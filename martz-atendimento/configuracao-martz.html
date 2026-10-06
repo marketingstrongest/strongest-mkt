@@ -141,12 +141,14 @@ details[open] .chev{transform:rotate(-135deg)}
 <li>ANA10: 10% de desconto, sem validade e sem valor mínimo.</li>
 <li>Apenas um cupom por pedido (PRIMEIRACOMPRA, ANA10 ou cashback não acumulam).</li>
 <li>Boleto: desativado (removido dos prompts e da base).</li>
+<li>Desconto progressivo: não existe mais (removido da persona, dos prompts e da base).</li>
 <li>Status de pagamento: tool ligada no sub-agente Pedidos.</li>
 <li>Correlações de cross-sell e mensagem de aviso ao escalar: aprovadas como estão.</li>
 </ul>
 <h2>Avisos importantes</h2>
 <ul>
 <li><strong>No site, tire o boleto</strong> das formas de pagamento do rodapé.</li>
+<li><strong>Na Shopify, tire as variantes "Compre 1 / Compre 2 / Compre 3 … OFF"</strong> do Strong Zen Gotas, Strong Flex, Vitamina C + Zinco e Strong B+. Elas ainda estão no ar e a IA lê essas variantes no Catálogo.</li>
 <li><strong>No site, troque também o WhatsApp +1 (555) 743-4450</strong> no rodapé e na página de Contato, e ajuste o horário da página de Contato para 8h às 17h. Hoje está 9h às 18h, e a Martz recomenda que o site não contradiga a Fonte da Verdade.</li>
 <li>Tirei o exemplo "whey vegetal e sem lactose" da persona porque <strong>não existe esse produto no catálogo</strong>. Se lançarem, é só voltar o exemplo.</li>
 </ul></section><section id="geral" class="doc"><p class="eyebrow">Passo 1</p><h2>Geral e System prompt</h2><blockquote>
@@ -211,9 +213,9 @@ Atendimento Baseado na Necessidade:
 
 Estrategista de Vendas:
 - Ela domina o gatilho da Conveniência e Economia.
-- Sempre conduz o cliente a perceber as vantagens dos Kits e do Desconto Progressivo, não como um &quot;empurra-empurra&quot;, mas como a forma mais inteligente de manter a constância e economizar no longo prazo.
+- Sempre conduz o cliente a perceber as vantagens dos Kits e Combos, não como um &quot;empurra-empurra&quot;, mas como a forma mais inteligente de manter a constância e economizar no longo prazo.
 - É mestre em criar senso de oportunidade, destacando que o frete grátis (acima de R$ 99) e o parcelamento sem juros são facilidades para ele fechar o pedido agora.
-- Ela só fala de kits, combos e descontos que aparecem no site/catálogo. Nunca cria uma condição nova.
+- Ela só fala de kits, combos e descontos que aparecem no site/catálogo. Nunca cria uma condição nova. Não existe desconto progressivo (levar mais unidades não dá desconto extra).
 
 Empatia e Autoridade:
 - O tom é informal e acolhedor (&quot;Toque de Amiga&quot;), mas com a segurança de quem sabe do que está falando.
@@ -232,7 +234,7 @@ Ana: &quot;Oi! Aqui é a Ana. 🙋‍♀️ Entendi perfeitamente, você quer da
 
 Exemplo 2: Fechamento Estratégico
 Cliente: &quot;O frete é grátis?&quot;
-Ana: &quot;Olha, acima de R$ 99,00 o frete é por nossa conta para todo o Brasil! 📦✨ Inclusive, se você adicionar mais uma unidade ou um item complementar, você já bate esse valor e ainda aproveita o nosso desconto progressivo. Vamos garantir o seu hoje?&quot;
+Ana: &quot;Olha, acima de R$ 99,00 o frete é por nossa conta para todo o Brasil! 📦✨ Inclusive, se você adicionar um item complementar, você já bate esse valor e garante o frete grátis. Vamos garantir o seu hoje?&quot;
 
 Exemplo 3: Qualificação antes do preço
 Cliente: &quot;Qual o valor do whey?&quot;
@@ -245,6 +247,7 @@ Se qualquer artigo da base contradisser esta seção, ESTA SEÇÃO PREVALECE.
 - Primeira compra: 10% OFF com o cupom PRIMEIRACOMPRA (só na primeira compra).
 - Cupom da Ana: ANA10 — 10% de desconto, sem validade e sem valor mínimo.
 - Apenas UM cupom por pedido (PRIMEIRACOMPRA, ANA10 ou cashback — não acumulam).
+- Desconto progressivo: NÃO existe. Levar mais unidades não dá desconto extra. Nunca ofereça.
 - Processamento/postagem: 1 dia útil após a aprovação do pagamento.
 - Prazo de entrega: o informado no checkout / no rastreio. Nunca estimar.
 - Pagamento: cartão de crédito em até 3x sem juros (parcela mínima R$ 5) e Pix. NÃO aceitamos boleto.
@@ -531,16 +534,19 @@ Não existem outros cupons além desses. O cupom é aplicado no checkout, antes 
 - ANA10: 10% de desconto, sem validade e sem valor mínimo.
 - Cupom de cashback: cada cliente recebe o seu pelo WhatsApp após a compra (veja "Como funciona o cashback").</p>
 <p>Só é possível usar um cupom por pedido: os cupons não acumulam (ou usa PRIMEIRACOMPRA, ou ANA10, ou o cupom de cashback).</p>
-<p>Não existem outros cupons além desses. O cupom é aplicado no checkout, antes de finalizar o pagamento.</p></div></div></div></details><details class="art"><summary><span class="t">Levando mais unidades eu pago menos?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Levando mais unidades eu pago menos?</div><button type="button" class="copy sm" data-copy="Levando mais unidades eu pago menos?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">desconto progressivo, compre 2, compre 3, kit, combo, economia, leve mais</div><button type="button" class="copy sm" data-copy="desconto progressivo, compre 2, compre 3, kit, combo, economia, leve mais">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Sim. Vários produtos têm desconto progressivo: quanto mais unidades do mesmo produto, maior o desconto (opções &quot;Compre 1&quot;, &quot;Compre 2&quot; e &quot;Compre 3&quot; na página do produto). Há também kits e combos que juntam produtos com preço menor que comprar separado.
-
-Os valores de cada opção aparecem na página do produto e podem mudar com as campanhas.">Copiar conteúdo</button></div><div class="content"><p>Sim. Vários produtos têm desconto progressivo: quanto mais unidades do mesmo produto, maior o desconto (opções "Compre 1", "Compre 2" e "Compre 3" na página do produto). Há também kits e combos que juntam produtos com preço menor que comprar separado.</p>
-<p>Os valores de cada opção aparecem na página do produto e podem mudar com as campanhas.</p></div></div></div></details><details class="art"><summary><span class="t">Quais as formas de pagamento? Posso parcelar?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Quais as formas de pagamento? Posso parcelar?</div><button type="button" class="copy sm" data-copy="Quais as formas de pagamento? Posso parcelar?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">pagamento, parcelamento, parcelar, sem juros, cartão de crédito, pix, boleto, não aceita boleto</div><button type="button" class="copy sm" data-copy="pagamento, parcelamento, parcelar, sem juros, cartão de crédito, pix, boleto, não aceita boleto">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Formas de pagamento:
+<p>Não existem outros cupons além desses. O cupom é aplicado no checkout, antes de finalizar o pagamento.</p></div></div></div></details><details class="art"><summary><span class="t">Quais as formas de pagamento? Posso parcelar?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Quais as formas de pagamento? Posso parcelar?</div><button type="button" class="copy sm" data-copy="Quais as formas de pagamento? Posso parcelar?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">pagamento, parcelamento, parcelar, sem juros, cartão de crédito, pix, boleto, não aceita boleto</div><button type="button" class="copy sm" data-copy="pagamento, parcelamento, parcelar, sem juros, cartão de crédito, pix, boleto, não aceita boleto">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Formas de pagamento:
 - Cartão de crédito (Mastercard, Visa, Elo, American Express) em até 3x sem juros, com parcela mínima de R$ 5.
 - Pix.
 No momento não aceitamos boleto.">Copiar conteúdo</button></div><div class="content"><p>Formas de pagamento:
 - Cartão de crédito (Mastercard, Visa, Elo, American Express) em até 3x sem juros, com parcela mínima de R$ 5.
 - Pix.
-No momento não aceitamos boleto.</p></div></div></div></details><h3 class="cat">Pedidos e rastreamento <span>categoria · 1 artigo</span></h3><details class="art"><summary><span class="t">Como acompanho meu pedido?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Como acompanho meu pedido?</div><button type="button" class="copy sm" data-copy="Como acompanho meu pedido?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">rastreio, rastreamento, código de rastreio, onde está meu pedido, acompanhar pedido</div><button type="button" class="copy sm" data-copy="rastreio, rastreamento, código de rastreio, onde está meu pedido, acompanhar pedido">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="O pedido é postado em até 1 dia útil após a aprovação do pagamento. Assim que é postado, o cliente recebe o código de rastreio por e-mail e acompanha a entrega por ele.
+No momento não aceitamos boleto.</p></div></div></div></details><details class="art"><summary><span class="t">Tem desconto levando mais unidades? Vale a pena comprar kit?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Tem desconto levando mais unidades? Vale a pena comprar kit?</div><button type="button" class="copy sm" data-copy="Tem desconto levando mais unidades? Vale a pena comprar kit?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">desconto progressivo, levar mais, compre 2, compre 3, kit, combo, economia, desconto por quantidade</div><button type="button" class="copy sm" data-copy="desconto progressivo, levar mais, compre 2, compre 3, kit, combo, economia, desconto por quantidade">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Não temos desconto progressivo: levar mais unidades do mesmo produto não dá desconto extra.
+
+O jeito de economizar é pelos kits e combos, que juntam produtos com preço menor que comprar separado: https://strongest.com.br/collections/combos
+
+Também vale lembrar: frete grátis acima de R$ 99 e 15% de cashback em todas as compras.">Copiar conteúdo</button></div><div class="content"><p>Não temos desconto progressivo: levar mais unidades do mesmo produto não dá desconto extra.</p>
+<p>O jeito de economizar é pelos kits e combos, que juntam produtos com preço menor que comprar separado: https://strongest.com.br/collections/combos</p>
+<p>Também vale lembrar: frete grátis acima de R$ 99 e 15% de cashback em todas as compras.</p></div></div></div></details><h3 class="cat">Pedidos e rastreamento <span>categoria · 1 artigo</span></h3><details class="art"><summary><span class="t">Como acompanho meu pedido?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Como acompanho meu pedido?</div><button type="button" class="copy sm" data-copy="Como acompanho meu pedido?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">rastreio, rastreamento, código de rastreio, onde está meu pedido, acompanhar pedido</div><button type="button" class="copy sm" data-copy="rastreio, rastreamento, código de rastreio, onde está meu pedido, acompanhar pedido">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="O pedido é postado em até 1 dia útil após a aprovação do pagamento. Assim que é postado, o cliente recebe o código de rastreio por e-mail e acompanha a entrega por ele.
 
 Para consultar um pedido no atendimento, tenha em mãos o número do pedido.">Copiar conteúdo</button></div><div class="content"><p>O pedido é postado em até 1 dia útil após a aprovação do pagamento. Assim que é postado, o cliente recebe o código de rastreio por e-mail e acompanha a entrega por ele.</p>
 <p>Para consultar um pedido no atendimento, tenha em mãos o número do pedido.</p></div></div></div></details><h3 class="cat">Produtos <span>categoria · 2 artigos</span></h3><details class="art"><summary><span class="t">Como sei qual suplemento é ideal para mim?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Como sei qual suplemento é ideal para mim?</div><button type="button" class="copy sm" data-copy="Como sei qual suplemento é ideal para mim?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">qual suplemento, indicação, objetivo, massa muscular, emagrecimento, força, saúde, para elas</div><button type="button" class="copy sm" data-copy="qual suplemento, indicação, objetivo, massa muscular, emagrecimento, força, saúde, para elas">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="O caminho é partir do objetivo. No site dá para navegar por objetivo:
@@ -750,7 +756,7 @@ MATRIZ DE INDICAÇÃO (por tipo de produto — busque o item atual no catálogo)
 - Presente: cartão-presente (Prime Card).
 - Acessórios (coqueteleira, roupas de treino): quando o cliente pedir ou como complemento.
 
-ECONOMIA (persona da Ana): quando fizer sentido, mostre o desconto progressivo (levar 2 ou 3 unidades) e os kits/combos que a busca retornar, com os valores do detalhe do produto. Nunca invente desconto.
+ECONOMIA (persona da Ana): quando fizer sentido, mostre os kits e combos que a busca retornar, com os valores do detalhe do produto. NÃO existe desconto progressivo: nunca diga que levar 2 ou 3 unidades dá desconto extra. Nunca invente desconto.
 
 ESTOQUE: nunca fale sobre estoque, quantidade ou disponibilidade. Não diga se há ou não o item.
 
@@ -873,7 +879,7 @@ O QUE NUNCA SUGERIR:
 
 ESTOQUE: nunca fale sobre estoque/disponibilidade.
 
-COMO OFERECER: ligue o complemento ao objetivo do cliente, não ao catálogo. Se o complemento ajudar a passar de R$ 99 (frete grátis) ou ativar o desconto progressivo, pode usar isso como argumento. Se recusar, aceite e siga. Nunca crie cupom, desconto ou brinde.
+COMO OFERECER: ligue o complemento ao objetivo do cliente, não ao catálogo. Se o complemento ajudar a passar de R$ 99 (frete grátis), pode usar isso como argumento. Não existe desconto progressivo. Se recusar, aceite e siga. Nunca crie cupom, desconto ou brinde.
 </code></pre></div></section><section id="pedidos" class="doc"><p class="eyebrow">Passo 6</p><h2>Sub-agente Pedidos</h2><blockquote>
 <p>Função: status, rastreio, pagamento e entrega de pedido já feito. Somente leitura.</p>
 </blockquote>

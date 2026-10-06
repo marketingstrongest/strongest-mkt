@@ -28,11 +28,13 @@ Material pronto para colar na Martz, montado a partir do site strongest.com.br e
 - ANA10: 10% de desconto, sem validade e sem valor mínimo.
 - Apenas um cupom por pedido (PRIMEIRACOMPRA, ANA10 ou cashback não acumulam).
 - Boleto: desativado (removido dos prompts e da base).
+- Desconto progressivo: não existe mais (removido da persona, dos prompts e da base).
 - Status de pagamento: tool ligada no sub-agente Pedidos.
 - Correlações de cross-sell e mensagem de aviso ao escalar: aprovadas como estão.
 
 ## Avisos importantes
 
 - **No site, tire o boleto** das formas de pagamento do rodapé.
+- **Na Shopify, tire as variantes "Compre 1 / Compre 2 / Compre 3 … OFF"** do Strong Zen Gotas, Strong Flex, Vitamina C + Zinco e Strong B+. Elas ainda estão no ar e a IA lê essas variantes no Catálogo.
 - **No site, troque também o WhatsApp +1 (555) 743-4450** no rodapé e na página de Contato, e ajuste o horário da página de Contato para 8h às 17h. Hoje está 9h às 18h, e a Martz recomenda que o site não contradiga a Fonte da Verdade.
 - Tirei o exemplo "whey vegetal e sem lactose" da persona porque **não existe esse produto no catálogo**. Se lançarem, é só voltar o exemplo.

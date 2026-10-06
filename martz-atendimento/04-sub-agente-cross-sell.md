@@ -18,12 +18,12 @@
 
 | Se o cliente tem/leva | Sugerir |
 |---|---|
-| Whey (Classic / Strong) | Creatina (vocês já vendem o kit Whey + Creatina) |
-| Creatina | Whey |
-| Whey ou creatina | Coqueteleira |
+| Proteína (whey ou Future Protein) | Creatina (vocês já vendem o kit Whey + Creatina) |
+| Creatina | Proteína (whey ou Future Protein, conforme a preferência do cliente) |
+| Proteína em pó ou creatina | Coqueteleira |
 | Pré-treino (pote ou sachê) | Coqueteleira |
 | Gel de carboidrato | Energy drink ou gel Black (outro sabor/linha) |
-| Termogênico | Whey (saciedade) |
+| Termogênico | Proteína (whey ou Future Protein) para saciedade |
 | Colágeno tipo II / Strong Flex | Ômega 3 |
 | Strong Beauty | Colágeno e Zinco |
 | Strong Zen (sono) | Magnésio |

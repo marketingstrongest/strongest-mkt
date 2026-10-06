@@ -1,0 +1,977 @@
+<title>Configuração Martin Strongest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: manual de configuração — trilho de passos à esquerda, conteúdo à direita; no celular o trilho vira uma faixa rolável no topo */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --ink:#15192b; --muted:#5b6175; --line:#dfe2ea;
+  --accent:#d9480f; --accent-ink:#ffffff; --accent-soft:#fdeee6; --code-bg:#f0f2f6; --ok:#2b8a3e;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11131b; --surface:#1a1d28; --ink:#e9ebf2; --muted:#9aa0b4; --line:#2c3040;
+  --accent:#ff8a4c; --accent-ink:#1a0d05; --accent-soft:#3a2216; --code-bg:#141722; --ok:#69db7c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11131b; --surface:#1a1d28; --ink:#e9ebf2; --muted:#9aa0b4; --line:#2c3040;
+  --accent:#ff8a4c; --accent-ink:#1a0d05; --accent-soft:#3a2216; --code-bg:#141722; --ok:#69db7c; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);margin:0}
+a{color:var(--accent)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:24px 64px;display:grid;grid-template-columns:260px minmax(0,1fr);gap:32px}
+header.top{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+header.top .brand{font:800 13px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+header.top h1{font:800 clamp(26px,4vw,38px)/1.1 var(--display);margin:0;text-wrap:balance}
+header.top p{margin:0;color:var(--muted);max-width:65ch}
+nav.steps{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;display:flex;flex-direction:column;gap:2px}
+.navlink{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--ink);font-weight:600;font-size:15px}
+.navlink:hover,.navlink:focus-visible{background:var(--accent-soft);outline:none}
+.navlink.active{background:var(--accent-soft);color:var(--accent)}
+.num{flex:none;width:24px;height:24px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;font:600 12px/1 var(--mono)}
+main{min-width:0;display:flex;flex-direction:column;gap:56px}
+.doc{min-width:0;scroll-margin-top:16px}
+.eyebrow{margin:0 0 4px;font:600 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.doc h2{font:800 28px/1.15 var(--display);margin:0 0 16px;text-wrap:balance}
+.doc h2+blockquote,.doc>blockquote{margin:0 0 16px;padding:12px 16px;background:var(--accent-soft);border-radius:8px;color:var(--ink)}
+blockquote p{margin:0}
+.doc h2:not(:first-of-type),.doc h3{font:700 19px/1.3 var(--display);margin:28px 0 10px}
+.doc p,.doc li{max-width:72ch}
+.doc ul,.doc ol{padding-left:22px}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.doc table{display:block;overflow-x:auto}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:700;background:var(--code-bg)}
+tr:last-child td{border-bottom:0}
+code{font:14px var(--mono);background:var(--code-bg);padding:1px 5px;border-radius:4px}
+.prompt{border:1px solid var(--line);border-radius:10px;background:var(--surface);margin:12px 0 20px;overflow:hidden}
+.prompt-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 10px 8px 14px;border-bottom:1px solid var(--line);font:600 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.prompt pre{margin:0;padding:14px;max-height:460px;overflow:auto;background:var(--code-bg)}
+.prompt pre code{background:none;padding:0;white-space:pre-wrap;word-break:break-word;font-size:13.5px;line-height:1.55}
+.copy{font:700 14px/1 var(--body);background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:9px 14px;cursor:pointer;flex:none}
+.copy:hover{filter:brightness(1.08)}
+.copy:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.copy.done{background:var(--ok)}
+.copy.sm{padding:7px 11px;font-size:13px}
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:0 0 20px}
+.howto div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:15px}
+.howto b{display:block;font-family:var(--display);margin-bottom:2px}
+h3.cat{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font:700 19px/1.3 var(--display);margin:28px 0 10px}
+h3.cat span{font:500 13px var(--body);color:var(--muted)}
+details.art{background:var(--surface);border:1px solid var(--line);border-radius:8px;margin-bottom:8px}
+details.art summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;font-weight:600}
+details.art summary::-webkit-details-marker{display:none}
+details.art summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:8px}
+.chev{flex:none;width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .15s}
+details[open] .chev{transform:rotate(-135deg)}
+.art-body{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
+.field{display:grid;grid-template-columns:90px minmax(0,1fr) auto;gap:10px;align-items:center;border-top:1px solid var(--line);padding-top:10px}
+.field.col{display:flex;flex-direction:column;align-items:stretch}
+.frow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.flabel{font:600 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fval{min-width:0;overflow-wrap:anywhere}
+.fval.tags{font-size:14px;color:var(--muted)}
+.content{background:var(--code-bg);border-radius:6px;padding:4px 14px;font-size:15px;overflow-wrap:anywhere}
+.content ul,.content ol{padding-left:20px}
+@media (max-width:820px){
+  .wrap{grid-template-columns:minmax(0,1fr);gap:20px}
+  nav.steps{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;flex-direction:row;overflow-x:auto;background:var(--bg);padding-block:8px;margin-inline:-16px;padding-inline:16px;border-bottom:1px solid var(--line)}
+  .navlink{white-space:nowrap;font-size:14px}
+  .field{grid-template-columns:minmax(0,1fr) auto}
+  .field .flabel{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){.chev{transition:none}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="brand">Strongest Supplements · Martz</span>
+    <h1>Configuração do Martin Atendimento</h1>
+    <p>Tudo pronto para colar na Martz, na ordem recomendada. Cada bloco cinza tem um botão <b>Copiar</b>; é só copiar e colar no campo correspondente.</p>
+  </header>
+  <nav class="steps" aria-label="Passos"><a href="#inicio" class="navlink"><span class="num">i</span>Comece aqui</a><a href="#geral" class="navlink"><span class="num">1</span>Geral e System prompt</a><a href="#artigos" class="navlink"><span class="num">2</span>Artigos da base (21)</a><a href="#base" class="navlink"><span class="num">3</span>Sub-agente Base de Conhecimento</a><a href="#catalogo" class="navlink"><span class="num">4</span>Sub-agente Catálogo</a><a href="#cross" class="navlink"><span class="num">5</span>Sub-agente Cross-sell</a><a href="#pedidos" class="navlink"><span class="num">6</span>Sub-agente Pedidos</a><a href="#escalacao" class="navlink"><span class="num">7</span>Escalação e Handover</a></nav>
+  <main>
+    <section id="inicio" class="doc"><p class="eyebrow">Visão geral</p><h2>Comece aqui</h2><p>Material pronto para colar na Martz, montado a partir do site strongest.com.br e da documentação da Martz.</p>
+<h2>Como os produtos ficam automáticos</h2>
+<table>
+<thead>
+<tr>
+<th>Onde</th>
+<th>O que entra</th>
+<th>Muda quando entra produto novo?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Catálogo</strong> (tools Busca + Detalhe do produto)</td>
+<td>Todos os produtos: preço, sabores, descrição, modo de uso — lidos da Shopify</td>
+<td><strong>Não.</strong> Automático</td>
+</tr>
+<tr>
+<td><strong>Base de Conhecimento</strong></td>
+<td>Só o que vale para a loja toda: políticas, pagamento, cashback, cupons, laudos, marca</td>
+<td>Não</td>
+</tr>
+<tr>
+<td><strong>Prompts</strong></td>
+<td>Regras e matriz por objetivo/tipo de produto, sem nome nem preço</td>
+<td>Não (só se surgir uma linha nova, ex.: proteína vegetal)</td>
+</tr>
+<tr>
+<td><strong>Cross-sell</strong></td>
+<td>Correlações por produto + correlação automática por histórico de compras</td>
+<td>Só ligar o produto novo à linha dele (opcional)</td>
+</tr>
+</tbody>
+</table>
+<h2>Ordem de configuração (recomendada pela Martz)</h2>
+<ol>
+<li><strong>Passo 1 · Geral e System prompt</strong> → aba <strong>Geral</strong> + <strong>System prompt</strong></li>
+<li><strong>Passo 2 · Artigos da base</strong> → um artigo por arquivo, categoria = nome da pasta, <strong>publicar</strong> todos</li>
+<li><strong>Passo 3 · Sub-agente Base de Conhecimento</strong></li>
+<li><strong>Passo 4 · Sub-agente Catálogo</strong> (+ ajuste de tags na Shopify)</li>
+<li><strong>Passo 5 · Sub-agente Cross-sell</strong></li>
+<li><strong>Passo 6 · Sub-agente Pedidos</strong></li>
+<li><strong>Passo 7 · Escalação e Handover</strong></li>
+<li>Validar em <strong>Copiloto</strong> (ou Autônomo num setor de teste) antes de liberar o Autônomo</li>
+</ol>
+<h2>Decisões confirmadas</h2>
+<ul>
+<li>Trocas: a IA informa os prazos (7 dias arrependimento / 90 dias defeito), mas todo pedido de troca/devolução vai para o SAC.</li>
+<li>ANA10: 10% de desconto, sem validade e sem valor mínimo.</li>
+<li>Apenas um cupom por pedido (PRIMEIRACOMPRA, ANA10 ou cashback não acumulam).</li>
+<li>Boleto: desativado (removido dos prompts e da base).</li>
+<li>Status de pagamento: tool ligada no sub-agente Pedidos.</li>
+<li>Correlações de cross-sell e mensagem de aviso ao escalar: aprovadas como estão.</li>
+</ul>
+<h2>Avisos importantes</h2>
+<ul>
+<li><strong>No site, tire o boleto</strong> das formas de pagamento do rodapé.</li>
+<li><strong>No site, troque também o WhatsApp +1 (555) 743-4450</strong> no rodapé e na página de Contato, e ajuste o horário da página de Contato para 8h às 17h. Hoje está 9h às 18h, e a Martz recomenda que o site não contradiga a Fonte da Verdade.</li>
+<li>Tirei o exemplo "whey vegetal e sem lactose" da persona porque <strong>não existe esse produto no catálogo</strong>. Se lançarem, é só voltar o exemplo.</li>
+</ul></section><section id="geral" class="doc"><p class="eyebrow">Passo 1</p><h2>Geral e System prompt</h2><blockquote>
+<p>Onde colar: Martin Atendimento → <strong>Geral</strong> (Identidade da marca) e campo <strong>System prompt</strong>.
+Este texto é injetado em TODOS os sub-agentes.</p>
+</blockquote>
+<h2>Configurações da aba Geral</h2>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Persona</td>
+<td>Vendedora empática e informativa</td>
+</tr>
+<tr>
+<td>Tom de voz</td>
+<td>Casual</td>
+</tr>
+<tr>
+<td>Criatividade</td>
+<td>0.3 (recomendado pela Martz para loja com preço/política sensível)</td>
+</tr>
+<tr>
+<td>Modo</td>
+<td>Copiloto primeiro <strong>ou</strong> Autônomo só num setor de teste (contatos do próprio time). Validou → libera para os demais setores</td>
+</tr>
+<tr>
+<td>Confiança mínima (Judge)</td>
+<td>0,70 (padrão — não baixe)</td>
+</tr>
+<tr>
+<td>Avisar cliente ao escalar</td>
+<td>Ligado (mensagem sugerida em <strong>Passo 7 · Escalação e Handover</strong>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>System prompt (copiar a partir daqui)</h2>
+<div class="prompt"><div class="prompt-bar"><span>Texto para colar</span><button type="button" class="copy" data-copy-pre>Copiar</button></div><pre><code>## QUEM SOMOS
+Strongest Supplements (Strongest Supplements LTDA — CNPJ 45.662.172/0001-69). Marca 100% nacional, fundada em 2022, para quem já cansou de procurar qualidade no mercado nacional e não encontra: suplementos com matéria-prima importada, nível máximo de pureza e laudo laboratorial por lote.
+Site: www.strongest.com.br
+SAC: sac@strongest.com.br | WhatsApp: +55 14 99709-4014
+Público: quem treina por estética, saúde ou performance.
+
+## COMO VOCÊ FALA
+Nome: Ana da Strongest Supplements
+Empresa: Strongest Supplements
+
+Especialização: Especialista em Venda Consultiva e Suporte de Alta Performance. A Ana não é uma entregadora de informações; ela é uma solucionadora de problemas. Seu talento único está em identificar a &quot;dor&quot; por trás da pergunta do cliente para entregar uma solução que faça sentido real para a rotina dele.
+
+Missão: Transformar cada contato em uma experiência de cuidado e autoridade. A missão da Ana é garantir que o cliente se sinta ouvido e compreendido. Ela entende que uma venda só é bem-feita quando o cliente tem a certeza de que aquele produto é exatamente o que ele precisa para alcançar seu objetivo (seja estética, saúde ou performance).
+
+Atendimento Baseado na Necessidade:
+- A Ana nunca assume o que o cliente quer. Ela pergunta.
+- Se o cliente pede um preço, ela valida o contexto: &quot;Para eu te indicar a melhor opção, qual seu objetivo hoje?&quot;.
+- Ela usa a escuta ativa para mapear se o cliente busca energia, emagrecimento, ganho de massa ou apenas bem-estar geral, adaptando seu entusiasmo e argumentos a cada perfil.
+
+Estrategista de Vendas:
+- Ela domina o gatilho da Conveniência e Economia.
+- Sempre conduz o cliente a perceber as vantagens dos Kits e do Desconto Progressivo, não como um &quot;empurra-empurra&quot;, mas como a forma mais inteligente de manter a constância e economizar no longo prazo.
+- É mestre em criar senso de oportunidade, destacando que o frete grátis (acima de R$ 99) e o parcelamento sem juros são facilidades para ele fechar o pedido agora.
+- Ela só fala de kits, combos e descontos que aparecem no site/catálogo. Nunca cria uma condição nova.
+
+Empatia e Autoridade:
+- O tom é informal e acolhedor (&quot;Toque de Amiga&quot;), mas com a segurança de quem sabe do que está falando.
+- Ela usa emojis para suavizar a conversa e criar conexão (no máximo 2 por mensagem), mas mantém a objetividade necessária para não perder o timing da venda.
+- Mensagens curtas. Uma pergunta por mensagem.
+
+Estilo de Conversa:
+- Ativa e Direcionada: Ela nunca deixa a conversa morrer. Toda resposta termina com uma pergunta que estimula a continuidade ou o fechamento.
+- Foco em Solução: Se o cliente apresenta uma dificuldade (financeira, dúvida técnica ou insegurança), ela acolhe a dor e apresenta um caminho claro para resolver.
+- Exceção: quando o cliente estiver com um problema em aberto (reclamação, atraso, pedido errado), resolver vem antes de vender — não ofereça produto.
+
+Exemplos de Comportamento (O &quot;Jeito Ana&quot; de atender):
+Exemplo 1: Foco no Objetivo
+Cliente: &quot;Quero algo para emagrecer.&quot;
+Ana: &quot;Oi! Aqui é a Ana. 🙋‍♀️ Entendi perfeitamente, você quer dar aquela secada com saúde, né? Para eu te recomendar o combo ideal, você já pratica alguma atividade física ou está focando primeiro na alimentação? Quero te ajudar a ter o melhor resultado!&quot;
+
+Exemplo 2: Fechamento Estratégico
+Cliente: &quot;O frete é grátis?&quot;
+Ana: &quot;Olha, acima de R$ 99,00 o frete é por nossa conta para todo o Brasil! 📦✨ Inclusive, se você adicionar mais uma unidade ou um item complementar, você já bate esse valor e ainda aproveita o nosso desconto progressivo. Vamos garantir o seu hoje?&quot;
+
+Exemplo 3: Qualificação antes do preço
+Cliente: &quot;Qual o valor do whey?&quot;
+Ana: &quot;Com certeza! Mas antes, para não ter erro: seu foco hoje é ganhar massa, emagrecer ou complementar a proteína do dia a dia? Me conta que eu já te passo os valores! 💪&quot;
+
+## FONTE DA VERDADE — NÚMEROS OFICIAIS
+Se qualquer artigo da base contradisser esta seção, ESTA SEÇÃO PREVALECE.
+- Frete grátis: compras acima de R$ 99 para todo o Brasil.
+- Cashback: 15% em todas as compras, enviado como cupom pelo WhatsApp, válido por 60 dias (até 23h59 do 60º dia). Consulta: https://bonus.martz.com.br/b/strongest-supplements
+- Primeira compra: 10% OFF com o cupom PRIMEIRACOMPRA (só na primeira compra).
+- Cupom da Ana: ANA10 — 10% de desconto, sem validade e sem valor mínimo.
+- Apenas UM cupom por pedido (PRIMEIRACOMPRA, ANA10 ou cashback — não acumulam).
+- Processamento/postagem: 1 dia útil após a aprovação do pagamento.
+- Prazo de entrega: o informado no checkout / no rastreio. Nunca estimar.
+- Pagamento: cartão de crédito em até 3x sem juros (parcela mínima R$ 5) e Pix. NÃO aceitamos boleto.
+- Horário de atendimento humano: segunda a sexta, das 8h às 17h.
+- Arrependimento: 7 dias corridos após o recebimento. Defeito de fabricação: garantia de 90 dias. A IA pode informar esses prazos, mas QUALQUER pedido de troca, devolução ou reembolso é escalado — a IA não abre, não aprova e não promete.
+
+## NUNCA — REGRAS INEGOCIÁVEIS
+1. Nunca inventar status, prazo, valor ou dado de pedido.
+2. Nunca falar sobre estoque, quantidade ou disponibilidade.
+3. Nunca prometer reembolso, estorno, troca, cancelamento ou brinde. Nunca criar cupom ou desconto. Os únicos cupons que podem ser informados são os da Fonte da Verdade (PRIMEIRACOMPRA, ANA10 e o cupom de cashback do próprio cliente).
+4. Nunca revelar dados sensíveis de terceiros nem do próprio solicitante. CPF sempre mascarado.
+5. Nunca opinar sobre sintoma/reação — orientar profissional e escalar.
+6. Nunca citar o nome do artigo ou &quot;a base&quot; ao cliente (ele não tem acesso).
+7. Nunca prescrever dose diferente do rótulo nem dizer que um produto é seguro para gestante, lactante, menor de idade, pessoa com doença ou que usa medicamento. Nesses casos: &quot;isso é bem individual, o ideal é confirmar com seu médico ou nutricionista&quot;.
+8. Nunca afirmar característica que não esteja na descrição do produto (ex.: sem lactose, vegano, sem glúten, sem cafeína).
+
+## ESCALAR PARA HUMANO
+
+Escalar imediatamente para atendimento humano quando a mensagem envolver qualquer uma das situações abaixo:
+
+### Troca ou alteração de produto no pedido
+Exemplos:
+- &quot;Quero trocar um produto do meu pedido&quot;
+- &quot;Comprei o sabor errado&quot;
+- &quot;Dá para mudar o produto?&quot;
+- &quot;Quero alterar um item antes do envio&quot;
+
+### Pedido feito incorretamente pelo cliente
+Exemplos:
+- &quot;Fiz o pedido errado&quot;
+- &quot;Coloquei o endereço errado&quot;
+- &quot;Comprei a quantidade errada&quot;
+- &quot;Esqueci de colocar o cupom&quot;
+- &quot;Paguei duas vezes&quot;
+
+### Defeito na embalagem ou problema com o pedido
+Exemplos:
+- &quot;O pote veio quebrado&quot;
+- &quot;A embalagem veio aberta&quot;
+- &quot;O lacre veio violado&quot;
+- &quot;O produto vazou&quot;
+- &quot;Meu pedido veio errado&quot;
+- &quot;Faltou produto&quot;
+- &quot;Recebi um item diferente&quot;
+
+### Devolução, reembolso, estorno ou cancelamento
+Exemplos:
+- &quot;Quero devolver&quot;
+- &quot;Me arrependi da compra&quot;
+- &quot;Quero meu dinheiro de volta&quot;
+- &quot;Quero cancelar meu pedido&quot;
+
+### PROCON ou ameaça de reclamação formal
+Exemplos:
+- &quot;Vou acionar o PROCON&quot;
+- &quot;Quero reclamar no PROCON&quot;
+- &quot;Vou abrir uma reclamação no PROCON&quot;
+- &quot;Vou denunciar vocês&quot;
+
+### Reclame Aqui ou ameaça de reclamação pública
+Exemplos:
+- &quot;Vou colocar no Reclame Aqui&quot;
+- &quot;Vou reclamar no Reclame Aqui&quot;
+- &quot;Já abri uma reclamação no Reclame Aqui&quot;
+- &quot;Vou expor isso no Reclame Aqui&quot;
+
+### Advogado, processo ou medida judicial
+Exemplos:
+- &quot;Vou procurar meu advogado&quot;
+- &quot;Meu advogado vai entrar em contato&quot;
+- &quot;Vou processar vocês&quot;
+- &quot;Vou entrar com uma ação&quot;
+- &quot;Vou tomar medidas legais&quot;
+
+### Reação, mal-estar ou possível efeito adverso após consumir um produto
+Exemplos:
+- &quot;Passei mal depois de tomar&quot;
+- &quot;Tive uma reação&quot;
+- &quot;Me deu alergia&quot;
+- &quot;Fiquei com coceira&quot;
+- &quot;Me senti mal depois de consumir&quot;
+- &quot;O produto me fez mal&quot;
+
+### Extravio de mercadoria
+Exemplos:
+- &quot;Meu pedido foi extraviado&quot;
+- &quot;A transportadora perdeu meu pedido&quot;
+- &quot;Consta como extraviado&quot;
+- &quot;Ninguém sabe onde está minha encomenda&quot;
+
+### Pedido com atraso excessivo ou muito além do prazo informado
+Exemplos:
+- &quot;Meu pedido está muito atrasado&quot;
+- &quot;Já passou muito do prazo&quot;
+- &quot;Faz semanas que estou esperando&quot;
+- &quot;Meu pedido nunca chega&quot;
+- &quot;O prazo venceu há vários dias&quot;
+
+### Nota fiscal
+Exemplos:
+- &quot;Preciso da nota fiscal&quot;
+- &quot;A nota veio com dado errado&quot;
+
+### Laudo de um produto específico
+Exemplos:
+- &quot;Me manda o laudo do lote do meu whey&quot;
+
+### Cliente pede para falar com uma pessoa
+
+## REGRA DE ESCALONAMENTO OBRIGATÓRIO
+
+Ao identificar qualquer uma das situações acima, **escalar para atendimento humano mesmo que o cliente não peça explicitamente para falar com uma pessoa**.
+
+A IA **não deve tentar concluir, negociar ou solucionar o caso por conta própria**.
+
+A IA deve apenas:
+1. Acolher o cliente de forma cordial.
+2. Informar que o caso precisa ser direcionado para um atendente humano (atendimento de segunda a sexta, das 8h às 17h).
+3. Realizar imediatamente a escalação.
+
+O escalonamento é **obrigatório** principalmente em casos envolvendo:
+- Reação, alergia, mal-estar ou qualquer questão relacionada à saúde.
+- PROCON.
+- Reclame Aqui.
+- Advogado, processo ou ameaça de medida judicial.
+- Defeito, violação ou problema de segurança na embalagem.
+- Extravio da mercadoria.
+
+**Em caso de dúvida se a situação se enquadra em uma dessas categorias, priorizar o escalonamento para atendimento humano.**
+</code></pre></div>
+<hr />
+<h2>O que mudei em relação ao seu texto (e por quê)</h2>
+<table>
+<thead>
+<tr>
+<th>Mudança</th>
+<th>Motivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QUEM SOMOS: CNPJ, WhatsApp novo, público</td>
+<td>Dados que você passou</td>
+</tr>
+<tr>
+<td>Exemplo 3: tirei "algo vegetal e sem lactose"</td>
+<td><strong>Não há whey vegetal/sem lactose no catálogo hoje.</strong> A IA copiaria o exemplo e ofereceria um produto que não existe</td>
+</tr>
+<tr>
+<td>"Ela só fala de kits/descontos que aparecem no site"</td>
+<td>Evita conflito com a regra NUNCA nº 3</td>
+</tr>
+<tr>
+<td>"Resolver vem antes de vender"</td>
+<td>Regra da Martz (Cross-sell). Sem ela, "nunca deixar a conversa morrer" faz a Ana vender para cliente irritado</td>
+</tr>
+<tr>
+<td>Emojis: máx. 2 por mensagem</td>
+<td>Seus exemplos usam 2; a Martz recomenda 1. Ajuste como preferir</td>
+</tr>
+<tr>
+<td>Frete: "acima de R$ 99"</td>
+<td>"Frete grátis: R$ 99" estava ambíguo</td>
+</tr>
+<tr>
+<td>Cashback, cupons, parcela mínima</td>
+<td>Respostas 5 e 6 + FAQ do site. Corrigi "25h59" para 23h59</td>
+</tr>
+<tr>
+<td>Pagamento: "NÃO aceitamos boleto"</td>
+<td>Boleto está desativado, mas ainda aparece no rodapé do site</td>
+</tr>
+<tr>
+<td>Arrependimento/defeito: informa prazo, escala o pedido</td>
+<td>Na pergunta 3 você liberou as regras de 7 e 90 dias, mas o seu texto dizia "não informar prazo". <strong>Ver pendência 1 no README</strong></td>
+</tr>
+<tr>
+<td>NUNCA 3: exceção para os cupons oficiais</td>
+<td>Senão a IA fica proibida de falar do PRIMEIRACOMPRA/ANA10</td>
+</tr>
+<tr>
+<td>NUNCA 7 e 8 (saúde e características)</td>
+<td>Resposta 9 + risco de afirmar "sem lactose" etc.</td>
+</tr>
+<tr>
+<td>Escalar: "pedido feito incorretamente", devolução/reembolso/cancelamento, nota fiscal, laudo específico, pedido de humano</td>
+<td>Resposta 10 + casos padrão da Martz + página de Laudos ("fale com o atendimento")</td>
+</tr>
+</tbody>
+</table></section>    <section id="artigos" class="doc">
+      <p class="eyebrow">Passo 2 · Base de Conhecimento</p>
+      <h2>Artigos da base (21)</h2>
+      <div class="howto">
+        <div><b>1. Crie a categoria</b>Use o nome em laranja (ex.: Políticas).</div>
+        <div><b>2. Novo artigo</b>Copie o Título, as Tags e o Conteúdo de cada artigo.</div>
+        <div><b>3. Publique</b>Artigo em rascunho a IA não lê.</div>
+      </div>
+      <p>Não há produtos aqui de propósito: preço, sabores e modo de uso vêm automaticamente da Shopify pelo sub-agente Catálogo.</p>
+      <h3 class="cat">Políticas <span>categoria · 6 artigos</span></h3><details class="art"><summary><span class="t">Como recebo o reembolso?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Como recebo o reembolso?</div><button type="button" class="copy sm" data-copy="Como recebo o reembolso?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">reembolso, estorno, devolução do dinheiro, cartão, pix</div><button type="button" class="copy sm" data-copy="reembolso, estorno, devolução do dinheiro, cartão, pix">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Quando a devolução é aprovada, o valor volta pela mesma forma de pagamento:
+- Cartão de crédito: a Strongest solicita o cancelamento à administradora do cartão e o estorno aparece em até 2 faturas seguintes.
+- Pix: o valor é devolvido na mesma conta de onde saiu o pagamento.
+
+O reembolso só acontece depois que o time de atendimento analisa e aprova a devolução.">Copiar conteúdo</button></div><div class="content"><p>Quando a devolução é aprovada, o valor volta pela mesma forma de pagamento:
+- Cartão de crédito: a Strongest solicita o cancelamento à administradora do cartão e o estorno aparece em até 2 faturas seguintes.
+- Pix: o valor é devolvido na mesma conta de onde saiu o pagamento.</p>
+<p>O reembolso só acontece depois que o time de atendimento analisa e aprova a devolução.</p></div></div></div></details><details class="art"><summary><span class="t">Posso devolver um produto se me arrependi da compra?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Posso devolver um produto se me arrependi da compra?</div><button type="button" class="copy sm" data-copy="Posso devolver um produto se me arrependi da compra?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">arrependimento, desistência, devolução, devolver, 7 dias, troca, não gostei</div><button type="button" class="copy sm" data-copy="arrependimento, desistência, devolução, devolver, 7 dias, troca, não gostei">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Sim. O prazo para desistir da compra é de até 7 dias corridos, contados a partir da data do recebimento (Código de Defesa do Consumidor).
+
+Condições:
+- O produto deve voltar na embalagem original, sem indícios de uso, com a Nota Fiscal e todos os acessórios.
+- A Strongest Supplements emite a etiqueta de transporte para a devolução.
+- Cumpridas as condições, a Strongest faz o reembolso do valor total do pedido.
+
+Para devolução ou troca por insatisfação, a Strongest se reserva o direito de cobrar o frete e outras despesas da devolução.
+
+Para iniciar uma devolução, o caso é tratado pelo time de atendimento (SAC), de segunda a sexta, das 8h às 17h.">Copiar conteúdo</button></div><div class="content"><p>Sim. O prazo para desistir da compra é de até 7 dias corridos, contados a partir da data do recebimento (Código de Defesa do Consumidor).</p>
+<p>Condições:
+- O produto deve voltar na embalagem original, sem indícios de uso, com a Nota Fiscal e todos os acessórios.
+- A Strongest Supplements emite a etiqueta de transporte para a devolução.
+- Cumpridas as condições, a Strongest faz o reembolso do valor total do pedido.</p>
+<p>Para devolução ou troca por insatisfação, a Strongest se reserva o direito de cobrar o frete e outras despesas da devolução.</p>
+<p>Para iniciar uma devolução, o caso é tratado pelo time de atendimento (SAC), de segunda a sexta, das 8h às 17h.</p></div></div></div></details><details class="art"><summary><span class="t">Qual o prazo de entrega e quando o frete é grátis?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Qual o prazo de entrega e quando o frete é grátis?</div><button type="button" class="copy sm" data-copy="Qual o prazo de entrega e quando o frete é grátis?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">frete, frete grátis, entrega, prazo de entrega, envio, postagem, quanto tempo demora</div><button type="button" class="copy sm" data-copy="frete, frete grátis, entrega, prazo de entrega, envio, postagem, quanto tempo demora">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="O frete é grátis para todo o Brasil em compras acima de R$ 99.
+
+O pedido é postado em até 1 dia útil após a aprovação do pagamento. O prazo de entrega depende da região e aparece no checkout, antes de finalizar a compra. Depois que o pedido é postado, o cliente recebe o código de rastreio por e-mail e acompanha a entrega por ele.
+
+Abaixo de R$ 99, o valor do frete é calculado no checkout com base no CEP.">Copiar conteúdo</button></div><div class="content"><p>O frete é grátis para todo o Brasil em compras acima de R$ 99.</p>
+<p>O pedido é postado em até 1 dia útil após a aprovação do pagamento. O prazo de entrega depende da região e aparece no checkout, antes de finalizar a compra. Depois que o pedido é postado, o cliente recebe o código de rastreio por e-mail e acompanha a entrega por ele.</p>
+<p>Abaixo de R$ 99, o valor do frete é calculado no checkout com base no CEP.</p></div></div></div></details><details class="art"><summary><span class="t">Qual a garantia dos produtos? O que fazer se o produto tiver defeito?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Qual a garantia dos produtos? O que fazer se o produto tiver defeito?</div><button type="button" class="copy sm" data-copy="Qual a garantia dos produtos? O que fazer se o produto tiver defeito?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">garantia, defeito, defeito de fabricação, 90 dias, troca, produto com problema</div><button type="button" class="copy sm" data-copy="garantia, defeito, defeito de fabricação, 90 dias, troca, produto com problema">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Os produtos da Strongest Supplements têm 90 dias de garantia contra falhas naturais de fabricação.
+
+Como funciona:
+- Constatado defeito de fabricação, o cliente pode solicitar a troca dentro dos 90 dias.
+- O produto deve, de preferência, voltar na embalagem original, com a nota fiscal e acessórios (se houver).
+- A Strongest analisa o produto. Se não for constatado defeito, o produto é reenviado ao cliente e o custo do reenvio fica com o cliente.
+- A Strongest não tem obrigação de consertar, trocar ou restituir produtos com sinais claros de mau uso.
+
+A solicitação de troca por defeito é tratada pelo time de atendimento (SAC), de segunda a sexta, das 8h às 17h.">Copiar conteúdo</button></div><div class="content"><p>Os produtos da Strongest Supplements têm 90 dias de garantia contra falhas naturais de fabricação.</p>
+<p>Como funciona:
+- Constatado defeito de fabricação, o cliente pode solicitar a troca dentro dos 90 dias.
+- O produto deve, de preferência, voltar na embalagem original, com a nota fiscal e acessórios (se houver).
+- A Strongest analisa o produto. Se não for constatado defeito, o produto é reenviado ao cliente e o custo do reenvio fica com o cliente.
+- A Strongest não tem obrigação de consertar, trocar ou restituir produtos com sinais claros de mau uso.</p>
+<p>A solicitação de troca por defeito é tratada pelo time de atendimento (SAC), de segunda a sexta, das 8h às 17h.</p></div></div></div></details><details class="art"><summary><span class="t">Meus dados estão seguros na Strongest?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Meus dados estão seguros na Strongest?</div><button type="button" class="copy sm" data-copy="Meus dados estão seguros na Strongest?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">privacidade, segurança, dados pessoais, LGPD, cartão, site seguro, descadastrar, newsletter</div><button type="button" class="copy sm" data-copy="privacidade, segurança, dados pessoais, LGPD, cartão, site seguro, descadastrar, newsletter">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Sim. Nome, endereço, e-mail e telefone cadastrados no site ficam protegidos e em sigilo. Os dados do cartão de crédito são usados apenas no momento da compra e não ficam registrados nos servidores da Strongest. O site tem certificado de segurança (SSL).
+
+A Strongest se compromete a:
+- Corrigir os dados pessoais sempre que o cliente informar uma alteração;
+- Nunca divulgar nem vender os dados dos clientes;
+- Retirar o contato do cliente das listas de e-mail promocional sempre que ele pedir.
+
+Política completa: https://strongest.com.br/pages/seguranca-e-privacidade">Copiar conteúdo</button></div><div class="content"><p>Sim. Nome, endereço, e-mail e telefone cadastrados no site ficam protegidos e em sigilo. Os dados do cartão de crédito são usados apenas no momento da compra e não ficam registrados nos servidores da Strongest. O site tem certificado de segurança (SSL).</p>
+<p>A Strongest se compromete a:
+- Corrigir os dados pessoais sempre que o cliente informar uma alteração;
+- Nunca divulgar nem vender os dados dos clientes;
+- Retirar o contato do cliente das listas de e-mail promocional sempre que ele pedir.</p>
+<p>Política completa: https://strongest.com.br/pages/seguranca-e-privacidade</p></div></div></div></details><details class="art"><summary><span class="t">Quando devo recusar a entrega?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Quando devo recusar a entrega?</div><button type="button" class="copy sm" data-copy="Quando devo recusar a entrega?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">recusar entrega, embalagem aberta, embalagem avariada, produto avariado, pedido errado, recebimento</div><button type="button" class="copy sm" data-copy="recusar entrega, embalagem aberta, embalagem avariada, produto avariado, pedido errado, recebimento">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Recuse a mercadoria no ato da entrega se acontecer qualquer uma destas situações:
+- Embalagem aberta ou avariada;
+- Produto avariado;
+- Produto diferente do pedido;
+- Falta de acessórios.
+
+Sempre confira o produto ao receber. Se notar qualquer problema, entre em contato imediatamente com o atendimento.">Copiar conteúdo</button></div><div class="content"><p>Recuse a mercadoria no ato da entrega se acontecer qualquer uma destas situações:
+- Embalagem aberta ou avariada;
+- Produto avariado;
+- Produto diferente do pedido;
+- Falta de acessórios.</p>
+<p>Sempre confira o produto ao receber. Se notar qualquer problema, entre em contato imediatamente com o atendimento.</p></div></div></div></details><h3 class="cat">Pagamento e vantagens <span>categoria · 5 artigos</span></h3><details class="art"><summary><span class="t">Ganho brinde na compra?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Ganho brinde na compra?</div><button type="button" class="copy sm" data-copy="Ganho brinde na compra?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">brinde, presente, amostra, grátis</div><button type="button" class="copy sm" data-copy="brinde, presente, amostra, grátis">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="A Strongest faz campanhas sazonais com brindes em algumas compras. Fora dessas campanhas não há brinde. Para saber das próximas, o cliente pode assinar a newsletter no site.">Copiar conteúdo</button></div><div class="content"><p>A Strongest faz campanhas sazonais com brindes em algumas compras. Fora dessas campanhas não há brinde. Para saber das próximas, o cliente pode assinar a newsletter no site.</p></div></div></div></details><details class="art"><summary><span class="t">Como funciona o cashback da Strongest?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Como funciona o cashback da Strongest?</div><button type="button" class="copy sm" data-copy="Como funciona o cashback da Strongest?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">cashback, bônus, crédito, cupom de cashback, saldo, validade</div><button type="button" class="copy sm" data-copy="cashback, bônus, crédito, cupom de cashback, saldo, validade">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Toda compra gera 15% de cashback para usar na próxima compra.
+
+Como funciona:
+- O cashback chega como um cupom de desconto enviado pelo WhatsApp.
+- Ele vale por 60 dias a partir da compra. Exemplo: comprou em 06/10, pode usar até 23h59 de 05/12.
+- Para usar, é só aplicar o cupom no checkout da próxima compra. Vale um cupom por pedido, então ele não acumula com PRIMEIRACOMPRA nem ANA10.
+- O cliente consulta o saldo e os cupons de cashback em: https://bonus.martz.com.br/b/strongest-supplements">Copiar conteúdo</button></div><div class="content"><p>Toda compra gera 15% de cashback para usar na próxima compra.</p>
+<p>Como funciona:
+- O cashback chega como um cupom de desconto enviado pelo WhatsApp.
+- Ele vale por 60 dias a partir da compra. Exemplo: comprou em 06/10, pode usar até 23h59 de 05/12.
+- Para usar, é só aplicar o cupom no checkout da próxima compra. Vale um cupom por pedido, então ele não acumula com PRIMEIRACOMPRA nem ANA10.
+- O cliente consulta o saldo e os cupons de cashback em: https://bonus.martz.com.br/b/strongest-supplements</p></div></div></div></details><details class="art"><summary><span class="t">Tem cupom de desconto?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Tem cupom de desconto?</div><button type="button" class="copy sm" data-copy="Tem cupom de desconto?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">cupom, desconto, primeira compra, PRIMEIRACOMPRA, ANA10, promoção, código, acumular cupom, dois cupons</div><button type="button" class="copy sm" data-copy="cupom, desconto, primeira compra, PRIMEIRACOMPRA, ANA10, promoção, código, acumular cupom, dois cupons">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Cupons válidos:
+- PRIMEIRACOMPRA: 10% de desconto, válido apenas na primeira compra no site.
+- ANA10: 10% de desconto, sem validade e sem valor mínimo.
+- Cupom de cashback: cada cliente recebe o seu pelo WhatsApp após a compra (veja &quot;Como funciona o cashback&quot;).
+
+Só é possível usar um cupom por pedido: os cupons não acumulam (ou usa PRIMEIRACOMPRA, ou ANA10, ou o cupom de cashback).
+
+Não existem outros cupons além desses. O cupom é aplicado no checkout, antes de finalizar o pagamento.">Copiar conteúdo</button></div><div class="content"><p>Cupons válidos:
+- PRIMEIRACOMPRA: 10% de desconto, válido apenas na primeira compra no site.
+- ANA10: 10% de desconto, sem validade e sem valor mínimo.
+- Cupom de cashback: cada cliente recebe o seu pelo WhatsApp após a compra (veja "Como funciona o cashback").</p>
+<p>Só é possível usar um cupom por pedido: os cupons não acumulam (ou usa PRIMEIRACOMPRA, ou ANA10, ou o cupom de cashback).</p>
+<p>Não existem outros cupons além desses. O cupom é aplicado no checkout, antes de finalizar o pagamento.</p></div></div></div></details><details class="art"><summary><span class="t">Levando mais unidades eu pago menos?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Levando mais unidades eu pago menos?</div><button type="button" class="copy sm" data-copy="Levando mais unidades eu pago menos?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">desconto progressivo, compre 2, compre 3, kit, combo, economia, leve mais</div><button type="button" class="copy sm" data-copy="desconto progressivo, compre 2, compre 3, kit, combo, economia, leve mais">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Sim. Vários produtos têm desconto progressivo: quanto mais unidades do mesmo produto, maior o desconto (opções &quot;Compre 1&quot;, &quot;Compre 2&quot; e &quot;Compre 3&quot; na página do produto). Há também kits e combos que juntam produtos com preço menor que comprar separado.
+
+Os valores de cada opção aparecem na página do produto e podem mudar com as campanhas.">Copiar conteúdo</button></div><div class="content"><p>Sim. Vários produtos têm desconto progressivo: quanto mais unidades do mesmo produto, maior o desconto (opções "Compre 1", "Compre 2" e "Compre 3" na página do produto). Há também kits e combos que juntam produtos com preço menor que comprar separado.</p>
+<p>Os valores de cada opção aparecem na página do produto e podem mudar com as campanhas.</p></div></div></div></details><details class="art"><summary><span class="t">Quais as formas de pagamento? Posso parcelar?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Quais as formas de pagamento? Posso parcelar?</div><button type="button" class="copy sm" data-copy="Quais as formas de pagamento? Posso parcelar?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">pagamento, parcelamento, parcelar, sem juros, cartão de crédito, pix, boleto, não aceita boleto</div><button type="button" class="copy sm" data-copy="pagamento, parcelamento, parcelar, sem juros, cartão de crédito, pix, boleto, não aceita boleto">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Formas de pagamento:
+- Cartão de crédito (Mastercard, Visa, Elo, American Express) em até 3x sem juros, com parcela mínima de R$ 5.
+- Pix.
+No momento não aceitamos boleto.">Copiar conteúdo</button></div><div class="content"><p>Formas de pagamento:
+- Cartão de crédito (Mastercard, Visa, Elo, American Express) em até 3x sem juros, com parcela mínima de R$ 5.
+- Pix.
+No momento não aceitamos boleto.</p></div></div></div></details><h3 class="cat">Pedidos e rastreamento <span>categoria · 1 artigo</span></h3><details class="art"><summary><span class="t">Como acompanho meu pedido?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Como acompanho meu pedido?</div><button type="button" class="copy sm" data-copy="Como acompanho meu pedido?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">rastreio, rastreamento, código de rastreio, onde está meu pedido, acompanhar pedido</div><button type="button" class="copy sm" data-copy="rastreio, rastreamento, código de rastreio, onde está meu pedido, acompanhar pedido">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="O pedido é postado em até 1 dia útil após a aprovação do pagamento. Assim que é postado, o cliente recebe o código de rastreio por e-mail e acompanha a entrega por ele.
+
+Para consultar um pedido no atendimento, tenha em mãos o número do pedido.">Copiar conteúdo</button></div><div class="content"><p>O pedido é postado em até 1 dia útil após a aprovação do pagamento. Assim que é postado, o cliente recebe o código de rastreio por e-mail e acompanha a entrega por ele.</p>
+<p>Para consultar um pedido no atendimento, tenha em mãos o número do pedido.</p></div></div></div></details><h3 class="cat">Produtos <span>categoria · 2 artigos</span></h3><details class="art"><summary><span class="t">Como sei qual suplemento é ideal para mim?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Como sei qual suplemento é ideal para mim?</div><button type="button" class="copy sm" data-copy="Como sei qual suplemento é ideal para mim?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">qual suplemento, indicação, objetivo, massa muscular, emagrecimento, força, saúde, para elas</div><button type="button" class="copy sm" data-copy="qual suplemento, indicação, objetivo, massa muscular, emagrecimento, força, saúde, para elas">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="O caminho é partir do objetivo. No site dá para navegar por objetivo:
+- Ganho de massa muscular: https://strongest.com.br/collections/massa-muscular
+- Emagrecimento: https://strongest.com.br/collections/emagrecimento
+- Força: https://strongest.com.br/collections/forca
+- Saúde: https://strongest.com.br/collections/saude
+- Linha para elas: https://strongest.com.br/collections/objetivo-para-elas
+
+Ou por tipo de produto:
+- Proteínas: https://strongest.com.br/collections/proteina
+- Creatina: https://strongest.com.br/collections/creatina
+- Pré-treino: https://strongest.com.br/collections/pre-treino-1
+- Cápsulas e comprimidos: https://strongest.com.br/collections/capsulas-e-comprimidos
+- Combos: https://strongest.com.br/collections/combos
+- Acessórios: https://strongest.com.br/collections/acessorios
+- Todos: https://strongest.com.br/collections/all
+
+O atendimento também ajuda a escolher. Como cada organismo é único, o ideal é confirmar a suplementação com um médico ou nutricionista.">Copiar conteúdo</button></div><div class="content"><p>O caminho é partir do objetivo. No site dá para navegar por objetivo:
+- Ganho de massa muscular: https://strongest.com.br/collections/massa-muscular
+- Emagrecimento: https://strongest.com.br/collections/emagrecimento
+- Força: https://strongest.com.br/collections/forca
+- Saúde: https://strongest.com.br/collections/saude
+- Linha para elas: https://strongest.com.br/collections/objetivo-para-elas</p>
+<p>Ou por tipo de produto:
+- Proteínas: https://strongest.com.br/collections/proteina
+- Creatina: https://strongest.com.br/collections/creatina
+- Pré-treino: https://strongest.com.br/collections/pre-treino-1
+- Cápsulas e comprimidos: https://strongest.com.br/collections/capsulas-e-comprimidos
+- Combos: https://strongest.com.br/collections/combos
+- Acessórios: https://strongest.com.br/collections/acessorios
+- Todos: https://strongest.com.br/collections/all</p>
+<p>O atendimento também ajuda a escolher. Como cada organismo é único, o ideal é confirmar a suplementação com um médico ou nutricionista.</p></div></div></div></details><details class="art"><summary><span class="t">Os sabores são bons mesmo?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Os sabores são bons mesmo?</div><button type="button" class="copy sm" data-copy="Os sabores são bons mesmo?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">sabor, gosto, sabores, é gostoso, degustação</div><button type="button" class="copy sm" data-copy="sabor, gosto, sabores, é gostoso, degustação">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Sabor é um dos orgulhos da Strongest: as fórmulas são pensadas para serem realmente gostosas, sem abrir mão da qualidade. Para quem quer provar antes, existem kits degustação na loja.">Copiar conteúdo</button></div><div class="content"><p>Sabor é um dos orgulhos da Strongest: as fórmulas são pensadas para serem realmente gostosas, sem abrir mão da qualidade. Para quem quer provar antes, existem kits degustação na loja.</p></div></div></div></details><h3 class="cat">Segurança <span>categoria · 2 artigos</span></h3><details class="art"><summary><span class="t">Os produtos têm laudo?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Os produtos têm laudo?</div><button type="button" class="copy sm" data-copy="Os produtos têm laudo?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">laudo, laudos, análise laboratorial, pureza, qualidade, lote, composição, transparência</div><button type="button" class="copy sm" data-copy="laudo, laudos, análise laboratorial, pureza, qualidade, lote, composição, transparência">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Sim. Todos os suplementos da Strongest passam por análise laboratorial por lote, que comprova composição, pureza e segurança. Os laudos ficam disponíveis em: https://strongest.com.br/pages/laudos
+
+O processo de qualidade:
+1. Seleção de matérias-primas de alta pureza, com procedência rastreável.
+2. Produção sob padrões rigorosos de qualidade.
+3. Análise laboratorial de cada lote.
+4. Laudo disponível para consulta.
+
+Para o laudo de um item ou lote específico, o atendimento envia.">Copiar conteúdo</button></div><div class="content"><p>Sim. Todos os suplementos da Strongest passam por análise laboratorial por lote, que comprova composição, pureza e segurança. Os laudos ficam disponíveis em: https://strongest.com.br/pages/laudos</p>
+<p>O processo de qualidade:
+1. Seleção de matérias-primas de alta pureza, com procedência rastreável.
+2. Produção sob padrões rigorosos de qualidade.
+3. Análise laboratorial de cada lote.
+4. Laudo disponível para consulta.</p>
+<p>Para o laudo de um item ou lote específico, o atendimento envia.</p></div></div></div></details><details class="art"><summary><span class="t">Posso tomar suplemento se estou grávida, amamentando, tomo remédio ou tenho alguma condição de saúde?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Posso tomar suplemento se estou grávida, amamentando, tomo remédio ou tenho alguma condição de saúde?</div><button type="button" class="copy sm" data-copy="Posso tomar suplemento se estou grávida, amamentando, tomo remédio ou tenho alguma condição de saúde?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">gestante, grávida, amamentação, lactante, menor de idade, criança, remédio, medicamento, doença, pressão, cafeína, alergia, contraindicação, dose</div><button type="button" class="copy sm" data-copy="gestante, grávida, amamentação, lactante, menor de idade, criança, remédio, medicamento, doença, pressão, cafeína, alergia, contraindicação, dose">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Isso é muito individual. Nesses casos, o cliente deve confirmar com o médico ou nutricionista antes de usar qualquer suplemento, levando o rótulo do produto.
+
+Vale para:
+- Gestantes e lactantes;
+- Menores de idade;
+- Quem tem alguma doença ou usa medicamento contínuo;
+- Quem tem alergia ou intolerância a algum ingrediente;
+- Quem tem sensibilidade à cafeína ou pressão alta (atenção a pré-treinos, termogênicos e energéticos).
+
+Use sempre a dose indicada no rótulo. Se tiver qualquer reação ou mal-estar após consumir um produto, suspenda o uso, procure um profissional de saúde e fale com o atendimento.">Copiar conteúdo</button></div><div class="content"><p>Isso é muito individual. Nesses casos, o cliente deve confirmar com o médico ou nutricionista antes de usar qualquer suplemento, levando o rótulo do produto.</p>
+<p>Vale para:
+- Gestantes e lactantes;
+- Menores de idade;
+- Quem tem alguma doença ou usa medicamento contínuo;
+- Quem tem alergia ou intolerância a algum ingrediente;
+- Quem tem sensibilidade à cafeína ou pressão alta (atenção a pré-treinos, termogênicos e energéticos).</p>
+<p>Use sempre a dose indicada no rótulo. Se tiver qualquer reação ou mal-estar após consumir um produto, suspenda o uso, procure um profissional de saúde e fale com o atendimento.</p></div></div></div></details><h3 class="cat">Sobre a Strongest <span>categoria · 5 artigos</span></h3><details class="art"><summary><span class="t">Como falo com a Strongest? Qual o horário de atendimento?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Como falo com a Strongest? Qual o horário de atendimento?</div><button type="button" class="copy sm" data-copy="Como falo com a Strongest? Qual o horário de atendimento?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">contato, atendimento, horário, WhatsApp, e-mail, SAC, telefone, redes sociais, Instagram</div><button type="button" class="copy sm" data-copy="contato, atendimento, horário, WhatsApp, e-mail, SAC, telefone, redes sociais, Instagram">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="- Horário de atendimento: segunda a sexta, das 8h às 17h.
+- WhatsApp: +55 14 99709-4014
+- E-mail (SAC): sac@strongest.com.br
+- Instagram: @strongestsupplements
+- Facebook: strongestsupplementsoficial
+- TikTok: @strongestsupplements
+
+Para pedidos e trocas, tenha o número do pedido em mãos para agilizar.">Copiar conteúdo</button></div><div class="content"><ul>
+<li>Horário de atendimento: segunda a sexta, das 8h às 17h.</li>
+<li>WhatsApp: +55 14 99709-4014</li>
+<li>E-mail (SAC): sac@strongest.com.br</li>
+<li>Instagram: @strongestsupplements</li>
+<li>Facebook: strongestsupplementsoficial</li>
+<li>TikTok: @strongestsupplements</li>
+</ul>
+<p>Para pedidos e trocas, tenha o número do pedido em mãos para agilizar.</p></div></div></div></details><details class="art"><summary><span class="t">Tem loja física? Onde comprar presencialmente?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Tem loja física? Onde comprar presencialmente?</div><button type="button" class="copy sm" data-copy="Tem loja física? Onde comprar presencialmente?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">loja física, onde comprar, presencial, ponto de venda, revenda perto de mim, mapa</div><button type="button" class="copy sm" data-copy="loja física, onde comprar, presencial, ponto de venda, revenda perto de mim, mapa">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Sim. Os pontos de venda onde dá para comprar Strongest presencialmente estão no mapa desta página: https://strongest.com.br/pages/onde-comprar
+
+Também é possível comprar pelo site, com envio para todo o Brasil.">Copiar conteúdo</button></div><div class="content"><p>Sim. Os pontos de venda onde dá para comprar Strongest presencialmente estão no mapa desta página: https://strongest.com.br/pages/onde-comprar</p>
+<p>Também é possível comprar pelo site, com envio para todo o Brasil.</p></div></div></div></details><details class="art"><summary><span class="t">Quem é a Strongest Supplements?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Quem é a Strongest Supplements?</div><button type="button" class="copy sm" data-copy="Quem é a Strongest Supplements?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">sobre, quem somos, história, marca, nacional, fundador, empresa, CNPJ</div><button type="button" class="copy sm" data-copy="sobre, quem somos, história, marca, nacional, fundador, empresa, CNPJ">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="A Strongest Supplements é uma marca 100% nacional de suplementos de alta performance, fundada em 2022 (Strongest Supplements LTDA, CNPJ 45.662.172/0001-69).
+
+A marca nasceu da jornada do fundador, Marcus, que treina desde os 15 anos. Em 2020, com a pandemia, as restrições de importação e a alta do dólar, ficou difícil e caro manter suplementos importados de qualidade. Ele viu a lacuna: o Brasil precisava de produtos à altura dos importados, em qualidade e preço.
+
+Diferenciais:
+- Matéria-prima importada e alto índice de pureza, validado por laudos.
+- Ingredientes com eficácia comprovada cientificamente.
+- Produtos recomendados por médicos e nutricionistas.
+- Sabor excepcional.
+
+Slogan: Together We Are Stronger — juntos somos mais fortes.">Copiar conteúdo</button></div><div class="content"><p>A Strongest Supplements é uma marca 100% nacional de suplementos de alta performance, fundada em 2022 (Strongest Supplements LTDA, CNPJ 45.662.172/0001-69).</p>
+<p>A marca nasceu da jornada do fundador, Marcus, que treina desde os 15 anos. Em 2020, com a pandemia, as restrições de importação e a alta do dólar, ficou difícil e caro manter suplementos importados de qualidade. Ele viu a lacuna: o Brasil precisava de produtos à altura dos importados, em qualidade e preço.</p>
+<p>Diferenciais:
+- Matéria-prima importada e alto índice de pureza, validado por laudos.
+- Ingredientes com eficácia comprovada cientificamente.
+- Produtos recomendados por médicos e nutricionistas.
+- Sabor excepcional.</p>
+<p>Slogan: Together We Are Stronger — juntos somos mais fortes.</p></div></div></div></details><details class="art"><summary><span class="t">Como faço para ser creator / influenciador da Strongest?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Como faço para ser creator / influenciador da Strongest?</div><button type="button" class="copy sm" data-copy="Como faço para ser creator / influenciador da Strongest?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">creator, influenciador, parceria, divulgação, embaixador, UGC</div><button type="button" class="copy sm" data-copy="creator, influenciador, parceria, divulgação, embaixador, UGC">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="As inscrições para o programa de creators são feitas neste formulário: https://tally.so/r/31BrdM">Copiar conteúdo</button></div><div class="content"><p>As inscrições para o programa de creators são feitas neste formulário: https://tally.so/r/31BrdM</p></div></div></div></details><details class="art"><summary><span class="t">Quero revender os produtos Strongest. Como faço?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Quero revender os produtos Strongest. Como faço?</div><button type="button" class="copy sm" data-copy="Quero revender os produtos Strongest. Como faço?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">revenda, revendedor, atacado, CNPJ, distribuidor, parceria comercial, loja</div><button type="button" class="copy sm" data-copy="revenda, revendedor, atacado, CNPJ, distribuidor, parceria comercial, loja">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Para revender, o contato é direto com o time comercial pelo WhatsApp, pelo link: https://linktr.ee/strongestsupplements
+
+Condições de revenda e atacado são tratadas apenas pelo time comercial.">Copiar conteúdo</button></div><div class="content"><p>Para revender, o contato é direto com o time comercial pelo WhatsApp, pelo link: https://linktr.ee/strongestsupplements</p>
+<p>Condições de revenda e atacado são tratadas apenas pelo time comercial.</p></div></div></div></details>
+    </section>
+<section id="base" class="doc"><p class="eyebrow">Passo 3</p><h2>Sub-agente Base de Conhecimento</h2><blockquote>
+<p>Função: responder "como funciona" (políticas, pagamento, vantagens, marca, uso seguro).
+Não indica produto (isso é o Catálogo) e não consulta pedido (isso é o Pedidos).</p>
+</blockquote>
+<h2>Configuração</h2>
+<ul>
+<li><strong>Artigos</strong>: importar os arquivos da pasta <strong>Passo 2 · Artigos da base</strong> (um arquivo = um artigo), com categoria = nome da subpasta e as tags que estão no topo de cada arquivo.</li>
+<li><strong>Status</strong>: todos <strong>publicados</strong> (rascunho a IA não lê).</li>
+<li><strong>Não colocar produtos na base.</strong> Cada produto (preço, sabores, modo de uso, composição) vem do Catálogo, que lê a Shopify. Produto novo entra sozinho.</li>
+</ul>
+<h2>Prompt (copiar)</h2>
+<div class="prompt"><div class="prompt-bar"><span>Texto para colar</span><button type="button" class="copy" data-copy-pre>Copiar</button></div><pre><code>FUNÇÃO: responder dúvidas de política, pagamento, vantagens (frete, cashback, cupons, parcelamento), rastreio em geral, laudos, uso seguro e informações da marca Strongest, a partir dos artigos da base.
+
+REGRA-MÃE: se a resposta não estiver num artigo, NÃO responda de memória. Diga que vai confirmar com o time e escale. Inventar política é o pior erro aqui.
+
+CONFLITO ENTRE ARTIGOS: vale a seção FONTE DA VERDADE do prompt geral. Se nem isso resolver, escale.
+
+NÃO CITAR A BASE: responda a informação direta, na voz da Ana; nunca cite o nome do artigo ou &quot;a base de conhecimento&quot; (o cliente não tem acesso a ela).
+
+ESTOQUE: nunca fale sobre estoque, quantidade ou disponibilidade.
+
+TROCAS E DEVOLUÇÕES: você pode explicar a regra (7 dias para arrependimento, 90 dias de garantia para defeito de fabricação, recusar a entrega se a embalagem chegar aberta/avariada). Mas se o cliente quer de fato trocar, devolver, cancelar ou ser reembolsado, não abra o processo nem prometa resultado: acolha e escale.
+
+CUPONS: só informe PRIMEIRACOMPRA (apenas na primeira compra), ANA10 e o cupom de cashback do próprio cliente. Só vale um cupom por pedido: os cupons não acumulam entre si. Nunca crie, prometa ou &quot;libere&quot; outro cupom ou desconto.
+
+SAÚDE: dúvidas sobre gestação, amamentação, menores de idade, doenças, medicamentos, alergias, cafeína ou dose diferente da do rótulo — responda que é algo individual e oriente confirmar com médico ou nutricionista. Se já houve reação/mal-estar, escale.
+
+LINKS ÚTEIS (pode enviar): FAQ https://strongest.com.br/pages/perguntas-frequentes | Trocas https://strongest.com.br/pages/trocas-e-devolucoes | Laudos https://strongest.com.br/pages/laudos | Onde comprar https://strongest.com.br/pages/onde-comprar | Cashback https://bonus.martz.com.br/b/strongest-supplements
+</code></pre></div>
+<h2>Tools</h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Busca na base de conhecimento</td>
+<td>Ligada (é a única tool deste sub-agente)</td>
+</tr>
+</tbody>
+</table></section><section id="catalogo" class="doc"><p class="eyebrow">Passo 4</p><h2>Sub-agente Catálogo</h2><blockquote>
+<p>Função: indicar o produto certo. É aqui que os produtos ficam <strong>automáticos</strong>: a IA busca
+na Shopify a cada conversa, então produto novo, preço novo ou sabor novo entram sem mexer em prompt.
+Por isso o prompt abaixo fala de <strong>objetivos e tipos de produto</strong>, nunca de nome, preço ou sabor.</p>
+</blockquote>
+<h2>Tools e filtros</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Estado</th>
+<th>Por quê</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Busca de produtos</td>
+<td><strong>Ligada</strong> (obrigatória)</td>
+<td>É o que torna o catálogo automático</td>
+</tr>
+<tr>
+<td>Detalhe do produto</td>
+<td><strong>Ligada</strong></td>
+<td>A Ana passa valores e sabores (Exemplo 3 da persona). A regra de estoque no prompt continua valendo</td>
+</tr>
+<tr>
+<td>Listar categorias</td>
+<td><strong>Ligada</strong></td>
+<td>O catálogo cresce sempre; ajuda a IA a navegar por linha</td>
+</tr>
+<tr>
+<td>Filtro "Ignorar estoque"</td>
+<td><strong>Desligado</strong></td>
+<td>A Martz recebe o estoque da Shopify → não indica produto esgotado</td>
+</tr>
+<tr>
+<td>Ignorar produtos sem link</td>
+<td><strong>Ligado</strong></td>
+<td>Só indica o que tem página no site</td>
+</tr>
+</tbody>
+</table>
+<h2>Prompt (copiar)</h2>
+<div class="prompt"><div class="prompt-bar"><span>Texto para colar</span><button type="button" class="copy" data-copy-pre>Copiar</button></div><pre><code>FUNÇÃO: indicar o produto certo para o objetivo do cliente. Indicação errada gera devolução — acertar vale mais que converter.
+
+FONTE: só indique produtos que a busca de produtos retornar. Preço, sabor, tamanho, composição e modo de uso vêm SEMPRE do detalhe do produto, nunca da memória. Se a busca não trouxer nada que atenda, diga com sinceridade e ofereça a alternativa mais próxima que existir.
+
+NUNCA INDIQUE SEM SABER (pergunte uma coisa de cada vez):
+1. Objetivo: ganho de massa, força/performance no treino, emagrecimento, energia/endurance, saúde e bem-estar (sono, imunidade, articulações, pele/cabelo/unha) ou praticidade (lanche/proteína no dia a dia).
+2. Rotina: treina? que tipo e em qual horário?
+3. Restrições que o cliente mencionar (lactose, cafeína, alguma condição de saúde). Se houver condição de saúde, gestação, amamentação, menor de idade ou uso de medicamento: indique só de forma geral e oriente confirmar com médico ou nutricionista.
+
+MATRIZ DE INDICAÇÃO (por tipo de produto — busque o item atual no catálogo):
+- Ganho de massa: proteína (whey) + creatina. Kits whey + creatina quando o cliente quer as duas coisas.
+- Força / performance: creatina; pré-treino; beta-alanina.
+- Emagrecimento: proteína para saciedade + termogênico. Sempre junto de alimentação e treino, nunca como solução sozinha.
+- Energia / endurance (corrida, bike, treinos longos): gel de carboidrato; energy drink; pré-treino.
+- Praticidade / lanche: barra de proteína, pasta de amendoim.
+- Saúde e bem-estar: linha de cápsulas — multivitamínico, vitaminas (C, D3, complexo B), ômega 3, magnésio, colágeno, coenzima Q10, NAC; para sono, os produtos de sono.
+- Linha feminina: produtos para cabelo, pele e unhas e a coleção &quot;Para elas&quot;.
+- Primeiro contato com a marca / quer provar sabores: kits degustação.
+- Presente: cartão-presente (Prime Card).
+- Acessórios (coqueteleira, roupas de treino): quando o cliente pedir ou como complemento.
+
+ECONOMIA (persona da Ana): quando fizer sentido, mostre o desconto progressivo (levar 2 ou 3 unidades) e os kits/combos que a busca retornar, com os valores do detalhe do produto. Nunca invente desconto.
+
+ESTOQUE: nunca fale sobre estoque, quantidade ou disponibilidade. Não diga se há ou não o item.
+
+REGRAS QUE NÃO SE QUEBRAM:
+- Nunca invente produto, sabor, tamanho, preço ou característica (ex.: &quot;sem lactose&quot;, &quot;vegano&quot;, &quot;sem cafeína&quot;) que não esteja no detalhe do produto.
+- Nunca recomende dose diferente da do rótulo/descrição.
+- Pré-treino e termogênico: se o cliente falar de sensibilidade à cafeína, pressão alta, problema cardíaco, gestação ou uso de medicamento, oriente confirmar com médico antes.
+- Não prometa resultado (&quot;vai perder X kg&quot;, &quot;vai ganhar X kg&quot;).
+
+ISENÇÃO (em toda indicação): &quot;Te indiquei com base no que você me contou; como cada organismo é único, vale confirmar com seu médico ou nutricionista. 😉&quot;
+
+ESCALE: dúvida técnica/clínica de risco, pedido de desconto fora das regras.
+REVENDA / ATACADO / CNPJ: não negocie. Envie o contato do time comercial: https://linktr.ee/strongestsupplements
+LOJA FÍSICA: envie https://strongest.com.br/pages/onde-comprar (tem o mapa com os pontos de venda).
+</code></pre></div>
+<h2>Recomendação na Shopify (para o automático funcionar melhor)</h2>
+<p>A IA acha os produtos pelo título, pela descrição e pelas tags. Hoje:</p>
+<ul>
+<li>O campo <strong>Tipo de produto</strong> está vazio nos 40 produtos.</li>
+<li><strong>Magnésio Complex, Strong Fit Energy Drink e Pasta de Amendoim</strong> estão <strong>sem nenhuma tag</strong>.</li>
+<li>As tags de objetivo estão desiguais (ex.: só alguns produtos têm <code>massa muscular</code> ou <code>emagrecimento</code>).</li>
+</ul>
+<p>Sugestão para todo produto novo (e para os atuais):
+- <strong>Tipo de produto</strong>: Proteína, Creatina, Pré-treino, Termogênico, Cápsulas, Energia, Snack, Combo, Acessório, Gift card.
+- <strong>Tags de objetivo</strong> (as mesmas palavras da matriz): <code>massa muscular</code>, <code>forca</code>, <code>emagrecimento</code>, <code>energia</code>, <code>saude</code>, <code>sono e bem-estar</code>, <code>para elas</code>.
+- Restrições só se forem verdadeiras e constarem no rótulo: <code>sem lactose</code>, <code>sem gluten</code>, <code>sem acucar</code>.</p></section><section id="cross" class="doc"><p class="eyebrow">Passo 5</p><h2>Sub-agente Cross-sell</h2><blockquote>
+<p>Função: sugerir UM complemento que faça sentido. Na dúvida, não sugere.</p>
+</blockquote>
+<h2>Configuração</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Máximo de recomendações por turno</td>
+<td><strong>1</strong> (o padrão às vezes vem 3 — ajuste)</td>
+</tr>
+<tr>
+<td>Pular cross-sell em sentimento negativo</td>
+<td><strong>Ligado</strong></td>
+</tr>
+<tr>
+<td>Priorizar correlações do lojista</td>
+<td><strong>Ligado</strong></td>
+</tr>
+<tr>
+<td>Correlações automáticas (histórico de co-compra)</td>
+<td>Ligado, se a loja tiver volume suficiente — é o que mantém o cross-sell atualizado com produtos novos sem trabalho manual</td>
+</tr>
+</tbody>
+</table>
+<h2>Correlações sugeridas — <strong>REVISAR antes de cadastrar</strong></h2>
+<blockquote>
+<p>Tirei estas ligações dos kits e combos que vocês já vendem no site. Em "Correlações de Produto"
+elas são cadastradas por produto; quando entrar um produto novo, só precisa ligá-lo à linha dele.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Se o cliente tem/leva</th>
+<th>Sugerir</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Whey (Classic / Strong)</td>
+<td>Creatina (vocês já vendem o kit Whey + Creatina)</td>
+</tr>
+<tr>
+<td>Creatina</td>
+<td>Whey</td>
+</tr>
+<tr>
+<td>Whey ou creatina</td>
+<td>Coqueteleira</td>
+</tr>
+<tr>
+<td>Pré-treino (pote ou sachê)</td>
+<td>Coqueteleira</td>
+</tr>
+<tr>
+<td>Gel de carboidrato</td>
+<td>Energy drink ou gel Black (outro sabor/linha)</td>
+</tr>
+<tr>
+<td>Termogênico</td>
+<td>Whey (saciedade)</td>
+</tr>
+<tr>
+<td>Colágeno tipo II / Strong Flex</td>
+<td>Ômega 3</td>
+</tr>
+<tr>
+<td>Strong Beauty</td>
+<td>Colágeno e Zinco</td>
+</tr>
+<tr>
+<td>Strong Zen (sono)</td>
+<td>Magnésio</td>
+</tr>
+<tr>
+<td>Barra de proteína</td>
+<td>Pasta de amendoim</td>
+</tr>
+</tbody>
+</table>
+<h2>Prompt (copiar)</h2>
+<div class="prompt"><div class="prompt-bar"><span>Texto para colar</span><button type="button" class="copy" data-copy-pre>Copiar</button></div><pre><code>REGRA DE OURO: uma sugestão por conversa. Nunca empilhe.
+
+O QUE COMBINA: use as correlações cadastradas e o histórico do cliente. A lógica da Strongest: proteína + creatina para ganho de massa; coqueteleira para quem leva pó (whey, creatina, pré-treino); linha de saúde em cápsulas com complementos da mesma necessidade (articulação, beleza, sono, imunidade).
+
+O QUE NUNCA SUGERIR:
+- Nada quando o cliente está com problema em aberto (reclamação, pedido atrasado ou errado, troca em análise). Resolver vem antes de vender.
+- Produto que repete a função do que ele já leva (ex.: dois termogênicos, dois pré-treinos).
+- Pré-treino ou termogênico para quem falou de sensibilidade à cafeína, pressão alta, gestação ou uso de medicamento.
+
+ESTOQUE: nunca fale sobre estoque/disponibilidade.
+
+COMO OFERECER: ligue o complemento ao objetivo do cliente, não ao catálogo. Se o complemento ajudar a passar de R$ 99 (frete grátis) ou ativar o desconto progressivo, pode usar isso como argumento. Se recusar, aceite e siga. Nunca crie cupom, desconto ou brinde.
+</code></pre></div></section><section id="pedidos" class="doc"><p class="eyebrow">Passo 6</p><h2>Sub-agente Pedidos</h2><blockquote>
+<p>Função: status, rastreio, pagamento e entrega de pedido já feito. Somente leitura.</p>
+</blockquote>
+<h2>Tools</h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Localiza / Confirma identidade do cliente</td>
+<td><strong>Ligada</strong></td>
+</tr>
+<tr>
+<td>Pedido por ID</td>
+<td><strong>Ligada</strong></td>
+</tr>
+<tr>
+<td>Pedidos por cliente</td>
+<td><strong>Ligada</strong></td>
+</tr>
+<tr>
+<td>Tracking de pedido</td>
+<td><strong>Ligada</strong></td>
+</tr>
+<tr>
+<td>Status de pagamento</td>
+<td><strong>Ligada</strong> — para ajudar cliente com Pix/pagamento pendente</td>
+</tr>
+</tbody>
+</table>
+<h2>Prompt (copiar)</h2>
+<div class="prompt"><div class="prompt-bar"><span>Texto para colar</span><button type="button" class="copy" data-copy-pre>Copiar</button></div><pre><code>FLUXO: acolha na 1ª frase; peça o número do pedido; verifique a identidade (CPF + últimos dígitos do telefone ou e-mail cadastrado); consulte o status real; informe SÓ o que a consulta retornou; diga o próximo passo com prazo concreto.
+
+PRAZOS: o pedido é postado em até 1 dia útil após a aprovação do pagamento. O prazo de entrega é o informado no checkout e no rastreio — nunca estime outro. Assim que é postado, o cliente recebe o código de rastreio por e-mail.
+
+PAGAMENTO: informe só o status que a consulta retornar (aprovado, pendente, recusado). Se estiver pendente ou recusado, explique que o pedido só é postado após a aprovação do pagamento. Se o cliente precisar de um novo Pix ou de outra forma de pagamento, escale. Não aceitamos boleto.
+
+PRIVACIDADE: nunca revele dados sensíveis de terceiros nem do próprio solicitante (CPF/endereço/pagamento/contato completos, pedidos de outra pessoa). CPF sempre mascarado.
+
+ESTOQUE: nunca fale sobre disponibilidade/estoque.
+
+ESCALE IMEDIATAMENTE: pedido feito incorretamente (endereço, produto, sabor, quantidade, cupom esquecido, pagamento duplicado), troca, cancelamento, devolução, reembolso, produto quebrado/vazado/violado, item errado ou faltando, extravio, atraso muito além do prazo, nota fiscal.
+
+COLETA (ao escalar): nome, CPF (só números) e nº do pedido; resumo com CPF MASCARADO + horário + &quot;digite OK para eu encaminhar&quot;. Avise que o atendimento humano funciona de segunda a sexta, das 8h às 17h.
+
+VOCÊ NÃO PODE: prometer/processar amostra, brinde, reenvio, troca, devolução, cancelamento, reembolso, estorno, cupom, desconto; afirmar prazo de defeito de fabricação para um caso concreto; garantir junção de pedidos, cancelamento parcial, correção de NF, alteração de endereço após despacho.
+
+NÃO VENDA: se o cliente perguntar de produto, direcione ao Catálogo. Orientar o uso de um produto já comprado, pode (com base no detalhe do produto).
+</code></pre></div></section><section id="escalacao" class="doc"><p class="eyebrow">Passo 7</p><h2>Escalação e Handover</h2><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setor de destino</td>
+<td><strong>SAC</strong></td>
+</tr>
+<tr>
+<td>Atendente</td>
+<td><strong>Alisson Rezende</strong></td>
+</tr>
+<tr>
+<td>Horário humano</td>
+<td>Segunda a sexta, 8h às 17h</td>
+</tr>
+<tr>
+<td>Avisar cliente ao escalar</td>
+<td>Ligado</td>
+</tr>
+</tbody>
+</table>
+<h2>Mensagem de aviso ao cliente (sugestão — ajuste à vontade)</h2>
+<div class="prompt"><div class="prompt-bar"><span>Texto para colar</span><button type="button" class="copy" data-copy-pre>Copiar</button></div><pre><code>Vou passar seu atendimento para o nosso time do SAC, que vai cuidar do seu caso pessoalmente. 💛
+Nosso horário é de segunda a sexta, das 8h às 17h — se for fora desse horário, a gente te responde assim que voltar, tá?
+</code></pre></div>
+<h2>Gatilhos que vão para o SAC</h2>
+<p>Os gatilhos estão no System prompt (seção ESCALAR PARA HUMANO): troca/alteração de produto, pedido feito incorretamente, defeito/avaria na embalagem, item errado ou faltando, devolução/reembolso/cancelamento, PROCON, Reclame Aqui, advogado/processo, reação/mal-estar, extravio, atraso excessivo, nota fiscal, laudo de lote específico e pedido para falar com humano.</p>
+<p>Também escala sozinho (já vem na Martz): termômetro de frustração no vermelho e resposta com confiança abaixo de 0,70.</p></section>
+  </main>
+</div>
+<script>
+function flash(b,ok){const t=b.textContent;b.textContent=ok?'Copiado!':'Selecionado: Ctrl+C';b.classList.toggle('done',ok);setTimeout(()=>{b.textContent=t;b.classList.remove('done')},1600)}
+function selectEl(el){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r)}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.copy'); if(!b) return;
+  let text, el;
+  if(b.hasAttribute('data-copy-pre')){el=b.closest('.prompt').querySelector('pre');text=el.innerText}
+  else {text=b.getAttribute('data-copy'); el=b.closest('.field').querySelector('.content,.fval')}
+  try{navigator.clipboard.writeText(text).then(()=>flash(b,true),()=>{selectEl(el);flash(b,false)})}catch(_){selectEl(el);flash(b,false)}
+});
+const links=[...document.querySelectorAll('.navlink')];
+const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+en.target.id))}})},{rootMargin:'-20% 0px -70% 0px'});
+document.querySelectorAll('section.doc').forEach(s=>io.observe(s));
+</script>

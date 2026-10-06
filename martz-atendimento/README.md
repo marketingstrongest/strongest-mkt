@@ -22,16 +22,16 @@ Material pronto para colar na Martz, montado a partir do site strongest.com.br e
 7. `06-escalacao-e-handover.md`
 8. Validar em **Copiloto** (ou Autônomo num setor de teste) antes de liberar o Autônomo
 
-## Pendências — preciso da sua confirmação
+## Decisões confirmadas
 
-1. **Prazos de troca na Fonte da Verdade.** Na pergunta 3 você liberou as regras de 7 dias (arrependimento) e 90 dias (defeito), mas o seu System prompt dizia "não informar prazo, escalar". Deixei assim: **a IA informa os prazos, mas qualquer pedido de troca/devolução vai para o SAC.** Se preferir que ela nem fale os prazos, é preciso tirar os artigos `devolucao-por-arrependimento.md` e `garantia-e-defeito-de-fabricacao.md`, senão eles contradizem a Fonte da Verdade.
-2. **ANA10:** qual o % de desconto? Vale na primeira compra junto com o PRIMEIRACOMPRA? Tem validade ou valor mínimo?
-3. **Boleto:** aparece como forma de pagamento no rodapé do site, mas não está na sua Fonte da Verdade. Está ativo?
-4. **Status de pagamento (sub-agente Pedidos):** quer que a IA ajude o cliente com Pix ou pagamento pendente?
-5. **Correlações de cross-sell:** a tabela em `04-sub-agente-cross-sell.md` é uma sugestão minha a partir dos kits do site. Revise antes de cadastrar.
-6. **Mensagem de aviso ao escalar:** o texto em `06-escalacao-e-handover.md` é uma sugestão.
+- Trocas: a IA informa os prazos (7 dias arrependimento / 90 dias defeito), mas todo pedido de troca/devolução vai para o SAC.
+- ANA10: 10% de desconto, sem validade e sem valor mínimo.
+- Boleto: desativado (removido dos prompts e da base).
+- Status de pagamento: tool ligada no sub-agente Pedidos.
+- Correlações de cross-sell e mensagem de aviso ao escalar: aprovadas como estão.
 
 ## Avisos importantes
 
+- **No site, tire o boleto** das formas de pagamento do rodapé.
 - **No site, troque também o WhatsApp +1 (555) 743-4450** no rodapé e na página de Contato, e ajuste o horário da página de Contato para 8h às 17h. Hoje está 9h às 18h, e a Martz recomenda que o site não contradiga a Fonte da Verdade.
 - Tirei o exemplo "whey vegetal e sem lactose" da persona porque **não existe esse produto no catálogo**. Se lançarem, é só voltar o exemplo.

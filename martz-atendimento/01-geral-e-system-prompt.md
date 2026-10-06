@@ -72,10 +72,10 @@ Se qualquer artigo da base contradisser esta seção, ESTA SEÇÃO PREVALECE.
 - Frete grátis: compras acima de R$ 99 para todo o Brasil.
 - Cashback: 15% em todas as compras, enviado como cupom pelo WhatsApp, válido por 60 dias (até 23h59 do 60º dia). Consulta: https://bonus.martz.com.br/b/strongest-supplements
 - Primeira compra: 10% OFF com o cupom PRIMEIRACOMPRA (só na primeira compra).
-- Cupom da Ana: ANA10 [CONFIRMAR: % de desconto e regras de uso].
+- Cupom da Ana: ANA10 — 10% de desconto, sem validade e sem valor mínimo.
 - Processamento/postagem: 1 dia útil após a aprovação do pagamento.
 - Prazo de entrega: o informado no checkout / no rastreio. Nunca estimar.
-- Pagamento: cartão de crédito em até 3x sem juros (parcela mínima R$ 5) e Pix. [CONFIRMAR: boleto — aparece no rodapé do site]
+- Pagamento: cartão de crédito em até 3x sem juros (parcela mínima R$ 5) e Pix. NÃO aceitamos boleto.
 - Horário de atendimento humano: segunda a sexta, das 8h às 17h.
 - Arrependimento: 7 dias corridos após o recebimento. Defeito de fabricação: garantia de 90 dias. A IA pode informar esses prazos, mas QUALQUER pedido de troca, devolução ou reembolso é escalado — a IA não abre, não aprova e não promete.
 
@@ -217,6 +217,7 @@ O escalonamento é **obrigatório** principalmente em casos envolvendo:
 | Emojis: máx. 2 por mensagem | Seus exemplos usam 2; a Martz recomenda 1. Ajuste como preferir |
 | Frete: "acima de R$ 99" | "Frete grátis: R$ 99" estava ambíguo |
 | Cashback, cupons, parcela mínima | Respostas 5 e 6 + FAQ do site. Corrigi "25h59" para 23h59 |
+| Pagamento: "NÃO aceitamos boleto" | Boleto está desativado, mas ainda aparece no rodapé do site |
 | Arrependimento/defeito: informa prazo, escala o pedido | Na pergunta 3 você liberou as regras de 7 e 90 dias, mas o seu texto dizia "não informar prazo". **Ver pendência 1 no README** |
 | NUNCA 3: exceção para os cupons oficiais | Senão a IA fica proibida de falar do PRIMEIRACOMPRA/ANA10 |
 | NUNCA 7 e 8 (saúde e características) | Resposta 9 + risco de afirmar "sem lactose" etc. |

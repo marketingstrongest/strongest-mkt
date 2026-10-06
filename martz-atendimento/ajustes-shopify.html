@@ -1,0 +1,578 @@
+<title>Ajustes na Shopify Strongest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: lista de tarefas da loja — trilho de etapas à esquerda, tarefas com caixas de "feito" à direita; no celular o trilho vira faixa no topo */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --ink:#15192b; --muted:#5b6175; --line:#dfe2ea;
+  --accent:#d9480f; --accent-ink:#ffffff; --accent-soft:#fdeee6; --code-bg:#f0f2f6; --ok:#2b8a3e; --ok-soft:#e6f4ea;
+  --hl:#fff3bf; --hl-line:#e8b923; --warn:#9c3d00;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11131b; --surface:#1a1d28; --ink:#e9ebf2; --muted:#9aa0b4; --line:#2c3040;
+  --accent:#ff8a4c; --accent-ink:#1a0d05; --accent-soft:#3a2216; --code-bg:#141722; --ok:#69db7c; --ok-soft:#173523;
+  --hl:#3d3311; --hl-line:#c9a227; --warn:#ffb27a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11131b; --surface:#1a1d28; --ink:#e9ebf2; --muted:#9aa0b4; --line:#2c3040;
+  --accent:#ff8a4c; --accent-ink:#1a0d05; --accent-soft:#3a2216; --code-bg:#141722; --ok:#69db7c; --ok-soft:#173523;
+  --hl:#3d3311; --hl-line:#c9a227; --warn:#ffb27a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);margin:0}
+a{color:var(--accent)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:24px 64px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:32px}
+header.top{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.brand{font:800 13px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+header.top h1{font:800 clamp(26px,4vw,38px)/1.1 var(--display);margin:0;text-wrap:balance}
+header.top p{margin:0;color:var(--muted);max-width:70ch}
+.progress{display:flex;align-items:center;gap:12px;margin-top:6px;font-weight:600}
+.bar{flex:1;max-width:320px;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .2s}
+nav.steps{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;display:flex;flex-direction:column;gap:2px}
+.navlink{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--ink);font-weight:600;font-size:15px}
+.navlink:hover,.navlink:focus-visible{background:var(--accent-soft);outline:none}
+.num{flex:none;width:24px;height:24px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;font:600 12px/1 var(--mono)}
+.opt{font:600 11px/1 var(--mono);color:var(--muted);margin-left:auto;text-transform:uppercase;letter-spacing:.06em}
+main{min-width:0;display:flex;flex-direction:column;gap:56px}
+section{min-width:0;scroll-margin-top:16px}
+.eyebrow{margin:0 0 4px;font:600 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+h2{font:800 28px/1.15 var(--display);margin:0 0 12px;text-wrap:balance}
+h3{font:700 18px/1.3 var(--display);margin:0}
+section>p,section li{max-width:72ch}
+.why{background:var(--accent-soft);border-radius:8px;padding:12px 16px;margin:0 0 16px;max-width:none}
+ol.how,ul.how{padding-left:22px;display:flex;flex-direction:column;gap:6px;margin:0 0 16px}
+.task{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.task>div{min-width:0}
+.task p{margin:4px 0 0}
+.chk{flex:none;display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:700}
+.chk input{width:20px;height:20px;accent-color:var(--ok);margin:2px 0 0;cursor:pointer}
+.chk.inline{margin-bottom:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.done-row{opacity:.55}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--code-bg);font-weight:700}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.vbox{margin-bottom:16px}
+code,.mono{font:14px var(--mono);background:var(--code-bg);padding:1px 6px;border-radius:4px;overflow-wrap:anywhere}
+.copy{font:700 14px/1 var(--body);background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:9px 14px;cursor:pointer;flex:none}
+.copy:hover{filter:brightness(1.08)}
+.copy:focus-visible,.chk input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.copy.done{background:var(--ok)}
+.copy.sm{padding:7px 11px;font-size:13px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin:0 0 12px;font-size:14px;color:var(--muted)}
+.filter{display:flex;gap:10px;align-items:center;margin:0 0 14px;flex-wrap:wrap}
+.filter input{font:16px var(--body);padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:min(100%,340px)}
+.prod{display:flex;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.pmain{min-width:0;flex:1;display:flex;flex-direction:column;gap:8px}
+.pmain h3 a{color:var(--ink);text-decoration:none}
+.pmain h3 a:hover{text-decoration:underline}
+.meta{margin:-4px 0 0;font-size:14px;color:var(--muted)}
+.line{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;align-items:center}
+.tags-line{align-items:start}
+.lbl{font:600 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:6px}
+.tipo{font-weight:700}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font:13px/1 var(--mono);padding:5px 7px;border-radius:5px;background:var(--code-bg);color:var(--muted)}
+.tag.new{background:var(--hl);color:var(--ink);box-shadow:0 0 0 1px var(--hl-line)}
+.note{margin:0;font-size:14px;color:var(--warn);padding-left:10px;border-left:3px solid var(--hl-line)}
+.decide{background:var(--hl);border:1px solid var(--hl-line);border-radius:8px;padding:10px 14px;margin:0 0 14px;max-width:none}
+@media (max-width:820px){
+  .wrap{grid-template-columns:minmax(0,1fr);gap:20px}
+  nav.steps{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;flex-direction:row;overflow-x:auto;background:var(--bg);padding-block:8px;margin-inline:-16px;padding-inline:16px;border-bottom:1px solid var(--line)}
+  .navlink{white-space:nowrap;font-size:14px}
+  .opt{display:none}
+  .line{grid-template-columns:minmax(0,1fr) auto}
+  .line .lbl{grid-column:1/-1;padding-top:0}
+}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="brand">Strongest Supplements · Shopify</span>
+    <h1>Ajustes na Shopify</h1>
+    <p>Tudo o que precisa mudar na loja para a IA da Martz responder certo e para produto novo entrar automático. Marque cada item quando terminar: as marcações ficam salvas neste navegador.</p>
+    <div class="progress"><div class="bar"><i id="barfill"></i></div><span id="progtxt">0 de 0 feitos</span></div>
+  </header>
+  <nav class="steps" aria-label="Etapas">
+    <a class="navlink" href="#variantes"><span class="num">1</span>Tirar "Compre 1/2/3"</a>
+    <a class="navlink" href="#future"><span class="num">2</span>Future Protein</a>
+    <a class="navlink" href="#produtos"><span class="num">3</span>Tipo e tags (40)</a>
+    <a class="navlink" href="#tema"><span class="num">4</span>Tema e páginas</a>
+    <a class="navlink" href="#giftcard"><span class="num">5</span>Prime Card</a>
+    <a class="navlink" href="#colecoes"><span class="num">6</span>Coleções<span class="opt">opcional</span></a>
+    <a class="navlink" href="#novos"><span class="num">7</span>Produto novo</a>
+  </nav>
+  <main>
+
+  <section id="variantes">
+    <p class="eyebrow">Etapa 1 · 4 produtos</p>
+    <h2>Tirar as opções "Compre 1 / Compre 2 / Compre 3"</h2>
+    <p class="why"><b>Por quê:</b> não existe mais desconto progressivo, mas essas opções continuam no ar. A IA lê as variantes no catálogo e pode oferecer esses valores ao cliente.</p>
+    <p class="decide"><b>Confirme o preço:</b> a variante que fica é a "Compre 1", com o preço de hoje. Se o preço de 1 unidade for mudar, ajuste em <b>Preço</b> e <b>Preço comparativo</b> antes de salvar.</p>
+    <ol class="how">
+      <li>Em <b>Produtos</b>, abra o produto.</li>
+      <li>Em <b>Variantes</b>, selecione as de "Compre 2" e "Compre 3" e clique em <b>Excluir variantes</b>.</li>
+      <li>Ainda em Variantes, edite a opção (ex.: "Quantidade") e <b>apague a opção</b>. Com um valor só, o produto volta a ter preço único e o nome "Compre 1 … OFF" some da página.</li>
+      <li>Confira <b>Preço</b> e <b>Preço comparativo</b> e salve. Abra a página do produto no site para conferir.</li>
+      <li>Se essas opções forem criadas por um app de "leve mais, pague menos", desative a oferta também no app.</li>
+    </ol>
+    <div class="vbox"><label class="chk inline"><input type="checkbox" id="v-strong-zen-gotas-30ml" data-done><span>Strong Zen Gotas 30ml</span></label>
+<div class="tablewrap"><table><thead><tr><th>Variante hoje</th><th>Preço</th><th>De</th><th>O que fazer</th></tr></thead><tbody><tr><td>Compre 1 Frasco R$30 OFF</td><td class="num">R$ 63,05</td><td class="num">R$ 89,90</td><td><b>Manter</b> (renomear)</td></tr><tr><td>Compre 2 Frascos R$70 OFF</td><td class="num">R$ 115,68</td><td class="num">R$ 179,80</td><td>Excluir</td></tr><tr><td>Compre 3 Frascos R$130 OFF</td><td class="num">R$ 147,26</td><td class="num">R$ 269,70</td><td>Excluir</td></tr></tbody></table></div></div><div class="vbox"><label class="chk inline"><input type="checkbox" id="v-strong-flex-500mg" data-done><span>Strong Flex 500mg</span></label>
+<div class="tablewrap"><table><thead><tr><th>Variante hoje</th><th>Preço</th><th>De</th><th>O que fazer</th></tr></thead><tbody><tr><td>Compre 1 Pote R$43 OFF</td><td class="num">R$ 84,11</td><td class="num">R$ 122,90</td><td><b>Manter</b> (renomear)</td></tr><tr><td>Compre 2 Potes R$96 OFF</td><td class="num">R$ 157,79</td><td class="num">R$ 245,80</td><td>Excluir</td></tr><tr><td>Compre 3 Potes R$179 OFF</td><td class="num">R$ 199,89</td><td class="num">R$ 368,70</td><td>Excluir</td></tr></tbody></table></div></div><div class="vbox"><label class="chk inline"><input type="checkbox" id="v-vitamina-c-zinco" data-done><span>Vitamina C + Zinco</span></label>
+<div class="tablewrap"><table><thead><tr><th>Variante hoje</th><th>Preço</th><th>De</th><th>O que fazer</th></tr></thead><tbody><tr><td>Compre 1 Pote R$30 OFF</td><td class="num">R$ 57,79</td><td class="num">R$ 84,90</td><td><b>Manter</b> (renomear)</td></tr><tr><td>Compre 2 Potes R$80 OFF</td><td class="num">R$ 94,63</td><td class="num">R$ 169,80</td><td>Excluir</td></tr><tr><td>Compre 3 Potes R$135 OFF</td><td class="num">R$ 126,21</td><td class="num">R$ 254,70</td><td>Excluir</td></tr></tbody></table></div></div><div class="vbox"><label class="chk inline"><input type="checkbox" id="v-strong-b" data-done><span>Strong B+</span></label>
+<div class="tablewrap"><table><thead><tr><th>Variante hoje</th><th>Preço</th><th>De</th><th>O que fazer</th></tr></thead><tbody><tr><td>Compre 1 Pote R$30 OFF</td><td class="num">R$ 57,79</td><td class="num">R$ 84,90</td><td><b>Manter</b> (renomear)</td></tr><tr><td>Compre 2 Potes R$80 OFF</td><td class="num">R$ 94,63</td><td class="num">R$ 169,80</td><td>Excluir</td></tr><tr><td>Compre 3 Potes R$135 OFF</td><td class="num">R$ 126,21</td><td class="num">R$ 254,70</td><td>Excluir</td></tr></tbody></table></div></div>
+  </section>
+
+  <section id="future">
+    <p class="eyebrow">Etapa 2 · 1 produto</p>
+    <h2>Future Protein: o "whey vegano" do cliente</h2>
+    <p class="why"><b>Por quê:</b> o cliente chama qualquer proteína de "whey". Sem a palavra "whey" no cadastro, quem procura "whey vegano" ou "whey sem lactose" pode não achar o Future Protein, nem no site nem na IA.</p>
+    <div class="task"><label class="chk"><input type="checkbox" id="t-future-tags" data-done><span class="sr">Feito</span></label><div><h3>Adicionar as tags de "whey"</h3><p>Já estão incluídas nas tags do Future Protein na <a href="#produtos">Etapa 3</a>: <code>whey vegano</code>, <code>whey vegetal</code>, <code>proteina vegetal</code>, <code>vegano</code>, <code>sem lactose</code>, <code>sem gluten</code>, <code>sem acucar</code>, <code>sem soja</code>. Todas estão escritas na descrição do produto.</p></div></div>
+    <div class="task"><label class="chk"><input type="checkbox" id="t-future-col" data-done><span class="sr">Feito</span></label><div><h3>Colocar o Future Protein na coleção "Whey"</h3><p>Hoje a coleção <a href="https://strongest.com.br/collections/whey" target="_blank" rel="noopener">Whey</a> só tem o Classic Whey e o Strong Whey. Em <b>Produtos › Coleções › Whey</b>, adicione o Future Protein 800g.</p></div></div>
+  </section>
+
+  <section id="produtos">
+    <p class="eyebrow">Etapa 3 · 40 produtos</p>
+    <h2>Tipo de produto e tags de cada produto</h2>
+    <p class="why"><b>Por quê:</b> hoje o campo <b>Tipo de produto</b> está vazio nos 40 produtos, e as tags estão desiguais (Magnésio, Energy Drink e Pasta de Amendoim estão sem nenhuma). Com tipo e tags padronizados, a busca da IA e do site acha o produto pelo jeito que o cliente fala.</p>
+    <p><b>Como as tags foram escolhidas:</b> mantive todas as tags atuais. Acrescentei o objetivo das coleções do menu em que o produto já está (Massa Muscular, Emagrecimento, Força, Saúde, Para Elas) e palavras que o cliente usa para procurar, tiradas da própria descrição. Tags como <code>sem lactose</code> e <code>cafeina</code> só entraram quando a descrição do produto diz isso (<code>sem acucar</code> quer dizer "sem adição de açúcar", como está nas descrições).</p>
+    <p><b>Mais rápido:</b> em <b>Produtos</b>, selecione todos › <b>Editar produtos</b>. No editor em massa, adicione as colunas <b>Tipo</b> e <b>Tags</b> e cole os valores daqui. Ou abra produto por produto: o <b>Tipo</b> e as <b>Tags</b> ficam no quadro "Organização do produto". No campo Tags, apague o conteúdo e cole a lista inteira copiada (as tags atuais já estão nela).</p>
+    <div class="tablewrap" style="margin:0 0 16px"><table><thead><tr><th>Tipo de produto</th><th>Para</th></tr></thead><tbody><tr><td><b>Proteína</b></td><td>whey, proteína vegetal</td></tr><tr><td><b>Creatina</b></td><td>creatina pura</td></tr><tr><td><b>Pré-treino</b></td><td>pré-treinos em pó ou sachê</td></tr><tr><td><b>Termogênico</b></td><td>termogênicos</td></tr><tr><td><b>Aminoácido</b></td><td>beta-alanina e similares</td></tr><tr><td><b>Saúde e bem-estar</b></td><td>vitaminas, minerais, colágeno, ômega 3, sono (cápsulas e gotas)</td></tr><tr><td><b>Energia</b></td><td>gel de carboidrato, energy drink</td></tr><tr><td><b>Snack proteico</b></td><td>barra de proteína, pasta de amendoim</td></tr><tr><td><b>Kit e combo</b></td><td>kits, combos e kits degustação</td></tr><tr><td><b>Acessório</b></td><td>coqueteleira</td></tr><tr><td><b>Vestuário</b></td><td>camisetas e regatas</td></tr><tr><td><b>Gift card</b></td><td>cartão-presente</td></tr></tbody></table></div>
+    <div class="legend"><span><span class="tag">cinza</span> tag que já existe</span><span><span class="tag new">amarelo</span> tag nova</span><span>O botão <b>Copiar tags</b> copia a lista completa, separada por vírgula.</span></div>
+    <div class="filter"><label for="q" class="lbl" style="padding:0">Filtrar</label><input id="q" type="search" placeholder="Nome ou tipo do produto"></div>
+    <div id="plist"><article class="prod" data-q="strong zen gotas 30ml saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-strong-zen-gotas-30ml" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/strong-zen-gotas-30ml" target="_blank" rel="noopener">Strong Zen Gotas 30ml</a></h3>
+    <p class="meta">Objetivos no menu: Saúde</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">variantN</span><span class="tag new">saude</span><span class="tag new">sono</span><span class="tag new">melatonina</span><span class="tag new">gotas</span><span class="tag new">relaxamento</span><span class="tag new">sem lactose</span><span class="tag new">sem gluten</span><span class="tag new">sem acucar</span></div><button type="button" class="copy sm" data-copy="variantN, saude, sono, melatonina, gotas, relaxamento, sem lactose, sem gluten, sem acucar">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="strong flex 500mg saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-strong-flex-500mg" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/strong-flex-500mg" target="_blank" rel="noopener">Strong Flex 500mg</a></h3>
+    <p class="meta">Objetivos no menu: Saúde</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">variantN</span><span class="tag new">saude</span><span class="tag new">articulacao</span><span class="tag new">ossos</span></div><button type="button" class="copy sm" data-copy="variantN, saude, articulacao, ossos">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="vitamina c + zinco saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-vitamina-c-zinco" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/vitamina-c-zinco" target="_blank" rel="noopener">Vitamina C + Zinco</a></h3>
+    <p class="meta">Objetivos no menu: Para Elas</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">capsula</span><span class="tag">capsulas</span><span class="tag">variantN</span><span class="tag new">para elas</span><span class="tag new">vitamina c</span><span class="tag new">zinco</span><span class="tag new">imunidade</span><span class="tag new">antioxidante</span><span class="tag new">sem lactose</span><span class="tag new">sem gluten</span><span class="tag new">sem acucar</span></div><button type="button" class="copy sm" data-copy="capsula, capsulas, variantN, para elas, vitamina c, zinco, imunidade, antioxidante, sem lactose, sem gluten, sem acucar">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="strong b+ saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-strong-b" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/strong-b" target="_blank" rel="noopener">Strong B+</a></h3>
+    <p class="meta">Objetivos no menu: Saúde</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">capsula</span><span class="tag">capsulas</span><span class="tag">variantN</span><span class="tag new">saude</span><span class="tag new">complexo b</span><span class="tag new">vitaminas b</span><span class="tag new">energia</span><span class="tag new">sem lactose</span><span class="tag new">sem gluten</span><span class="tag new">sem acucar</span></div><button type="button" class="copy sm" data-copy="capsula, capsulas, variantN, saude, complexo b, vitaminas b, energia, sem lactose, sem gluten, sem acucar">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="kit degustação strong up kit e combo">
+  <label class="chk"><input type="checkbox" id="p-kit-8-saches-strong-up-sortidos" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/kit-8-saches-strong-up-sortidos" target="_blank" rel="noopener">Kit Degustação Strong Up</a></h3>
+    <p class="meta">Objetivos no menu: Força</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Kit e combo</span><button type="button" class="copy sm" data-copy="Kit e combo">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">combo</span><span class="tag new">forca</span><span class="tag new">kit degustacao</span><span class="tag new">degustacao</span><span class="tag new">gel de carboidrato</span><span class="tag new">energy gel</span><span class="tag new">energia</span><span class="tag new">corrida</span><span class="tag new">ciclismo</span></div><button type="button" class="copy sm" data-copy="combo, forca, kit degustacao, degustacao, gel de carboidrato, energy gel, energia, corrida, ciclismo">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="magnésio complex 60 cápsulas saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-magnesio-complex-60-capsulas" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/magnesio-complex-60-capsulas" target="_blank" rel="noopener">Magnésio Complex 60 Cápsulas</a></h3>
+    <p class="meta">Objetivos no menu: Saúde</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag new">saude</span><span class="tag new">magnesio</span><span class="tag new">sono</span><span class="tag new">relaxamento</span><span class="tag new">capsulas</span><span class="tag new">sem lactose</span><span class="tag new">sem gluten</span><span class="tag new">sem acucar</span></div><button type="button" class="copy sm" data-copy="saude, magnesio, sono, relaxamento, capsulas, sem lactose, sem gluten, sem acucar">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="strong fit energy drink 269ml energia">
+  <label class="chk"><input type="checkbox" id="p-strong-fit-energy-drink-269ml" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/strong-fit-energy-drink-269ml" target="_blank" rel="noopener">Strong Fit Energy Drink 269ml</a></h3>
+    <p class="meta">Objetivos no menu: Emagrecimento</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Energia</span><button type="button" class="copy sm" data-copy="Energia">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag new">emagrecimento</span><span class="tag new">energetico</span><span class="tag new">energy drink</span><span class="tag new">cafeina</span><span class="tag new">taurina</span><span class="tag new">zero acucar</span><span class="tag new">sem gluten</span><span class="tag new">sem acucar</span></div><button type="button" class="copy sm" data-copy="emagrecimento, energetico, energy drink, cafeina, taurina, zero acucar, sem gluten, sem acucar">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="kit degustação barra de proteína kit e combo">
+  <label class="chk"><input type="checkbox" id="p-kit-degustacao-barra-de-proteina" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/kit-degustacao-barra-de-proteina" target="_blank" rel="noopener">Kit Degustação Barra de Proteína</a></h3>
+    <p class="meta">Objetivos no menu: Emagrecimento</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Kit e combo</span><button type="button" class="copy sm" data-copy="Kit e combo">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">combo</span><span class="tag">experimente</span><span class="tag new">emagrecimento</span><span class="tag new">kit degustacao</span><span class="tag new">degustacao</span><span class="tag new">barra de proteina</span><span class="tag new">barrinha</span><span class="tag new">snack</span><span class="tag new">sem acucar</span></div><button type="button" class="copy sm" data-copy="combo, experimente, emagrecimento, kit degustacao, degustacao, barra de proteina, barrinha, snack, sem acucar">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="kit degustação detonator sachê kit e combo">
+  <label class="chk"><input type="checkbox" id="p-kit-degustacao-detonator-sache" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/kit-degustacao-detonator-sache" target="_blank" rel="noopener">Kit Degustação Detonator Sachê</a></h3>
+    <p class="meta">Objetivos no menu: Massa Muscular, Emagrecimento, Força</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Kit e combo</span><button type="button" class="copy sm" data-copy="Kit e combo">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">combo</span><span class="tag new">massa muscular</span><span class="tag new">emagrecimento</span><span class="tag new">forca</span><span class="tag new">kit degustacao</span><span class="tag new">degustacao</span><span class="tag new">pre-treino</span><span class="tag new">pre treino</span><span class="tag new">sache</span><span class="tag new">cafeina</span></div><button type="button" class="copy sm" data-copy="combo, massa muscular, emagrecimento, forca, kit degustacao, degustacao, pre-treino, pre treino, sache, cafeina">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="projeto verão começa agora kit e combo">
+  <label class="chk"><input type="checkbox" id="p-projeto-verao-comeca-agora" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/projeto-verao-comeca-agora" target="_blank" rel="noopener">Projeto Verão Começa Agora</a></h3>
+    <p class="meta">Objetivos no menu: —</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Kit e combo</span><button type="button" class="copy sm" data-copy="Kit e combo">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">combo</span><span class="tag new">kit</span><span class="tag new">termogenico</span><span class="tag new">proteina vegetal</span></div><button type="button" class="copy sm" data-copy="combo, kit, termogenico, proteina vegetal">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="coqueteleira shaker 700ml acessório">
+  <label class="chk"><input type="checkbox" id="p-coqueteleira-shaker-academia-700ml-strongest" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/coqueteleira-shaker-academia-700ml-strongest" target="_blank" rel="noopener">Coqueteleira Shaker 700ml</a></h3>
+    <p class="meta">Objetivos no menu: —</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Acessório</span><button type="button" class="copy sm" data-copy="Acessório">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">acessorios</span><span class="tag">coqueteleira</span><span class="tag">coqueteleira fume</span><span class="tag">variantN</span><span class="tag new">shaker</span></div><button type="button" class="copy sm" data-copy="acessorios, coqueteleira, coqueteleira fume, variantN, shaker">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="combo destrave seu intestino kit e combo">
+  <label class="chk"><input type="checkbox" id="p-combo-destrave-seu-intestino" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/combo-destrave-seu-intestino" target="_blank" rel="noopener">Combo Destrave Seu Intestino</a></h3>
+    <p class="meta">Objetivos no menu: —</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Kit e combo</span><button type="button" class="copy sm" data-copy="Kit e combo">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">combo</span><span class="tag new">kit</span><span class="tag new">intestino</span><span class="tag new">fibras</span><span class="tag new">proteina vegetal</span></div><button type="button" class="copy sm" data-copy="combo, kit, intestino, fibras, proteina vegetal">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="strong multi 60 comprimidos saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-strong-multi-60-comp" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/strong-multi-60-comp" target="_blank" rel="noopener">Strong Multi 60 comprimidos</a></h3>
+    <p class="meta">Objetivos no menu: Saúde</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">variantN</span><span class="tag new">saude</span><span class="tag new">multivitaminico</span><span class="tag new">vitaminas</span><span class="tag new">imunidade</span><span class="tag new">energia</span></div><button type="button" class="copy sm" data-copy="variantN, saude, multivitaminico, vitaminas, imunidade, energia">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="caixa 12 un strong fit barra de proteína snack proteico">
+  <label class="chk"><input type="checkbox" id="p-caixa-12-un-strong-fit-barra-de-proteina" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/caixa-12-un-strong-fit-barra-de-proteina" target="_blank" rel="noopener">Caixa 12 un Strong Fit Barra de Proteína</a></h3>
+    <p class="meta">Objetivos no menu: Emagrecimento</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Snack proteico</span><button type="button" class="copy sm" data-copy="Snack proteico">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">barrinha</span><span class="tag">proteina</span><span class="tag new">emagrecimento</span><span class="tag new">barra de proteina</span><span class="tag new">snack</span><span class="tag new">lanche</span><span class="tag new">sem acucar</span></div><button type="button" class="copy sm" data-copy="barrinha, proteina, emagrecimento, barra de proteina, snack, lanche, sem acucar">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="strong up energy gel - caixa 10 sachês energia">
+  <label class="chk"><input type="checkbox" id="p-strong-up-energy-gel-caixa-10-saches" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/strong-up-energy-gel-caixa-10-saches" target="_blank" rel="noopener">Strong Up Energy Gel - Caixa 10 Sachês</a></h3>
+    <p class="meta">Objetivos no menu: Força</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Energia</span><button type="button" class="copy sm" data-copy="Energia">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">carbogel</span><span class="tag">variantN</span><span class="tag new">forca</span><span class="tag new">gel de carboidrato</span><span class="tag new">energy gel</span><span class="tag new">energia</span><span class="tag new">corrida</span><span class="tag new">ciclismo</span><span class="tag new">endurance</span></div><button type="button" class="copy sm" data-copy="carbogel, variantN, forca, gel de carboidrato, energy gel, energia, corrida, ciclismo, endurance">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="strong up energy gel black - caixa 10 sachês energia">
+  <label class="chk"><input type="checkbox" id="p-strong-up-energy-gel-black-caixa-10-saches" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/strong-up-energy-gel-black-caixa-10-saches" target="_blank" rel="noopener">Strong Up Energy Gel Black - Caixa 10 Sachês</a></h3>
+    <p class="meta">Objetivos no menu: Força</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Energia</span><button type="button" class="copy sm" data-copy="Energia">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">variantN</span><span class="tag new">forca</span><span class="tag new">gel de carboidrato</span><span class="tag new">energy gel</span><span class="tag new">carbogel</span><span class="tag new">cafeina</span><span class="tag new">energia</span><span class="tag new">corrida</span><span class="tag new">ciclismo</span><span class="tag new">endurance</span></div><button type="button" class="copy sm" data-copy="variantN, forca, gel de carboidrato, energy gel, carbogel, cafeina, energia, corrida, ciclismo, endurance">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="future protein 800g proteína">
+  <label class="chk"><input type="checkbox" id="p-future-protein-800g" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/future-protein-800g" target="_blank" rel="noopener">Future Protein 800g</a></h3>
+    <p class="meta">Objetivos no menu: Massa Muscular, Emagrecimento, Força, Para Elas</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Proteína</span><button type="button" class="copy sm" data-copy="Proteína">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">proteina</span><span class="tag">variantN</span><span class="tag new">massa muscular</span><span class="tag new">emagrecimento</span><span class="tag new">forca</span><span class="tag new">para elas</span><span class="tag new">whey vegano</span><span class="tag new">whey vegetal</span><span class="tag new">proteina vegetal</span><span class="tag new">vegano</span><span class="tag new">sem lactose</span><span class="tag new">sem gluten</span><span class="tag new">sem acucar</span><span class="tag new">sem soja</span></div><button type="button" class="copy sm" data-copy="proteina, variantN, massa muscular, emagrecimento, forca, para elas, whey vegano, whey vegetal, proteina vegetal, vegano, sem lactose, sem gluten, sem acucar, sem soja">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="combo musa do verão kit e combo">
+  <label class="chk"><input type="checkbox" id="p-combo-musa-do-verao" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/combo-musa-do-verao" target="_blank" rel="noopener">Combo Musa do Verão</a></h3>
+    <p class="meta">Objetivos no menu: Emagrecimento, Para Elas</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Kit e combo</span><button type="button" class="copy sm" data-copy="Kit e combo">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">combo</span><span class="tag">variantN</span><span class="tag new">emagrecimento</span><span class="tag new">para elas</span><span class="tag new">kit</span><span class="tag new">termogenico</span><span class="tag new">cabelo pele unha</span></div><button type="button" class="copy sm" data-copy="combo, variantN, emagrecimento, para elas, kit, termogenico, cabelo pele unha">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="strongest prime card gift card">
+  <label class="chk"><input type="checkbox" id="p-strongest-prime-card-1" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/strongest-prime-card-1" target="_blank" rel="noopener">Strongest Prime Card</a></h3>
+    <p class="meta">Objetivos no menu: —</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Gift card</span><button type="button" class="copy sm" data-copy="Gift card">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">gift back</span><span class="tag">gift card</span><span class="tag">giftback</span><span class="tag">giftcard</span><span class="tag">variantN</span><span class="tag new">cartao presente</span><span class="tag new">vale presente</span><span class="tag new">presente</span></div><button type="button" class="copy sm" data-copy="gift back, gift card, giftback, giftcard, variantN, cartao presente, vale presente, presente">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="strong fit pasta de amendoim 500g snack proteico">
+  <label class="chk"><input type="checkbox" id="p-strong-fit-pasta-de-amendoim-500g" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/strong-fit-pasta-de-amendoim-500g" target="_blank" rel="noopener">Strong Fit Pasta de Amendoim 500g</a></h3>
+    <p class="meta">Objetivos no menu: Massa Muscular, Força</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Snack proteico</span><button type="button" class="copy sm" data-copy="Snack proteico">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag new">massa muscular</span><span class="tag new">forca</span><span class="tag new">pasta de amendoim</span><span class="tag new">snack</span><span class="tag new">lanche</span><span class="tag new">sem lactose</span><span class="tag new">sem acucar</span></div><button type="button" class="copy sm" data-copy="massa muscular, forca, pasta de amendoim, snack, lanche, sem lactose, sem acucar">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="vitamina d3 2000ui 30 cápsulas saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-vitamina-d3-2000ui-30-capsulas" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/vitamina-d3-2000ui-30-capsulas" target="_blank" rel="noopener">Vitamina D3 2000UI 30 Cápsulas</a></h3>
+    <p class="meta">Objetivos no menu: —</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">capsula</span><span class="tag">capsulas</span><span class="tag">variantN</span><span class="tag new">vitamina d</span><span class="tag new">vitamina d3</span><span class="tag new">ossos</span></div><button type="button" class="copy sm" data-copy="capsula, capsulas, variantN, vitamina d, vitamina d3, ossos">Copiar tags</button></div>
+    <p class="note">Não está em nenhuma coleção de objetivo do menu (Massa, Emagrecimento, Força, Saúde, Para Elas). Se fizer sentido, coloque em uma — a tag do objetivo entra junto.</p>
+  </div>
+</article><article class="prod" data-q="kit classic whey + creatina kit e combo">
+  <label class="chk"><input type="checkbox" id="p-kit-classic-whey-creatina" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/kit-classic-whey-creatina" target="_blank" rel="noopener">Kit Classic Whey + Creatina</a></h3>
+    <p class="meta">Objetivos no menu: Massa Muscular</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Kit e combo</span><button type="button" class="copy sm" data-copy="Kit e combo">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">combo</span><span class="tag">creatina</span><span class="tag">proteina</span><span class="tag">variantN</span><span class="tag new">massa muscular</span><span class="tag new">kit</span><span class="tag new">whey</span><span class="tag new">kit whey creatina</span></div><button type="button" class="copy sm" data-copy="combo, creatina, proteina, variantN, massa muscular, kit, whey, kit whey creatina">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="kit strong whey + creatina kit e combo">
+  <label class="chk"><input type="checkbox" id="p-kit-strong-whey-creatina" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/kit-strong-whey-creatina" target="_blank" rel="noopener">Kit Strong Whey + Creatina</a></h3>
+    <p class="meta">Objetivos no menu: Massa Muscular</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Kit e combo</span><button type="button" class="copy sm" data-copy="Kit e combo">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">combo</span><span class="tag">creatina</span><span class="tag">proteina</span><span class="tag">variantN</span><span class="tag new">massa muscular</span><span class="tag new">kit</span><span class="tag new">whey</span><span class="tag new">kit whey creatina</span></div><button type="button" class="copy sm" data-copy="combo, creatina, proteina, variantN, massa muscular, kit, whey, kit whey creatina">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="pré treino detonator caixa 20 sachês pré-treino">
+  <label class="chk"><input type="checkbox" id="p-pre-treino-detonator-sache-16g-caixa-20-unidades" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/pre-treino-detonator-sache-16g-caixa-20-unidades" target="_blank" rel="noopener">Pré Treino Detonator Caixa 20 Sachês</a></h3>
+    <p class="meta">Objetivos no menu: Massa Muscular, Emagrecimento, Força</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Pré-treino</span><button type="button" class="copy sm" data-copy="Pré-treino">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">detonator</span><span class="tag">detonator sache</span><span class="tag">performance</span><span class="tag">pre-treino</span><span class="tag">variantN</span><span class="tag new">massa muscular</span><span class="tag new">emagrecimento</span><span class="tag new">forca</span><span class="tag new">pre treino</span><span class="tag new">sache</span><span class="tag new">cafeina</span><span class="tag new">energia</span></div><button type="button" class="copy sm" data-copy="detonator, detonator sache, performance, pre-treino, variantN, massa muscular, emagrecimento, forca, pre treino, sache, cafeina, energia">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="classic whey protein concentrado 900g proteína">
+  <label class="chk"><input type="checkbox" id="p-suplemento-classic-whey-protein-100-strongest-900g" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/suplemento-classic-whey-protein-100-strongest-900g" target="_blank" rel="noopener">Classic Whey Protein Concentrado 900g</a></h3>
+    <p class="meta">Objetivos no menu: Massa Muscular, Força</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Proteína</span><button type="button" class="copy sm" data-copy="Proteína">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">classic whey</span><span class="tag">emagrecimento</span><span class="tag">massa muscular</span><span class="tag">proteina</span><span class="tag">variantN</span><span class="tag">whey</span><span class="tag new">forca</span><span class="tag new">whey concentrado</span><span class="tag new">soro do leite</span></div><button type="button" class="copy sm" data-copy="classic whey, emagrecimento, massa muscular, proteina, variantN, whey, forca, whey concentrado, soro do leite">Copiar tags</button></div>
+    <p class="note">Já tem a tag <b>emagrecimento</b>, mas não aparece na coleção “Emagrecimento” do menu. Decida: coloque o produto na coleção ou tire a tag.</p>
+  </div>
+</article><article class="prod" data-q="strong beauty cabelo pele unha 30 caps saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-strong-beauty-cabelo-pele-unha-30-capsulas-strongest" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/strong-beauty-cabelo-pele-unha-30-capsulas-strongest" target="_blank" rel="noopener">Strong Beauty Cabelo Pele Unha 30 Caps</a></h3>
+    <p class="meta">Objetivos no menu: Para Elas</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">capsula</span><span class="tag">capsulas</span><span class="tag">para elas</span><span class="tag">sono e bem-estar</span><span class="tag">strong beauty</span><span class="tag">variantN</span><span class="tag new">cabelo pele unha</span><span class="tag new">cabelo</span><span class="tag new">pele</span><span class="tag new">unha</span><span class="tag new">beleza</span></div><button type="button" class="copy sm" data-copy="capsula, capsulas, para elas, sono e bem-estar, strong beauty, variantN, cabelo pele unha, cabelo, pele, unha, beleza">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="strong whey protein 100% 918g proteína">
+  <label class="chk"><input type="checkbox" id="p-suplemento-whey-protein-100-strongest-918g-1" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/suplemento-whey-protein-100-strongest-918g-1" target="_blank" rel="noopener">Strong Whey Protein 100% 918g</a></h3>
+    <p class="meta">Objetivos no menu: Massa Muscular, Força</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Proteína</span><button type="button" class="copy sm" data-copy="Proteína">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">emagrecimento</span><span class="tag">massa muscular</span><span class="tag">proteina</span><span class="tag">strong whey</span><span class="tag">variantN</span><span class="tag">whey</span><span class="tag new">forca</span><span class="tag new">soro do leite</span></div><button type="button" class="copy sm" data-copy="emagrecimento, massa muscular, proteina, strong whey, variantN, whey, forca, soro do leite">Copiar tags</button></div>
+    <p class="note">Já tem a tag <b>emagrecimento</b>, mas não aparece na coleção “Emagrecimento” do menu. Decida: coloque o produto na coleção ou tire a tag.</p>
+  </div>
+</article><article class="prod" data-q="pré treino detonator 480g pré-treino">
+  <label class="chk"><input type="checkbox" id="p-suplemento-pre-treino-detonator-strongest-480g-1" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/suplemento-pre-treino-detonator-strongest-480g-1" target="_blank" rel="noopener">Pré Treino Detonator 480g</a></h3>
+    <p class="meta">Objetivos no menu: Massa Muscular, Emagrecimento, Força</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Pré-treino</span><button type="button" class="copy sm" data-copy="Pré-treino">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">detonator</span><span class="tag">emagrecimento</span><span class="tag">performance</span><span class="tag">pre-treino</span><span class="tag">variantN</span><span class="tag new">massa muscular</span><span class="tag new">forca</span><span class="tag new">pre treino</span><span class="tag new">cafeina</span><span class="tag new">energia</span></div><button type="button" class="copy sm" data-copy="detonator, emagrecimento, performance, pre-treino, variantN, massa muscular, forca, pre treino, cafeina, energia">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="ômega 3 1400mg meg-3 60 cápsulas saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-suplemento-omega-3-1400mg-epa-dha-meg-3-strongest" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/suplemento-omega-3-1400mg-epa-dha-meg-3-strongest" target="_blank" rel="noopener">Ômega 3 1400mg MEG-3 60 Cápsulas</a></h3>
+    <p class="meta">Objetivos no menu: Saúde</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">capsula</span><span class="tag">capsulas</span><span class="tag">sono e bem-estar</span><span class="tag">variantN</span><span class="tag">ômega 3</span><span class="tag new">saude</span><span class="tag new">omega 3</span><span class="tag new">epa</span><span class="tag new">dha</span><span class="tag new">coracao</span><span class="tag new">articulacao</span></div><button type="button" class="copy sm" data-copy="capsula, capsulas, sono e bem-estar, variantN, ômega 3, saude, omega 3, epa, dha, coracao, articulacao">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="nac acetilcisteína 600mg 30 cápsulas saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-suplemento-nac-acetilcisteina-600mg-30-capsulas-strongest" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/suplemento-nac-acetilcisteina-600mg-30-capsulas-strongest" target="_blank" rel="noopener">NAC Acetilcisteína 600mg 30 Cápsulas</a></h3>
+    <p class="meta">Objetivos no menu: Saúde</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">capsula</span><span class="tag">capsulas</span><span class="tag">NAC acetilcisteina</span><span class="tag">sono e bem-estar</span><span class="tag">variantN</span><span class="tag new">saude</span><span class="tag new">nac</span><span class="tag new">acetilcisteina</span><span class="tag new">antioxidante</span><span class="tag new">recuperacao</span></div><button type="button" class="copy sm" data-copy="capsula, capsulas, NAC acetilcisteina, sono e bem-estar, variantN, saude, nac, acetilcisteina, antioxidante, recuperacao">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="creatina pura monohidratada 300g creatina">
+  <label class="chk"><input type="checkbox" id="p-suplemento-creatina-monohidratada-pura-strongest-300g" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/suplemento-creatina-monohidratada-pura-strongest-300g" target="_blank" rel="noopener">Creatina Pura Monohidratada 300g</a></h3>
+    <p class="meta">Objetivos no menu: Massa Muscular, Força, Para Elas</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Creatina</span><button type="button" class="copy sm" data-copy="Creatina">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">creatina</span><span class="tag">massa muscular</span><span class="tag">variantN</span><span class="tag new">forca</span><span class="tag new">para elas</span><span class="tag new">creatina monohidratada</span><span class="tag new">creatina pura</span></div><button type="button" class="copy sm" data-copy="creatina, massa muscular, variantN, forca, para elas, creatina monohidratada, creatina pura">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="colágeno tipo ii 40mg 30 cápsulas saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-suplemento-colageno-tipo-ii-40mg-30-capsulas-strongest" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/suplemento-colageno-tipo-ii-40mg-30-capsulas-strongest" target="_blank" rel="noopener">Colágeno Tipo II 40mg 30 Cápsulas</a></h3>
+    <p class="meta">Objetivos no menu: Saúde</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">capsula</span><span class="tag">capsulas</span><span class="tag">colageno tipo 2</span><span class="tag">sono e bem-estar</span><span class="tag">variantN</span><span class="tag new">saude</span><span class="tag new">colageno</span><span class="tag new">articulacao</span></div><button type="button" class="copy sm" data-copy="capsula, capsulas, colageno tipo 2, sono e bem-estar, variantN, saude, colageno, articulacao">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="colágeno e zinco 60 cápsulas saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-suplemento-colageno-e-zinco-60-capsulas-strongest" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/suplemento-colageno-e-zinco-60-capsulas-strongest" target="_blank" rel="noopener">Colágeno e Zinco 60 Cápsulas</a></h3>
+    <p class="meta">Objetivos no menu: Saúde, Para Elas</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">capsula</span><span class="tag">capsulas</span><span class="tag">colageno e zinco</span><span class="tag">para elas</span><span class="tag">sono e bem-estar</span><span class="tag">variantN</span><span class="tag new">saude</span><span class="tag new">colageno</span><span class="tag new">zinco</span><span class="tag new">cabelo pele unha</span></div><button type="button" class="copy sm" data-copy="capsula, capsulas, colageno e zinco, para elas, sono e bem-estar, variantN, saude, colageno, zinco, cabelo pele unha">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="coenzima q10 100mg 30 cápsulas saúde e bem-estar">
+  <label class="chk"><input type="checkbox" id="p-suplemento-coenzima-q10-100mg-30-capsulas-strongest" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/suplemento-coenzima-q10-100mg-30-capsulas-strongest" target="_blank" rel="noopener">Coenzima Q10 100mg 30 Cápsulas</a></h3>
+    <p class="meta">Objetivos no menu: Saúde</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Saúde e bem-estar</span><button type="button" class="copy sm" data-copy="Saúde e bem-estar">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">capsula</span><span class="tag">capsulas</span><span class="tag">coenzima q10</span><span class="tag">sono e bem-estar</span><span class="tag">variantN</span><span class="tag new">saude</span><span class="tag new">coq10</span><span class="tag new">antioxidante</span><span class="tag new">energia</span></div><button type="button" class="copy sm" data-copy="capsula, capsulas, coenzima q10, sono e bem-estar, variantN, saude, coq10, antioxidante, energia">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="beta alanina 100% pura 200g aminoácido">
+  <label class="chk"><input type="checkbox" id="p-suplemento-beta-alanina-100-pura-sem-sabor-200g-strongest" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/suplemento-beta-alanina-100-pura-sem-sabor-200g-strongest" target="_blank" rel="noopener">Beta Alanina 100% Pura 200g</a></h3>
+    <p class="meta">Objetivos no menu: Massa Muscular, Força</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Aminoácido</span><button type="button" class="copy sm" data-copy="Aminoácido">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">beta alanina</span><span class="tag">performance</span><span class="tag">variantN</span><span class="tag new">massa muscular</span><span class="tag new">forca</span><span class="tag new">aminoacido</span><span class="tag new">sem sabor</span></div><button type="button" class="copy sm" data-copy="beta alanina, performance, variantN, massa muscular, forca, aminoacido, sem sabor">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="regata nadador feminina dry fit uv vestuário">
+  <label class="chk"><input type="checkbox" id="p-regata-nadador-dry-uv-strongest-academia-feminina" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/regata-nadador-dry-uv-strongest-academia-feminina" target="_blank" rel="noopener">Regata Nadador Feminina Dry Fit UV</a></h3>
+    <p class="meta">Objetivos no menu: —</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Vestuário</span><button type="button" class="copy sm" data-copy="Vestuário">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">acessorios</span><span class="tag">camiseta</span><span class="tag">regata nadador feminina</span><span class="tag">variantN</span><span class="tag new">roupa de treino</span><span class="tag new">regata</span><span class="tag new">dry fit</span><span class="tag new">feminina</span></div><button type="button" class="copy sm" data-copy="acessorios, camiseta, regata nadador feminina, variantN, roupa de treino, regata, dry fit, feminina">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="regata masculina dry fit uv vestuário">
+  <label class="chk"><input type="checkbox" id="p-regata-dry-fit-uv-strongest-treino-academia-masculina" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/regata-dry-fit-uv-strongest-treino-academia-masculina" target="_blank" rel="noopener">Regata Masculina Dry Fit UV</a></h3>
+    <p class="meta">Objetivos no menu: —</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Vestuário</span><button type="button" class="copy sm" data-copy="Vestuário">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">acessorios</span><span class="tag">camiseta</span><span class="tag">regata masculina</span><span class="tag">variantN</span><span class="tag new">roupa de treino</span><span class="tag new">regata</span><span class="tag new">dry fit</span><span class="tag new">masculina</span></div><button type="button" class="copy sm" data-copy="acessorios, camiseta, regata masculina, variantN, roupa de treino, regata, dry fit, masculina">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="lipofire thermogenic 60 cápsulas termogênico">
+  <label class="chk"><input type="checkbox" id="p-lipofire-thermogenic-60-capsulas-sem-sabor-strongest" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/lipofire-thermogenic-60-capsulas-sem-sabor-strongest" target="_blank" rel="noopener">Lipofire Thermogenic 60 Cápsulas</a></h3>
+    <p class="meta">Objetivos no menu: Emagrecimento</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Termogênico</span><button type="button" class="copy sm" data-copy="Termogênico">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">capsula</span><span class="tag">capsulas</span><span class="tag">emagrecimento</span><span class="tag">lipofire</span><span class="tag">termogenico</span><span class="tag">variantN</span><span class="tag new">cafeina</span></div><button type="button" class="copy sm" data-copy="capsula, capsulas, emagrecimento, lipofire, termogenico, variantN, cafeina">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="camiseta masculina dry fit uv vestuário">
+  <label class="chk"><input type="checkbox" id="p-camiseta-masculina-academia-dry-treino-uv-strongest" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/camiseta-masculina-academia-dry-treino-uv-strongest" target="_blank" rel="noopener">Camiseta Masculina Dry Fit UV</a></h3>
+    <p class="meta">Objetivos no menu: —</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Vestuário</span><button type="button" class="copy sm" data-copy="Vestuário">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">acessorios</span><span class="tag">camiseta</span><span class="tag">camiseta masculina</span><span class="tag">variantN</span><span class="tag new">roupa de treino</span><span class="tag new">dry fit</span><span class="tag new">masculina</span></div><button type="button" class="copy sm" data-copy="acessorios, camiseta, camiseta masculina, variantN, roupa de treino, dry fit, masculina">Copiar tags</button></div>
+    
+  </div>
+</article><article class="prod" data-q="camiseta feminina dry fit uv vestuário">
+  <label class="chk"><input type="checkbox" id="p-camiseta-dry-fit-uv-strongest-treino-academia-feminina" data-done><span class="sr">Feito</span></label>
+  <div class="pmain">
+    <h3><a href="https://strongest.com.br/products/camiseta-dry-fit-uv-strongest-treino-academia-feminina" target="_blank" rel="noopener">Camiseta Feminina Dry Fit UV</a></h3>
+    <p class="meta">Objetivos no menu: —</p>
+    <div class="line"><span class="lbl">Tipo</span><span class="tipo">Vestuário</span><button type="button" class="copy sm" data-copy="Vestuário">Copiar</button></div>
+    <div class="line tags-line"><span class="lbl">Tags</span><div class="tags"><span class="tag">acessorios</span><span class="tag">camiseta</span><span class="tag">camiseta feminina</span><span class="tag">variantN</span><span class="tag new">roupa de treino</span><span class="tag new">dry fit</span><span class="tag new">feminina</span></div><button type="button" class="copy sm" data-copy="acessorios, camiseta, camiseta feminina, variantN, roupa de treino, dry fit, feminina">Copiar tags</button></div>
+    
+  </div>
+</article></div>
+  </section>
+
+  <section id="tema">
+    <p class="eyebrow">Etapa 4 · Loja online › Temas</p>
+    <h2>Tema e páginas do site</h2>
+    <p class="why"><b>Por quê:</b> o site não pode contradizer o que a IA fala. Se o cliente vê um número ou horário diferente, perde a confiança.</p>
+    <div class="task"><label class="chk"><input type="checkbox" id="t-whats" data-done><span class="sr">Feito</span></label><div><h3>Trocar o WhatsApp para +55 14 99709-4014</h3><p>Hoje aparece <span class="mono">+1 (555) 743-4450</span> no rodapé, na página Contato e na página Perguntas Frequentes. O botão de WhatsApp leva para <span class="mono">wa.me/15557434450</span>. Troque o número no texto e no link. O link novo fica <span class="mono">https://wa.me/5514997094014</span>.</p><p>Onde costuma ficar: <b>Personalizar tema</b> › rodapé e configurações do tema, as seções da página Contato e o app ou bloco do botão flutuante de WhatsApp.</p></div></div>
+    <div class="task"><label class="chk"><input type="checkbox" id="t-horario" data-done><span class="sr">Feito</span></label><div><h3>Página Contato: horário 8h às 17h</h3><p>A página <a href="https://strongest.com.br/pages/contact" target="_blank" rel="noopener">Contato</a> diz "Seg a Sex, das 9h às 18h". O rodapé e a IA dizem 8h às 17h.</p></div></div>
+    <div class="task"><label class="chk"><input type="checkbox" id="t-boleto" data-done><span class="sr">Feito</span></label><div><h3>Tirar o ícone de boleto do rodapé</h3><p>Primeiro confira em <b>Configurações › Pagamentos</b> se o boleto está mesmo desativado em todos os meios de pagamento, porque o tema mostra os ícones dos meios ativos. Se estiver desativado e o ícone continuar, ele foi colocado à mão no rodapé do tema: tire por lá.</p></div></div>
+    <div class="task"><label class="chk"><input type="checkbox" id="t-faq" data-done><span class="sr">Feito</span></label><div><h3>Perguntas Frequentes: completar a resposta de troca <span class="opt" style="margin:0">recomendado</span></h3><p>Hoje a resposta "Posso trocar ou devolver?" só fala dos 7 dias. Sugestão de texto, igual ao que a IA vai falar:</p><p class="mono" style="display:block;padding:10px 12px;margin-top:6px">Sim! Você tem até 7 dias corridos após o recebimento para desistir da compra, e nossos produtos têm 90 dias de garantia contra defeito de fabricação. Fale com o atendimento que te orientamos em cada passo.</p><p><button type="button" class="copy sm" data-copy="Sim! Você tem até 7 dias corridos após o recebimento para desistir da compra, e nossos produtos têm 90 dias de garantia contra defeito de fabricação. Fale com o atendimento que te orientamos em cada passo.">Copiar texto</button></p></div></div>
+  </section>
+
+  <section id="giftcard">
+    <p class="eyebrow">Etapa 5 · 1 produto</p>
+    <h2>Strongest Prime Card: completar a descrição</h2>
+    <p class="why"><b>Por quê:</b> a descrição atual só diz que é um cartão-presente digital. Se o cliente perguntar como usar ou até quando vale, a IA não tem a resposta e vai escalar para o SAC.</p>
+    <div class="task"><label class="chk"><input type="checkbox" id="t-gift" data-done><span class="sr">Feito</span></label><div><h3>Acrescentar na descrição do produto</h3><ul class="how" style="margin:6px 0 0"><li>Como o presenteado recebe o cartão (e-mail? código?).</li><li>Validade.</li><li>Se pode usar em mais de uma compra ou se o saldo precisa ser usado de uma vez.</li><li>Se pode usar junto com cupom (PRIMEIRACOMPRA, ANA10, cashback).</li><li>Se dá cashback na compra do cartão e na compra feita com ele.</li></ul></div></div>
+  </section>
+
+  <section id="colecoes">
+    <p class="eyebrow">Etapa 6 · Opcional</p>
+    <h2>Organizar as coleções</h2>
+    <p class="why"><b>Por quê:</b> a IA pode listar as coleções para navegar no catálogo. Hoje existem coleções vazias e várias que dizem a mesma coisa, o que confunde a IA e o cliente.</p>
+    <p class="decide"><b>Antes de excluir qualquer coleção:</b> confira se ela não está em um link do menu, banner, anúncio ou campanha. Se estiver, só tire do canal Loja online em vez de excluir.</p>
+    <div class="task"><label class="chk"><input type="checkbox" id="t-col-dup" data-done><span class="sr">Feito</span></label><div><h3>Coleções repetidas por objetivo</h3><p>O menu usa as primeiras. As outras são versões antigas com menos produtos:</p><div class="tablewrap" style="margin-top:8px"><table><thead><tr><th>Menu (manter)</th><th>Antigas</th></tr></thead><tbody>
+      <tr><td>Massa Muscular (11)</td><td>Ganho de Massa (8) · Objetivo: Massa Muscular (3)</td></tr>
+      <tr><td>Emagrecimento (9)</td><td>Objetivo: Emagrecimento (4)</td></tr>
+      <tr><td>Saúde (11)</td><td>Objetivo: Sono e Bem-Estar (6)</td></tr>
+      <tr><td>Força (12)</td><td>Objetivo: Performance (3) · Foco e disposição (3)</td></tr>
+    </tbody></table></div></div></div>
+    <div class="task"><label class="chk"><input type="checkbox" id="t-col-empty" data-done><span class="sr">Feito</span></label><div><h3>Coleções sem nenhum produto à venda</h3><p>Acetilcisteína, Objetivo: Combos, Cúrcuma, Strongmen, Cloreto de Magnésio e Multivitamínico aparecem vazias no site.</p></div></div>
+    <div class="task"><label class="chk"><input type="checkbox" id="t-col-auto" data-done><span class="sr">Feito</span></label><div><h3>Coleções do menu automáticas por tag</h3><p>Hoje as coleções do menu são montadas à mão. Depois da Etapa 3, dá para recriá-las como <b>coleção automatizada</b> com a condição "Tag do produto é igual a…" (ex.: <code>massa muscular</code>). Assim, produto novo com a tag certa entra sozinho no menu e na IA.</p><p>Na Shopify não dá para converter uma coleção manual em automática: crie a nova, confira os produtos e então troque no menu. Se quiser manter o mesmo endereço (ex.: /collections/massa-muscular), exclua a antiga antes de salvar a nova com o mesmo identificador.</p></div></div>
+    <div class="task"><label class="chk"><input type="checkbox" id="t-col-combine" data-done><span class="sr">Feito</span></label><div><h3>Aproveite as coleções "Combine com…" no cross-sell da Martz</h3><p>Vocês já mantêm coleções como "Combine com Classic Whey" e "Combine com Detonator". Use as mesmas combinações nas <b>Correlações de Produto</b> da Martz, para o site e a IA sugerirem as mesmas coisas. Algumas dessas coleções citam produtos que não estão mais à venda (Cúrcuma, Strongmen, Whey sachê): revise quando der.</p></div></div>
+  </section>
+
+  <section id="novos">
+    <p class="eyebrow">Etapa 7 · Sempre que lançar um produto</p>
+    <h2>Checklist de produto novo</h2>
+    <p class="why">É isso que faz o produto entrar sozinho na IA, sem mexer em prompt.</p>
+    <ol class="how">
+      <li><b>Descrição completa:</b> para que serve, como usar (dose e horário), composição principal e restrições ("sem lactose", "contém cafeína"…). A IA só fala o que estiver escrito ali.</li>
+      <li><b>Tipo de produto</b> da tabela da Etapa 3.</li>
+      <li><b>Tags:</b> objetivo (<code>massa muscular</code>, <code>emagrecimento</code>, <code>forca</code>, <code>saude</code>, <code>para elas</code>), as palavras que o cliente usa para procurar e as restrições que estão no rótulo.</li>
+      <li>Colocar nas <b>coleções do menu</b> (ou deixar entrar sozinho, se fez as coleções automáticas da Etapa 6).</li>
+      <li>Variantes só para <b>sabor ou tamanho</b>. Nada de "Compre 2" ou "Compre 3".</li>
+      <li>Na Martz, ligar o produto novo nas <b>Correlações de Produto</b> do cross-sell (opcional).</li>
+    </ol>
+  </section>
+  </main>
+</div>
+<script>
+function flash(b,ok){const t=b.textContent;b.textContent=ok?'Copiado!':'Selecionado: Ctrl+C';b.classList.toggle('done',ok);setTimeout(()=>{b.textContent=t;b.classList.remove('done')},1600)}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.copy'); if(!b) return;
+  const text=b.getAttribute('data-copy');
+  const fallback=()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(_){};ta.remove();flash(b,ok)};
+  try{navigator.clipboard.writeText(text).then(()=>flash(b,true),fallback)}catch(_){fallback()}
+});
+const KEY='strongest-shopify-feito';
+let state={};try{state=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(_){}
+const boxes=[...document.querySelectorAll('input[data-done]')];
+function paint(){let n=0;boxes.forEach(c=>{const row=c.closest('.prod,.task,.vbox');if(row)row.classList.toggle('done-row',c.checked);if(c.checked)n++});
+  document.getElementById('barfill').style.width=(boxes.length?100*n/boxes.length:0)+'%';
+  document.getElementById('progtxt').textContent=n+' de '+boxes.length+' feitos'}
+boxes.forEach(c=>{c.checked=!!state[c.id];c.addEventListener('change',()=>{state[c.id]=c.checked;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(_){};paint()})});
+paint();
+const q=document.getElementById('q');
+q.addEventListener('input',()=>{const v=q.value.trim().toLowerCase();document.querySelectorAll('#plist .prod').forEach(p=>{p.hidden=v&&!p.dataset.q.includes(v)})});
+</script>

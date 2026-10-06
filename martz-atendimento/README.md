@@ -35,6 +35,8 @@ Material pronto para colar na Martz, montado a partir do site strongest.com.br e
 
 ## Avisos importantes
 
+- **Tudo o que mudar na Shopify está na página [Ajustes na Shopify](https://claude.ai/artifact/Vo7rLxcRGGFeBJs3qY8ynB)**: variantes, tipo e tags dos 40 produtos, tema, Prime Card e coleções.
+
 - **No site, tire o boleto** das formas de pagamento do rodapé.
 - **Na Shopify, tire as variantes "Compre 1 / Compre 2 / Compre 3 … OFF"** do Strong Zen Gotas, Strong Flex, Vitamina C + Zinco e Strong B+. Elas ainda estão no ar e a IA lê essas variantes no Catálogo.
 - **No site, troque também o WhatsApp +1 (555) 743-4450** no rodapé e na página de Contato, e ajuste o horário da página de Contato para 8h às 17h. Hoje está 9h às 18h, e a Martz recomenda que o site não contradiga a Fonte da Verdade.

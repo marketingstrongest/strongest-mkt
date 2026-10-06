@@ -6,16 +6,16 @@
 /* Layout: manual de configuração — trilho de passos à esquerda, conteúdo à direita; no celular o trilho vira uma faixa rolável no topo */
 :root{
   --bg:#f5f6f8; --surface:#ffffff; --ink:#15192b; --muted:#5b6175; --line:#dfe2ea;
-  --accent:#d9480f; --accent-ink:#ffffff; --accent-soft:#fdeee6; --code-bg:#f0f2f6; --ok:#2b8a3e;
+  --accent:#d9480f; --accent-ink:#ffffff; --accent-soft:#fdeee6; --code-bg:#f0f2f6; --ok:#2b8a3e; --hl:#fff3bf; --hl-line:#e8b923;
   --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#11131b; --surface:#1a1d28; --ink:#e9ebf2; --muted:#9aa0b4; --line:#2c3040;
-  --accent:#ff8a4c; --accent-ink:#1a0d05; --accent-soft:#3a2216; --code-bg:#141722; --ok:#69db7c; color-scheme:dark}}
+  --accent:#ff8a4c; --accent-ink:#1a0d05; --accent-soft:#3a2216; --code-bg:#141722; --ok:#69db7c; --hl:#3d3311; --hl-line:#c9a227; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#11131b; --surface:#1a1d28; --ink:#e9ebf2; --muted:#9aa0b4; --line:#2c3040;
-  --accent:#ff8a4c; --accent-ink:#1a0d05; --accent-soft:#3a2216; --code-bg:#141722; --ok:#69db7c; color-scheme:dark}
+  --accent:#ff8a4c; --accent-ink:#1a0d05; --accent-soft:#3a2216; --code-bg:#141722; --ok:#69db7c; --hl:#3d3311; --hl-line:#c9a227; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);margin:0}
 a{color:var(--accent)}
@@ -73,6 +73,15 @@ details[open] .chev{transform:rotate(-135deg)}
 .fval.tags{font-size:14px;color:var(--muted)}
 .content{background:var(--code-bg);border-radius:6px;padding:4px 14px;font-size:15px;overflow-wrap:anywhere}
 .content ul,.content ol{padding-left:20px}
+mark{background:var(--hl);color:inherit;border-radius:3px;padding:0 2px;box-shadow:0 0 0 1px var(--hl-line)}
+.upd{display:inline-block;vertical-align:middle;margin-left:10px;font:700 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;background:var(--hl);color:var(--ink);border:1px solid var(--hl-line);padding:4px 7px;border-radius:999px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--hl-line);margin-left:auto;flex:none}
+details.art.isnew{border-color:var(--hl-line)}
+.changes{grid-column:1/-1;background:var(--hl);border:1px solid var(--hl-line);border-radius:10px;padding:14px 18px}
+.changes h2{font:800 18px/1.3 var(--display);margin:0 0 4px}
+.changes p{margin:0 0 8px;max-width:75ch}
+.changes ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px}
+.changes a{font-weight:700}
 @media (max-width:820px){
   .wrap{grid-template-columns:minmax(0,1fr);gap:20px}
   nav.steps{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;flex-direction:row;overflow-x:auto;background:var(--bg);padding-block:8px;margin-inline:-16px;padding-inline:16px;border-bottom:1px solid var(--line)}
@@ -89,7 +98,19 @@ details[open] .chev{transform:rotate(-135deg)}
     <h1>Configuração do Martin Atendimento</h1>
     <p>Tudo pronto para colar na Martz, na ordem recomendada. Cada bloco cinza tem um botão <b>Copiar</b>; é só copiar e colar no campo correspondente.</p>
   </header>
-  <nav class="steps" aria-label="Passos"><a href="#inicio" class="navlink"><span class="num">i</span>Comece aqui</a><a href="#geral" class="navlink"><span class="num">1</span>Geral e System prompt</a><a href="#artigos" class="navlink"><span class="num">2</span>Artigos da base (21)</a><a href="#base" class="navlink"><span class="num">3</span>Sub-agente Base de Conhecimento</a><a href="#catalogo" class="navlink"><span class="num">4</span>Sub-agente Catálogo</a><a href="#cross" class="navlink"><span class="num">5</span>Sub-agente Cross-sell</a><a href="#pedidos" class="navlink"><span class="num">6</span>Sub-agente Pedidos</a><a href="#escalacao" class="navlink"><span class="num">7</span>Escalação e Handover</a></nav>
+  <aside class="changes" aria-label="O que mudou">
+    <h2>O que mudou na última atualização: desconto progressivo removido</h2>
+    <p>Se você já colou na Martz a versão anterior, refaça só estes 5 itens. Os trechos alterados estão <mark>grifados em amarelo</mark>; o botão Copiar continua copiando o bloco inteiro.</p>
+    <ol>
+      <li><a href="#geral">Passo 1 · System prompt</a>: copie e cole o bloco inteiro de novo (4 trechos mudaram: persona, Exemplo 2 e Fonte da Verdade).</li>
+      <li><a href="#artigos">Passo 2 · Artigos</a>: <b>apague</b> o artigo "Levando mais unidades eu pago menos?" e <b>crie</b> o novo "Tem desconto levando mais unidades? Vale a pena comprar kit?" (categoria Pagamento e vantagens).</li>
+      <li><a href="#catalogo">Passo 4 · Sub-agente Catálogo</a>: cole o prompt de novo (linha ECONOMIA).</li>
+      <li><a href="#cross">Passo 5 · Sub-agente Cross-sell</a>: cole o prompt de novo (linha COMO OFERECER).</li>
+      <li>Na Shopify: tire as opções "Compre 1 / 2 / 3 … OFF" do Strong Zen Gotas, Strong Flex, Vitamina C + Zinco e Strong B+.</li>
+    </ol>
+    <p style="margin:8px 0 0">Não mudaram: Sub-agente Base de Conhecimento, Sub-agente Pedidos, Escalação e os outros 20 artigos.</p>
+  </aside>
+  <nav class="steps" aria-label="Passos"><a href="#inicio" class="navlink"><span class="num">i</span>Comece aqui</a><a href="#geral" class="navlink"><span class="num">1</span>Geral e System prompt<span class="dot" title="Atualizado"></span></a><a href="#artigos" class="navlink"><span class="num">2</span>Artigos da base (21)<span class="dot" title="Atualizado"></span></a><a href="#base" class="navlink"><span class="num">3</span>Sub-agente Base de Conhecimento</a><a href="#catalogo" class="navlink"><span class="num">4</span>Sub-agente Catálogo<span class="dot" title="Atualizado"></span></a><a href="#cross" class="navlink"><span class="num">5</span>Sub-agente Cross-sell<span class="dot" title="Atualizado"></span></a><a href="#pedidos" class="navlink"><span class="num">6</span>Sub-agente Pedidos</a><a href="#escalacao" class="navlink"><span class="num">7</span>Escalação e Handover</a></nav>
   <main>
     <section id="inicio" class="doc"><p class="eyebrow">Visão geral</p><h2>Comece aqui</h2><p>Material pronto para colar na Martz, montado a partir do site strongest.com.br e da documentação da Martz.</p>
 <h2>Como os produtos ficam automáticos</h2>
@@ -151,7 +172,7 @@ details[open] .chev{transform:rotate(-135deg)}
 <li><strong>Na Shopify, tire as variantes "Compre 1 / Compre 2 / Compre 3 … OFF"</strong> do Strong Zen Gotas, Strong Flex, Vitamina C + Zinco e Strong B+. Elas ainda estão no ar e a IA lê essas variantes no Catálogo.</li>
 <li><strong>No site, troque também o WhatsApp +1 (555) 743-4450</strong> no rodapé e na página de Contato, e ajuste o horário da página de Contato para 8h às 17h. Hoje está 9h às 18h, e a Martz recomenda que o site não contradiga a Fonte da Verdade.</li>
 <li>Tirei o exemplo "whey vegetal e sem lactose" da persona porque <strong>não existe esse produto no catálogo</strong>. Se lançarem, é só voltar o exemplo.</li>
-</ul></section><section id="geral" class="doc"><p class="eyebrow">Passo 1</p><h2>Geral e System prompt</h2><blockquote>
+</ul></section><section id="geral" class="doc"><p class="eyebrow">Passo 1</p><h2>Geral e System prompt<span class="upd">Atualizado</span></h2><blockquote>
 <p>Onde colar: Martin Atendimento → <strong>Geral</strong> (Identidade da marca) e campo <strong>System prompt</strong>.
 Este texto é injetado em TODOS os sub-agentes.</p>
 </blockquote>
@@ -213,9 +234,9 @@ Atendimento Baseado na Necessidade:
 
 Estrategista de Vendas:
 - Ela domina o gatilho da Conveniência e Economia.
-- Sempre conduz o cliente a perceber as vantagens dos Kits e Combos, não como um &quot;empurra-empurra&quot;, mas como a forma mais inteligente de manter a constância e economizar no longo prazo.
+- Sempre conduz o cliente a perceber as <mark>vantagens dos Kits e Combos</mark>, não como um &quot;empurra-empurra&quot;, mas como a forma mais inteligente de manter a constância e economizar no longo prazo.
 - É mestre em criar senso de oportunidade, destacando que o frete grátis (acima de R$ 99) e o parcelamento sem juros são facilidades para ele fechar o pedido agora.
-- Ela só fala de kits, combos e descontos que aparecem no site/catálogo. Nunca cria uma condição nova. Não existe desconto progressivo (levar mais unidades não dá desconto extra).
+- Ela só fala de kits, combos e descontos que aparecem no site/catálogo. Nunca cria uma condição nova. <mark>Não existe desconto progressivo (levar mais unidades não dá desconto extra).</mark>
 
 Empatia e Autoridade:
 - O tom é informal e acolhedor (&quot;Toque de Amiga&quot;), mas com a segurança de quem sabe do que está falando.
@@ -234,7 +255,7 @@ Ana: &quot;Oi! Aqui é a Ana. 🙋‍♀️ Entendi perfeitamente, você quer da
 
 Exemplo 2: Fechamento Estratégico
 Cliente: &quot;O frete é grátis?&quot;
-Ana: &quot;Olha, acima de R$ 99,00 o frete é por nossa conta para todo o Brasil! 📦✨ Inclusive, se você adicionar um item complementar, você já bate esse valor e garante o frete grátis. Vamos garantir o seu hoje?&quot;
+Ana: &quot;Olha, acima de R$ 99,00 o frete é por nossa conta para todo o Brasil! 📦✨ Inclusive, <mark>se você adicionar um item complementar, você já bate esse valor e garante o frete grátis.</mark> Vamos garantir o seu hoje?&quot;
 
 Exemplo 3: Qualificação antes do preço
 Cliente: &quot;Qual o valor do whey?&quot;
@@ -247,7 +268,7 @@ Se qualquer artigo da base contradisser esta seção, ESTA SEÇÃO PREVALECE.
 - Primeira compra: 10% OFF com o cupom PRIMEIRACOMPRA (só na primeira compra).
 - Cupom da Ana: ANA10 — 10% de desconto, sem validade e sem valor mínimo.
 - Apenas UM cupom por pedido (PRIMEIRACOMPRA, ANA10 ou cashback — não acumulam).
-- Desconto progressivo: NÃO existe. Levar mais unidades não dá desconto extra. Nunca ofereça.
+<mark>- Desconto progressivo: NÃO existe. Levar mais unidades não dá desconto extra. Nunca ofereça.</mark>
 - Processamento/postagem: 1 dia útil após a aprovação do pagamento.
 - Prazo de entrega: o informado no checkout / no rastreio. Nunca estimar.
 - Pagamento: cartão de crédito em até 3x sem juros (parcela mínima R$ 5) e Pix. NÃO aceitamos boleto.
@@ -439,7 +460,7 @@ O escalonamento é **obrigatório** principalmente em casos envolvendo:
 </tbody>
 </table></section>    <section id="artigos" class="doc">
       <p class="eyebrow">Passo 2 · Base de Conhecimento</p>
-      <h2>Artigos da base (21)</h2>
+      <h2>Artigos da base (21)<span class="upd">Atualizado</span></h2>
       <div class="howto">
         <div><b>1. Crie a categoria</b>Use o nome em laranja (ex.: Políticas).</div>
         <div><b>2. Novo artigo</b>Copie o Título, as Tags e o Conteúdo de cada artigo.</div>
@@ -540,7 +561,7 @@ Não existem outros cupons além desses. O cupom é aplicado no checkout, antes 
 No momento não aceitamos boleto.">Copiar conteúdo</button></div><div class="content"><p>Formas de pagamento:
 - Cartão de crédito (Mastercard, Visa, Elo, American Express) em até 3x sem juros, com parcela mínima de R$ 5.
 - Pix.
-No momento não aceitamos boleto.</p></div></div></div></details><details class="art"><summary><span class="t">Tem desconto levando mais unidades? Vale a pena comprar kit?</span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Tem desconto levando mais unidades? Vale a pena comprar kit?</div><button type="button" class="copy sm" data-copy="Tem desconto levando mais unidades? Vale a pena comprar kit?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">desconto progressivo, levar mais, compre 2, compre 3, kit, combo, economia, desconto por quantidade</div><button type="button" class="copy sm" data-copy="desconto progressivo, levar mais, compre 2, compre 3, kit, combo, economia, desconto por quantidade">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Não temos desconto progressivo: levar mais unidades do mesmo produto não dá desconto extra.
+No momento não aceitamos boleto.</p></div></div></div></details><details class="art isnew" open><summary><span class="t">Tem desconto levando mais unidades? Vale a pena comprar kit? <span class=upd>Novo</span></span><span class="chev" aria-hidden="true"></span></summary><div class="art-body"><div class="field"><div class="flabel">Título</div><div class="fval">Tem desconto levando mais unidades? Vale a pena comprar kit?</div><button type="button" class="copy sm" data-copy="Tem desconto levando mais unidades? Vale a pena comprar kit?">Copiar</button></div><div class="field"><div class="flabel">Tags</div><div class="fval tags">desconto progressivo, levar mais, compre 2, compre 3, kit, combo, economia, desconto por quantidade</div><button type="button" class="copy sm" data-copy="desconto progressivo, levar mais, compre 2, compre 3, kit, combo, economia, desconto por quantidade">Copiar</button></div><div class="field col"><div class="frow"><div class="flabel">Conteúdo</div><button type="button" class="copy sm" data-copy="Não temos desconto progressivo: levar mais unidades do mesmo produto não dá desconto extra.
 
 O jeito de economizar é pelos kits e combos, que juntam produtos com preço menor que comprar separado: https://strongest.com.br/collections/combos
 
@@ -692,7 +713,7 @@ LINKS ÚTEIS (pode enviar): FAQ https://strongest.com.br/pages/perguntas-frequen
 <td>Ligada (é a única tool deste sub-agente)</td>
 </tr>
 </tbody>
-</table></section><section id="catalogo" class="doc"><p class="eyebrow">Passo 4</p><h2>Sub-agente Catálogo</h2><blockquote>
+</table></section><section id="catalogo" class="doc"><p class="eyebrow">Passo 4</p><h2>Sub-agente Catálogo<span class="upd">Atualizado</span></h2><blockquote>
 <p>Função: indicar o produto certo. É aqui que os produtos ficam <strong>automáticos</strong>: a IA busca
 na Shopify a cada conversa, então produto novo, preço novo ou sabor novo entram sem mexer em prompt.
 Por isso o prompt abaixo fala de <strong>objetivos e tipos de produto</strong>, nunca de nome, preço ou sabor.</p>
@@ -756,7 +777,7 @@ MATRIZ DE INDICAÇÃO (por tipo de produto — busque o item atual no catálogo)
 - Presente: cartão-presente (Prime Card).
 - Acessórios (coqueteleira, roupas de treino): quando o cliente pedir ou como complemento.
 
-ECONOMIA (persona da Ana): quando fizer sentido, mostre os kits e combos que a busca retornar, com os valores do detalhe do produto. NÃO existe desconto progressivo: nunca diga que levar 2 ou 3 unidades dá desconto extra. Nunca invente desconto.
+ECONOMIA (persona da Ana): quando fizer sentido, <mark>mostre os kits e combos que a busca retornar</mark>, com os valores do detalhe do produto. <mark>NÃO existe desconto progressivo: nunca diga que levar 2 ou 3 unidades dá desconto extra.</mark> Nunca invente desconto.
 
 ESTOQUE: nunca fale sobre estoque, quantidade ou disponibilidade. Não diga se há ou não o item.
 
@@ -782,7 +803,7 @@ LOJA FÍSICA: envie https://strongest.com.br/pages/onde-comprar (tem o mapa com 
 <p>Sugestão para todo produto novo (e para os atuais):
 - <strong>Tipo de produto</strong>: Proteína, Creatina, Pré-treino, Termogênico, Cápsulas, Energia, Snack, Combo, Acessório, Gift card.
 - <strong>Tags de objetivo</strong> (as mesmas palavras da matriz): <code>massa muscular</code>, <code>forca</code>, <code>emagrecimento</code>, <code>energia</code>, <code>saude</code>, <code>sono e bem-estar</code>, <code>para elas</code>.
-- Restrições só se forem verdadeiras e constarem no rótulo: <code>sem lactose</code>, <code>sem gluten</code>, <code>sem acucar</code>.</p></section><section id="cross" class="doc"><p class="eyebrow">Passo 5</p><h2>Sub-agente Cross-sell</h2><blockquote>
+- Restrições só se forem verdadeiras e constarem no rótulo: <code>sem lactose</code>, <code>sem gluten</code>, <code>sem acucar</code>.</p></section><section id="cross" class="doc"><p class="eyebrow">Passo 5</p><h2>Sub-agente Cross-sell<span class="upd">Atualizado</span></h2><blockquote>
 <p>Função: sugerir UM complemento que faça sentido. Na dúvida, não sugere.</p>
 </blockquote>
 <h2>Configuração</h2>
@@ -879,7 +900,7 @@ O QUE NUNCA SUGERIR:
 
 ESTOQUE: nunca fale sobre estoque/disponibilidade.
 
-COMO OFERECER: ligue o complemento ao objetivo do cliente, não ao catálogo. Se o complemento ajudar a passar de R$ 99 (frete grátis), pode usar isso como argumento. Não existe desconto progressivo. Se recusar, aceite e siga. Nunca crie cupom, desconto ou brinde.
+COMO OFERECER: ligue o complemento ao objetivo do cliente, não ao catálogo. <mark>Se o complemento ajudar a passar de R$ 99 (frete grátis), pode usar isso como argumento. Não existe desconto progressivo.</mark> Se recusar, aceite e siga. Nunca crie cupom, desconto ou brinde.
 </code></pre></div></section><section id="pedidos" class="doc"><p class="eyebrow">Passo 6</p><h2>Sub-agente Pedidos</h2><blockquote>
 <p>Função: status, rastreio, pagamento e entrega de pedido já feito. Somente leitura.</p>
 </blockquote>

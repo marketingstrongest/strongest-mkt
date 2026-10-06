@@ -26,6 +26,7 @@ Material pronto para colar na Martz, montado a partir do site strongest.com.br e
 
 - Trocas: a IA informa os prazos (7 dias arrependimento / 90 dias defeito), mas todo pedido de troca/devolução vai para o SAC.
 - ANA10: 10% de desconto, sem validade e sem valor mínimo.
+- Apenas um cupom por pedido (PRIMEIRACOMPRA, ANA10 ou cashback não acumulam).
 - Boleto: desativado (removido dos prompts e da base).
 - Status de pagamento: tool ligada no sub-agente Pedidos.
 - Correlações de cross-sell e mensagem de aviso ao escalar: aprovadas como estão.

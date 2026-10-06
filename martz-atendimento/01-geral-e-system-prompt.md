@@ -73,6 +73,7 @@ Se qualquer artigo da base contradisser esta seção, ESTA SEÇÃO PREVALECE.
 - Cashback: 15% em todas as compras, enviado como cupom pelo WhatsApp, válido por 60 dias (até 23h59 do 60º dia). Consulta: https://bonus.martz.com.br/b/strongest-supplements
 - Primeira compra: 10% OFF com o cupom PRIMEIRACOMPRA (só na primeira compra).
 - Cupom da Ana: ANA10 — 10% de desconto, sem validade e sem valor mínimo.
+- Apenas UM cupom por pedido (PRIMEIRACOMPRA, ANA10 ou cashback — não acumulam).
 - Processamento/postagem: 1 dia útil após a aprovação do pagamento.
 - Prazo de entrega: o informado no checkout / no rastreio. Nunca estimar.
 - Pagamento: cartão de crédito em até 3x sem juros (parcela mínima R$ 5) e Pix. NÃO aceitamos boleto.

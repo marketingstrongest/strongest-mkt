@@ -6,7 +6,8 @@
 
 > Ranking consultado em 07/10/2026 em `collections/all?sort_by=best-selling` (40 produtos).
 > A posição de cada produto aparece entre parênteses (ex.: **#30 de 40**).
-> Ficaram de fora de propósito os produtos que já vendem bem (Future Protein, LipoFire, Creatina, Wheys, Detonator pote, Ômega 3, Vitamina D3, Magnésio, Strong Beauty), porque já puxam venda sozinhos. Eles só aparecem dentro dos combos.
+> **Force Hair** é o rebranding do Strong Beauty (mesma fórmula, ainda em draft na loja). Nas copys ele já aparece com o nome novo; até o lançamento, o link do combo segue mostrando Strong Beauty.
+> Ficaram de fora de propósito os produtos que já vendem bem (Future Protein, LipoFire, Creatina, Wheys, Detonator pote, Ômega 3, Vitamina D3, Magnésio, Force Hair), porque já puxam venda sozinhos. Eles só aparecem dentro dos combos.
 
 ---
 
@@ -30,7 +31,7 @@
 Verão de dentro pra fora
 
 **Combo Musa do Verão**
-LipoFire + Strong Beauty: o termogênico que acelera seu treino e o cuidado diário com pele, cabelo e unhas.
+LipoFire + Force Hair: o termogênico que acelera seu treino e 11 vitaminas + 5 minerais pra cuidar de cabelo, pele e unhas.
 
 **CTA:**
 Quero meu combo

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calendário de Banners Strongest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: cronograma vertical — cada ciclo de 15 dias é uma faixa com 3 fichas de banner lado a lado (empilham no celular) */
+:root {
+  --bg: #f3f4f6;
+  --surface: #ffffff;
+  --fg: #14171c;
+  --muted: #5b6270;
+  --line: #dde0e6;
+  --accent: #1f4fd6;
+  --accent-soft: #e6ecfc;
+  --hot: #c2410c;
+  --hot-soft: #fdeee6;
+  --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1216; --surface: #181c22; --fg: #eceef2; --muted: #9aa2b1; --line: #2a303a;
+    --accent: #7f9ef5; --accent-soft: #1c2645; --hot: #f59a6b; --hot-soft: #3a2218;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1216; --surface: #181c22; --fg: #eceef2; --muted: #9aa2b1; --line: #2a303a;
+  --accent: #7f9ef5; --accent-soft: #1c2645; --hot: #f59a6b; --hot-soft: #3a2218;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 64px; display: grid; gap: 40px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.05; }
+header { display: grid; gap: 14px; }
+.eyebrow { font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+h1 { font-size: clamp(34px, 6vw, 56px); font-weight: 800; text-transform: uppercase; letter-spacing: .01em; }
+.lead { color: var(--muted); max-width: 68ch; margin: 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+
+.overview { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 14px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-display); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+td a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--line); }
+td a:hover { border-color: var(--accent); }
+
+.cycle { display: grid; gap: 16px; scroll-margin-top: 16px; }
+.cycle-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; padding-bottom: 10px; border-bottom: 2px solid var(--fg); }
+.cycle-head .n { font-family: var(--font-display); font-weight: 800; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.cycle-head h2 { font-size: clamp(24px, 3.4vw, 32px); font-weight: 700; text-transform: uppercase; }
+.cycle-head .dates { font-variant-numeric: tabular-nums; color: var(--muted); font-weight: 600; margin-left: auto; }
+.note { margin: 0; font-size: 14px; color: var(--hot); background: var(--hot-soft); padding: 8px 12px; border-radius: 6px; }
+
+.banners { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 900px) { .banners { grid-template-columns: 1fr; } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; grid-template-rows: auto 1fr auto; gap: 14px; min-width: 0; }
+.card-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.rank { font-variant-numeric: tabular-nums; background: var(--bg); padding: 2px 8px; border-radius: 4px; letter-spacing: 0; text-transform: none; }
+.copy { display: grid; gap: 10px; align-content: start; }
+.field { display: grid; gap: 2px; }
+.label { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.headline { font-family: var(--font-display); font-size: 24px; font-weight: 700; line-height: 1.1; text-wrap: balance; }
+.product { font-weight: 600; font-size: 16px; }
+.sub { margin: 0; }
+.cta { justify-self: start; font-family: var(--font-display); font-weight: 700; font-size: 16px; letter-spacing: .04em; text-transform: uppercase; background: var(--accent); color: var(--surface); padding: 6px 14px; border-radius: 4px; }
+.obs { font-size: 13px; color: var(--muted); margin: 0; }
+.card-foot { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px dashed var(--line); }
+.card-foot a { font-size: 13px; color: var(--accent); word-break: break-all; }
+button { font: 600 13px var(--font-body); color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+button:hover { border-color: var(--accent); color: var(--accent); }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.notes { display: grid; gap: 10px; }
+.notes h2 { font-size: 26px; text-transform: uppercase; }
+.notes ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 80ch; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">strongest.com.br · Banners rotativos</span>
+    <h1>Calendário de banners · out/2026 a jan/2027</h1>
+    <p class="lead">18 copys para o setor de criação, no formato título, produto, subtítulo e CTA. O foco são os produtos da metade de baixo do ranking de mais vendidos e os que têm potencial na data. O número de cada ficha é a posição no ranking consultado em 07/10/2026 (40 produtos).</p>
+    <div class="facts">
+      <span class="chip">6 ciclos</span><span class="chip">3 banners por ciclo</span><span class="chip">Troca a cada 15 dias</span><span class="chip">15/10/2026 a 12/01/2027</span>
+    </div>
+  </header>
+
+  <section class="overview" aria-label="Visão geral">
+    <table>
+      <thead><tr><th>Ciclo</th><th>Período</th><th>Tema</th><th>Banner 1</th><th>Banner 2</th><th>Banner 3</th></tr></thead>
+      <tbody id="overview"></tbody>
+    </table>
+  </section>
+
+  <main id="cycles" style="display:grid;gap:44px"></main>
+
+  <section class="notes">
+    <h2>Notas pro time</h2>
+    <ul>
+      <li><strong>Force Hair</strong> é o rebranding do Strong Beauty, com a mesma fórmula. Ele ainda está em draft na loja, então o link do Combo Musa do Verão segue mostrando Strong Beauty até o lançamento.</li>
+      <li>Os produtos que já vendem bem (Future Protein, LipoFire, Creatina, Wheys, Detonator pote, Ômega 3, Vitamina D3, Magnésio e Force Hair) ficaram de fora e só aparecem dentro dos combos.</li>
+      <li><strong>Reservas</strong>, caso algum produto fique sem estoque: Strong Up Energy Gel Black (#34), Kit Degustação Strong Up (#24), NAC Acetilcisteína (#16), Camiseta Feminina Dry Fit UV (#23), Detonator Sachê caixa 20 (#14), Pasta de Amendoim (#13).</li>
+      <li>As copys usam "suporte", "cuidar" e "reforçar" e não prometem cura nem resultado garantido, seguindo o padrão da Anvisa para suplementos. Vale manter isso se o texto for ajustado.</li>
+      <li>Preços e descontos ficaram fora da copy porque mudam com frequência. Se quiser selo de preço, inclua na arte de cada ciclo.</li>
+      <li>Datas-chave: Black Friday 27/11/2026 · Início do verão 21/12 · Natal 25/12 · Ano novo 01/01/2027.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const BASE = "https://strongest.com.br/products/";
+const CYCLES = [
+  { n: 1, dates: "15/10 – 29/10", theme: "Contagem pro verão", banners: [
+    { name: "Combo Musa do Verão", rank: "#26", h: "Verão de dentro pra fora", p: "Combo Musa do Verão", s: "LipoFire + Force Hair: o termogênico que acelera seu treino e 11 vitaminas + 5 minerais pra cuidar de cabelo, pele e unhas.", cta: "Quero meu combo", links: ["combo-musa-do-verao"] },
+    { name: "Colágeno e Zinco", rank: "#30", h: "Firmeza que você sente no espelho", p: "Colágeno e Zinco", s: "Colágeno hidrolisado + zinco pra cuidar da firmeza da pele e da força de cabelos e unhas, todos os dias.", cta: "Quero mais firmeza", links: ["suplemento-colageno-e-zinco-60-capsulas-strongest"] },
+    { name: "Beta Alanina", rank: "#20", h: "Vá além da última repetição", p: "Beta Alanina 100% Pura", s: "Sem sabor, sem mistura. Mais resistência pra sustentar a intensidade quando o treino costuma travar.", cta: "Quero treinar mais forte", links: ["suplemento-beta-alanina-100-pura-sem-sabor-200g-strongest"] }
+  ]},
+  { n: 2, dates: "30/10 – 13/11", theme: "Energia pra reta final do ano", banners: [
+    { name: "Coenzima Q10", rank: "#19", h: "Energia que começa nas células", p: "Coenzima Q10 100mg", s: "Disposição física e mental e ação antioxidante pra quem não quer desacelerar no fim do ano.", cta: "Quero mais disposição", links: ["suplemento-coenzima-q10-100mg-30-capsulas-strongest"] },
+    { name: "Strong Up Energy Gel", rank: "#29", h: "Pique do primeiro ao último quilômetro", p: "Strong Up Energy Gel", s: "3 fontes de carboidrato com Palatinose™: energia rápida e sustentada, sem o doce enjoativo.", cta: "Quero meu combustível", links: ["strong-up-energy-gel-caixa-10-saches"], obs: "Pode citar a versão Black (com cafeína e taurina) e o Kit Degustação com 8 sachês (#24)." },
+    { name: "Strong Zen Gotas", rank: "#36", h: "Desacelere. Seu treino de amanhã agradece.", p: "Strong Zen Gotas", s: "Melatonina + triptofano + B6 + magnésio, em gotas, pra noites mais tranquilas.", cta: "Quero dormir melhor", links: ["strong-zen-gotas-30ml"] }
+  ]},
+  { n: 3, dates: "14/11 – 28/11", theme: "Black Friday (27/11)", note: "Atualizar o subtítulo ou selo com o desconto real da Black Friday assim que a oferta for definida.", banners: [
+    { name: "Projeto Verão Começa Agora", rank: "#35", h: "O verão não espera. Você também não.", p: "Projeto Verão Começa Agora", s: "LipoFire + Future Protein: definição no espelho e 25g de proteína vegana pra preservar a massa magra.", cta: "Começar meu projeto", links: ["projeto-verao-comeca-agora"] },
+    { name: "Caixa 12 Barras Strong Fit", rank: "#17", h: "A sobremesa que cabe na dieta", p: "Strong Fit Barra de Proteína", s: "12g de proteína e zero adição de açúcares, nos sabores Brigadeiro e Romeu e Julieta.", cta: "Quero minha caixa", links: ["caixa-12-un-strong-fit-barra-de-proteina"] },
+    { name: "Strong Flex", rank: "#37", h: "Articulações que acompanham seu ritmo", p: "Strong Flex", s: "7 ativos, entre eles colágeno tipo II, glucosamina, condroitina e cúrcuma, num suporte articular completo.", cta: "Quero me mover melhor", links: ["strong-flex-500mg"] }
+  ]},
+  { n: 4, dates: "29/11 – 13/12", theme: "Presentes e teste antes de escolher", banners: [
+    { name: "Kit Degustação Detonator", rank: "#33", h: "Teste o pré-treino antes de escolher o seu sabor", p: "Kit Degustação Detonator", s: "6 sachês (3 Melancia + 3 Uva) com a fórmula completa do Detonator e só 20 kcal por dose.", cta: "Quero experimentar", links: ["kit-degustacao-detonator-sache"] },
+    { name: "Kit Degustação Barra", rank: "#25", h: "O amigo secreto mais fit do ano", p: "Kit Degustação Strong Fit", s: "6 barras (3 Brigadeiro + 3 Romeu e Julieta) com 12g de proteína cada. Presente que todo mundo come.", cta: "Quero presentear", links: ["kit-degustacao-barra-de-proteina"] },
+    { name: "Strong Multi", rank: "#22", h: "Tudo o que sua rotina pede, em um só", p: "Strong Multi", s: "Mais de 20 vitaminas e minerais quelados + Coenzima Q10 pra completar sua alimentação na correria.", cta: "Quero simplificar", links: ["strong-multi-60-comp"] }
+  ]},
+  { n: 5, dates: "14/12 – 28/12", theme: "Festas, férias e verão", banners: [
+    { name: "Strong Fit Energy Drink", rank: "#27", h: "Energia pra virar o ano sem pesar", p: "Strong Fit Energy Drink", s: "Zero açúcar, zero calorias, com cafeína, taurina e vitaminas do complexo B. 5 sabores.", cta: "Quero minha energia", links: ["strong-fit-energy-drink-269ml"] },
+    { name: "Vitamina C + Zinco", rank: "#40", h: "Férias são pra aproveitar, não pra ficar parado", p: "Vitamina C + Zinco", s: "900mg de vitamina C + zinco quelado pra reforçar a imunidade na correria das festas e das viagens.", cta: "Quero reforçar minha imunidade", links: ["vitamina-c-zinco"] },
+    { name: "Colágeno Tipo II", rank: "#21", h: "Seu joelho também quer curtir o verão", p: "Colágeno Tipo II 40mg", s: "O colágeno da cartilagem, pra dar suporte às articulações em quem treina, corre e não para.", cta: "Quero cuidar das articulações", links: ["suplemento-colageno-tipo-ii-40mg-30-capsulas-strongest"] }
+  ]},
+  { n: 6, dates: "29/12 – 12/01", theme: "Ano novo, rotina nova", banners: [
+    { name: "Combo Destrave Seu Intestino", rank: "#38", h: "Ano novo começa com o corpo mais leve", p: "Combo Destrave Seu Intestino", s: "Future Protein com fibra prebiótica + NAC + Strong Multi: conforto digestivo e nutrição pós-festas.", cta: "Quero me sentir mais leve", links: ["combo-destrave-seu-intestino"] },
+    { name: "Strong B+", rank: "#39", h: "Energia pra cumprir as metas de 2027", p: "Strong B+", s: "As 8 vitaminas do complexo B numa cápsula diária, pra transformar o que você come em energia.", cta: "Quero começar com energia", links: ["strong-b"] },
+    { name: "Regatas Dry Fit UV", rank: "#28 / #31", h: "Treino de verão, sol sob controle", p: "Regatas Dry Fit UV50+", s: "Tecido que seca rápido e proteção UV50+ pra treinar ao ar livre sem se preocupar com suor e sol.", cta: "Quero treinar no verão", links: ["regata-dry-fit-uv-strongest-treino-academia-masculina", "regata-nadador-dry-uv-strongest-academia-feminina"] }
+  ]}
+];
+
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const copyText = b => `Conteúdo:\n${b.h}\n\n${b.p}\n${b.s}\n\nCTA\n${b.cta}`;
+
+document.getElementById("overview").innerHTML = CYCLES.map(c =>
+  `<tr><td class="num"><a href="#ciclo-${c.n}">${c.n}</a></td><td class="num">${c.dates}</td><td>${esc(c.theme)}</td>` +
+  c.banners.map(b => `<td>${esc(b.name)} <span class="rank">${b.rank}</span></td>`).join("") + `</tr>`
+).join("");
+
+document.getElementById("cycles").innerHTML = CYCLES.map(c => `
+  <section class="cycle" id="ciclo-${c.n}">
+    <div class="cycle-head">
+      <span class="n">Ciclo ${c.n}</span><h2>${esc(c.theme)}</h2><span class="dates">${c.dates}</span>
+    </div>
+    ${c.note ? `<p class="note">${esc(c.note)}</p>` : ""}
+    <div class="banners">
+      ${c.banners.map((b, i) => `
+        <article class="card">
+          <div class="card-top"><span>Banner ${c.n}.${i + 1}</span><span class="rank">${b.rank} de 40</span></div>
+          <div class="copy">
+            <div class="field"><span class="label">Conteúdo</span><span class="headline">${esc(b.h)}</span></div>
+            <div class="field"><span class="product">${esc(b.p)}</span><p class="sub">${esc(b.s)}</p></div>
+            <div class="field"><span class="label">CTA</span><span class="cta">${esc(b.cta)}</span></div>
+            ${b.obs ? `<p class="obs">Obs. criação: ${esc(b.obs)}</p>` : ""}
+          </div>
+          <div class="card-foot">
+            <span style="display:grid;gap:2px;min-width:0">${b.links.map(l => `<a href="${BASE + l}" target="_blank" rel="noopener">/products/${l}</a>`).join("")}</span>
+            <button type="button" data-c="${c.n}" data-b="${i}">Copiar copy</button>
+          </div>
+        </article>`).join("")}
+    </div>
+  </section>`).join("");
+
+document.addEventListener("click", e => {
+  const btn = e.target.closest("button[data-c]");
+  if (!btn) return;
+  const b = CYCLES[btn.dataset.c - 1].banners[btn.dataset.b];
+  const done = msg => { btn.textContent = msg; setTimeout(() => (btn.textContent = "Copiar copy"), 1600); };
+  const fallback = () => {
+    const ta = document.createElement("textarea");
+    ta.value = copyText(b); document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done("Copiado"); } catch { done("Selecione e copie"); }
+    ta.remove();
+  };
+  if (navigator.clipboard) navigator.clipboard.writeText(copyText(b)).then(() => done("Copiado"), fallback);
+  else fallback();
+});
+</script>
+</body>
+</html>

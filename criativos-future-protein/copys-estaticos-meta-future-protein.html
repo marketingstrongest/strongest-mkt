@@ -1,0 +1,420 @@
+<title>Future Protein · 60 Estáticos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112.5..125,600..800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: mesa de briefing. Resumo dos temas vencedores no topo, filtros fixos, grade de cartões de demanda (arte | anúncio | direção). */
+:root{
+  --bg:#f3f5f9; --surface:#ffffff; --ink:#0d1220; --muted:#5b6478; --line:#dfe3ec;
+  --accent:#2457e6; --accent-soft:#e6edff; --good:#11845b; --good-soft:#e2f4ec; --warn:#a85d00; --warn-soft:#fdf0dd;
+  --art:#0d1220; --art-fg:#f5f7fb; --art-muted:#a9b3c9;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b0e16; --surface:#141927; --ink:#eef1f7; --muted:#9aa3b8; --line:#262d40;
+  --accent:#7ea2ff; --accent-soft:#1c2747; --good:#4cc996; --good-soft:#132e25; --warn:#f0b05a; --warn-soft:#33260f;
+  --art:#05070c; --art-fg:#f5f7fb; --art-muted:#a9b3c9; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b0e16; --surface:#141927; --ink:#eef1f7; --muted:#9aa3b8; --line:#262d40;
+  --accent:#7ea2ff; --accent-soft:#1c2747; --good:#4cc996; --good-soft:#132e25; --warn:#f0b05a; --warn-soft:#33260f;
+  --art:#05070c; --art-fg:#f5f7fb; --art-muted:#a9b3c9; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px;padding-block:28px 64px;display:grid;gap:28px}
+.eyebrow{font:600 11px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--f-display);font-stretch:125%;font-weight:800;font-size:clamp(30px,5vw,52px);line-height:1;margin:10px 0 12px;letter-spacing:-.02em;text-wrap:balance}
+h2{font-family:var(--f-display);font-stretch:118%;font-weight:700;font-size:20px;margin:0 0 4px;text-wrap:balance}
+.lede{max-width:70ch;color:var(--muted);margin:0}
+.lede b{color:var(--ink)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
+.grid2{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px}
+@media (max-width:900px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums}
+th{font:600 10.5px/1.2 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 8px;border-bottom:1px solid var(--line)}
+td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num{text-align:right;white-space:nowrap}
+.roas{font-family:var(--f-mono);font-weight:600;color:var(--good)}
+.bar{height:6px;border-radius:3px;background:var(--accent);display:block;margin-top:5px}
+.ref{font-family:var(--f-mono);font-size:11px;color:var(--muted);word-break:break-all}
+ul.notes{margin:0;padding-left:18px;display:grid;gap:8px;font-size:14px}
+ul.notes b{color:var(--ink)}
+/* filtros */
+.toolbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px;border-bottom:1px solid var(--line);display:grid;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:600 12.5px/1 var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,.btn:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.search{flex:1 1 220px;min-width:0;font:inherit;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+.count{font-size:13px;color:var(--muted)}
+.btn{font:600 12.5px/1 var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:7px;padding:8px 11px;cursor:pointer;white-space:nowrap}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+/* cartões */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,370px),1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;display:grid;grid-template-rows:auto auto 1fr auto;overflow:hidden;min-width:0}
+.card.done{opacity:.55}
+.card-head{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:12px 14px 10px}
+.id{font:600 13px/1 var(--f-mono);margin-right:auto}
+.tag{font:600 11px/1 var(--f-body);padding:5px 8px;border-radius:5px;background:var(--accent-soft);color:var(--accent)}
+.tag.rmk{background:var(--warn-soft);color:var(--warn)}
+.tag.frio{background:var(--good-soft);color:var(--good)}
+.art{background:var(--art);color:var(--art-fg);margin:0 14px;border-radius:8px;padding:18px 16px;display:grid;gap:10px}
+.art .hl{font-family:var(--f-display);font-stretch:118%;font-weight:800;font-size:22px;line-height:1.08;letter-spacing:-.01em;text-wrap:balance}
+.art .sub{color:var(--art-muted);font-size:14px}
+.selos{display:flex;flex-wrap:wrap;gap:5px}
+.selo{font:600 11px/1 var(--f-body);border:1px solid var(--art-muted);color:var(--art-fg);border-radius:4px;padding:5px 7px}
+.cta{justify-self:start;font:700 12px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;background:var(--art-fg);color:var(--art);border-radius:4px;padding:8px 11px}
+.body{padding:14px;display:grid;gap:12px;min-width:0}
+.lbl{font:600 10.5px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.txt{white-space:pre-line;font-size:14px}
+.vis{font-size:13.5px;color:var(--ink);background:var(--bg);border-radius:6px;padding:9px 10px}
+.foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 14px 14px;border-top:1px solid var(--line)}
+.foot label{display:flex;gap:6px;align-items:center;font-size:13px;margin-left:auto;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:13.5px;font-weight:600}
+@media (prefers-reduced-motion:no-preference){.card{transition:opacity .2s}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Strongest · Meta Ads · base: semana 27/09–03/10/2026</div>
+    <h1>Future Protein · 60 estáticos</h1>
+    <p class="lede">60 copys de criativo estático (post) para abrir demanda ao design. Cada cartão traz <b>o texto que vai na arte</b>, <b>o texto do anúncio no Meta</b> e <b>a direção visual</b>. Os temas seguem os anúncios e conjuntos de Future Protein com maior ROAS do relatório da semana (a média da conta foi 1,26×).</p>
+  </header>
+
+  <section class="grid2">
+    <div class="panel">
+      <h2>Temas vencedores e quantas copys cada um recebeu</h2>
+      <p class="lede" style="font-size:13.5px;margin-bottom:10px">Mais copys para quem mais retornou. Referências tiradas das páginas 10 e 11 do relatório (top conjuntos e top anúncios).</p>
+      <div class="tbl-wrap"><table id="themes"><thead><tr><th>Tema</th><th>Origem no relatório</th><th class="num">ROAS</th><th class="num">Copys</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div class="panel">
+      <h2>O que o relatório pede da arte</h2>
+      <ul class="notes">
+        <li><b>Estático converte, mas custa clique.</b> Os anúncios IMG de Future Protein tiveram a maior conversão da conta (CVR 8–9%), mas o diagnóstico foi "sessão cara · criativo" (CTR ~1%). A headline precisa parar a rolagem: grande, curta, lida em 1 segundo.</li>
+        <li><b>Future Protein 800g é o herói:</b> 62 potes e 59% da receita do site na semana. Pote sempre visível e reconhecível.</li>
+        <li><b>Prova com número real:</b> 25g de proteína por dose de 32g, 4,2g de BCAA, 3g de carbo, 1,5g de gordura, vitaminas D e B12.</li>
+        <li><b>Oferta vigente no site:</b> de R$ 299,90 por R$ 199,90 (33% OFF), 3x de R$ 66,63 sem juros, 15% de cashback, frete grátis acima de R$ 99, 10% OFF na primeira compra. Confirmar antes de subir.</li>
+        <li><b>Formato:</b> 4:5 (1080×1350) para feed e 1:1 (1080×1080). Texto da arte dentro da área segura central.</li>
+        <li><b>Política Meta:</b> nada de "você tem intolerância…" (atributo pessoal), nada de antes/depois de corpo. Copys de "últimas unidades" só sobem com estoque realmente baixo.</li>
+        <li><b>Nome do anúncio:</b> use o código do cartão (ex.: AD-IMG-FP-ROTULO-R01) para ler o resultado no próximo relatório.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="toolbar" aria-label="Filtros">
+    <div class="chips" id="themeChips"></div>
+    <div class="row">
+      <div class="chips" id="audChips"></div>
+      <input class="search" id="q" type="search" placeholder="Buscar por palavra, código ou sabor" aria-label="Buscar copys">
+      <span class="count" id="count"></span>
+      <button class="btn primary" id="copyAll" type="button">Copiar briefings filtrados</button>
+    </div>
+  </section>
+
+  <section class="cards" id="cards" aria-live="polite"></section>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const THEMES = {
+  rotulo:   {name:"Leia o rótulo / fórmula aberta", src:"AD-MATRIZ2508-FUTUREPROTEIN-LEIA-O-ROTULO-RT10 (melhor anúncio da semana)", roas:2.41, code:"ROTULO"},
+  pedido:   {name:"Seu pedido / oferta direta", src:"AD-IMG-FP-SEU-PEDIDO-IMP… (CVR 5,0%)", roas:2.19, code:"PEDIDO"},
+  economia: {name:"Economia / carrinho", src:"Conjunto RMT-FUTUREPROTEIN-CARRINHO-ECONOMIA-MATRIZ1409 (melhor conjunto)", roas:2.10, code:"ECONOMIA"},
+  formula:  {name:"Fórmula completa (ervilha + arroz)", src:"AD-MATRIZ1409-FUTUREPROTEIN-FOR… 1,96× · conj. FORMULA-NUTRICAO 1,70× · ERVILHA+ARROZ 1,66×", roas:1.96, code:"FORMULA"},
+  ultimas:  {name:"Últimas unidades / mais vendido", src:"AD-IMG-FP-ULTIMAS-UNIDADES-V1 1,90× (maior volume: 10 compras, CVR 9,35%) · conj. BROAD-ABERTO 1,95×", roas:1.90, code:"ULTIMAS"},
+  digestao: {name:"Digestão leve / troca do whey", src:"Conj. FUTUREPROTEIN-DIGESTAO-LEVEZA 1,87× · TROCA-WHEY-PERFORMANCE 1,61×", roas:1.87, code:"DIGESTAO"},
+  rotina:   {name:"Shake da noite / rotina real", src:"MATRIZ2109-FP-SHAKENOITE 1,68× · IMG-FP-ROTINA-VIDAREAL 1,38×", roas:1.68, code:"ROTINA"},
+  limpa:    {name:"Proteína limpa / sabor", src:"UGC-RAFA-PROTEINALIMPA 1,44× (saudável · escalar)", roas:1.44, code:"LIMPA"}
+};
+const AUD = {frio:"Público frio", morno:"Morno (engajou/visitou)", rmk:"Remarketing (carrinho/PDP)"};
+
+const OFERTA = "De R$ 299,90 por R$ 199,90 ou 3x de R$ 66,63 sem juros. 15% de cashback e frete grátis acima de R$ 99.";
+
+// [id, tema, público, headline, apoio, selos, cta, título do anúncio, texto principal, direção visual]
+const C = [
+// ---------- LEIA O RÓTULO (10)
+["R01","rotulo","frio","Vira o pote. Lê o rótulo.","25g de proteína, 3g de carbo, 1,5g de gordura. Sem letra miúda.",["25g de proteína","Zero lactose","Sem açúcar adicionado"],"Ver a fórmula","Future Protein: fórmula aberta",
+"Antes de comprar qualquer proteína, faça um teste simples: vire o pote e leia o rótulo.\n\nNo Future Protein você encontra 25g de proteína por dose, 4,2g de BCAA, 3g de carboidratos e 1,5g de gordura. Blend de proteína isolada de ervilha + proteína de arroz, com vitaminas D e B12.\n\nZero lactose, zero glúten, zero soja e sem açúcar adicionado.\n\n"+OFERTA,
+"Mão segurando o pote virado, mostrando o verso. Tabela nutricional ampliada como callout ao lado, com os números 25g e 4,2g em destaque."],
+["R02","rotulo","frio","O que tem na dose. Sem esconder.","Proteína 25g · BCAA 4,2g · Carbo 3g · Gordura 1,5g",["Por dose de 32g","100% vegana"],"Conhecer","O que tem na dose do Future Protein",
+"Fórmula aberta, do jeito que deveria ser em toda proteína:\n\n▪ Proteína: 25g\n▪ BCAA: 4,2g\n▪ Carboidratos: 3g\n▪ Gorduras: 1,5g\n\nTudo isso em uma dose de 32g, com ervilha isolada + arroz e vitaminas D e B12.\n\n"+OFERTA,
+"Arte tipográfica no formato de tabela nutricional gigante ocupando 70% da peça. Pote do Future Protein no canto inferior direito. Fundo escuro, números brancos."],
+["R03","rotulo","frio","Ingrediente que você não sabe pronunciar? Aqui não tem.","Proteína de ervilha. Proteína de arroz. Vitaminas D e B12.",["Sem soja","Sem glúten","Sem lactose"],"Ler o rótulo","Rótulo curto, proteína de verdade",
+"Rótulo bom é rótulo que você entende.\n\nO Future Protein é feito de proteína isolada de ervilha e proteína de arroz, enriquecido com vitaminas D e B12. São 25g de proteína por dose, sem lactose, sem glúten, sem soja e sem açúcar adicionado.\n\n"+OFERTA,
+"Lista de ingredientes escrita grande, como se fosse o próprio rótulo recortado. Pote ao lado. Sem citar ou mostrar marca concorrente."],
+["R04","rotulo","morno","25g de proteína em 32g de pó.","78% de cada dose é proteína. Faça a conta no seu pote atual.",["78% proteína","4,2g de BCAA"],"Comparar agora","78% da dose é proteína",
+"Pega o pote de proteína que você usa hoje e divide a proteína pelo tamanho da dose.\n\nNo Future Protein: 25g de proteína em 32g de pó. Isso dá 78% de proteína por scoop, com origem 100% vegetal.\n\n"+OFERTA,
+"Scoop cheio em close, com uma seta indicando '32g' no scoop e '25g' de proteína. Número 78% gigante como elemento principal."],
+["R05","rotulo","frio","Zero. Zero. Zero. Zero.","Lactose, glúten, soja e açúcar adicionado. Proteína: 25g.",["Proteína vegetal","3 sabores"],"Quero provar","Future Protein: o que não tem também importa",
+"O que fica de fora da fórmula diz tanto quanto o que entra.\n\nZero lactose. Zero glúten. Zero soja. Zero açúcar adicionado.\n\nO que entra: 25g de proteína vegetal completa por dose, com vitaminas D e B12.\n\n"+OFERTA,
+"Grid 2×2 com quatro '0' enormes e legendas (lactose, glúten, soja, açúcar adicionado). Pote centralizado sobre o grid com '25g' em destaque."],
+["R06","rotulo","rmk","Você já leu o rótulo. Agora prova.","25g de proteína vegetal por dose. R$ 199,90 com 15% de cashback.",["33% OFF","3x sem juros"],"Comprar agora","Falta só provar o Future Protein",
+"Você já viu o que tem dentro: 25g de proteína, 4,2g de BCAA, vitaminas D e B12, zero lactose.\n\nAgora é a parte boa. Escolha seu sabor: Cacau & Avelã, Baunilha & Macadâmia ou Caramelo & Flor de Sal.\n\n"+OFERTA,
+"Pote aberto com o scoop saindo, coqueteleira ao lado. Faixa inferior com preço R$ 199,90 e selo 33% OFF."],
+["R07","rotulo","frio","Laudos aprovados. Fórmula aberta.","Proteína vegetal com transparência do rótulo ao laudo.",["Laudos aprovados","25g de proteína"],"Ver detalhes","Proteína vegetal com laudo aprovado",
+"Na Strongest, qualidade não fica só no discurso: o Future Protein tem laudos aprovados e fórmula aberta no site.\n\n25g de proteína por dose, blend de ervilha + arroz, vitaminas D e B12, zero lactose e sem açúcar adicionado.\n\n"+OFERTA,
+"Pote em fundo limpo com um selo estilo carimbo 'Laudo aprovado' sobreposto. Tipografia sóbria, visual de 'documento'."],
+["R08","rotulo","frio","Proteína vegetal com rótulo de proteína séria.","25g de proteína + 4,2g de BCAA em cada dose.",["Ervilha + arroz","Vit. D e B12"],"Conhecer","Rótulo de quem leva treino a sério",
+"Proteína vegetal não precisa ser fraca no rótulo.\n\nO Future Protein entrega 25g de proteína e 4,2g de BCAA por dose, com blend de ervilha isolada + arroz para um perfil de aminoácidos mais completo.\n\n"+OFERTA,
+"Pote em destaque, com os números 25g e 4,2g estilo 'placar' ao lado. Clima de academia ao fundo, desfocado."],
+["R09","rotulo","morno","Compare o rótulo. Depois compare o preço.","25g de proteína por cerca de R$ 8 a dose.",["~25 doses","800g"],"Fazer as contas","R$ 8 por dose de 25g de proteína",
+"Duas comparações que valem antes de escolher sua proteína:\n\n1. Quanto de proteína vem por dose? No Future Protein: 25g.\n2. Quanto custa cada dose? R$ 199,90 ÷ ~25 doses = cerca de R$ 8.\n\nE tudo isso sem lactose, sem glúten e sem soja.\n\n"+OFERTA,
+"Peça dividida em duas colunas: 'Rótulo' (25g) e 'Preço' (≈R$ 8/dose). Pote no centro unindo as duas."],
+["R10","rotulo","frio","B12 e vitamina D no rótulo.","Dois nutrientes que costumam faltar em dieta 100% vegetal.",["100% vegana","25g de proteína"],"Saiba mais","Proteína vegana com B12 e vitamina D",
+"Quem segue dieta vegana ou vegetariana sabe: a B12 é encontrada quase só em alimentos de origem animal.\n\nPor isso o Future Protein vem enriquecido com vitaminas D e B12, além de 25g de proteína vegetal completa por dose.\n\n"+OFERTA,
+"Pote com dois 'comprimidos' tipográficos flutuando: B12 e D. Folhas/ervilhas sutis no cenário. Paleta verde discreta sobre fundo escuro."],
+
+// ---------- SEU PEDIDO (6)
+["P01","pedido","rmk","Seu Future Protein está separado.","Finalize hoje: R$ 199,90 em até 3x sem juros.",["Frete grátis","15% cashback"],"Finalizar pedido","Seu pedido está te esperando",
+"Seu Future Protein 800g ficou separado no carrinho.\n\nFinalize agora com 33% OFF: de R$ 299,90 por R$ 199,90, em até 3x de R$ 66,63 sem juros. Ainda volta 15% de cashback para a próxima compra e o frete é grátis.",
+"Pote dentro de uma caixa de envio Strongest aberta, com etiqueta 'Seu pedido'. Visual de unboxing, luz quente."],
+["P02","pedido","frio","Seu pedido: 1 pote. 25 doses. 0 lactose.","Future Protein 800g. Proteína vegetal com sabor de verdade.",["R$ 199,90","3 sabores"],"Montar meu pedido","Seu pedido de proteína vegetal",
+"Resumo do seu próximo pedido:\n\n✔ 1 pote de Future Protein 800g\n✔ Cerca de 25 doses de 25g de proteína\n✔ 0 lactose, 0 glúten, 0 soja\n✔ Sabor à sua escolha\n\n"+OFERTA,
+"Arte em formato de checklist de pedido (estilo comanda estilizada, claramente gráfica). Cada item com check. Pote no rodapé."],
+["P03","pedido","frio","Pedido acima de R$ 99? Frete grátis.","O Future Protein já passa disso sozinho.",["Frete grátis","33% OFF"],"Pedir agora","Frete grátis no Future Protein",
+"Frete grátis em pedidos acima de R$ 99, e o Future Protein já resolve isso sozinho.\n\n25g de proteína vegetal por dose, zero lactose, sem açúcar adicionado e três sabores gourmet.\n\nDe R$ 299,90 por R$ 199,90 ou 3x de R$ 66,63 sem juros. 15% de cashback.",
+"Caminhão/caixa de entrega estilizado com o pote dentro. 'FRETE GRÁTIS' em tipografia grande. Sem mapa, sem prazos específicos."],
+["P04","pedido","rmk","Faltou só um clique.","E 15% do valor volta como cashback.",["R$ 199,90","3x sem juros"],"Comprar agora","Falta só um clique",
+"Seu Future Protein está a um clique.\n\nFinalizando hoje: R$ 199,90 (33% OFF), 3x de R$ 66,63 sem juros, frete grátis e 15% de cashback para usar na próxima compra.",
+"Botão 'Comprar' gigante desenhado na arte, com um cursor clicando. Pote ao lado. Visual de interface, simples."],
+["P05","pedido","frio","Primeira compra? 10% OFF.","Cadastre-se na Strongest e use no seu Future Protein.",["Primeira compra","Frete grátis"],"Me cadastrar","10% OFF na sua primeira compra",
+"Primeira vez na Strongest? Cadastre-se no site e ganhe 10% OFF na primeira compra.\n\nComece pelo Future Protein: 25g de proteína vegetal por dose, zero lactose e três sabores gourmet.\n\nFrete grátis acima de R$ 99 e 15% de cashback em toda compra.\n\n(Confirmar regra do cupom de primeira compra com a oferta de 33% antes de subir.)",
+"'10% OFF' enorme, pote ao lado, selo 'primeira compra'. Clima de boas-vindas, fundo claro."],
+["P06","pedido","morno","Monte seu pedido: Future Protein + Creatina.","A dupla que mais sai junto na Strongest.",["Frete grátis","15% cashback"],"Montar combo","Future Protein + Creatina",
+"Proteína para construir, creatina para render mais no treino.\n\nMonte seu pedido com Future Protein 800g (R$ 199,90) + Creatina Pura Monohidratada 300g (R$ 79,90). Frete grátis e 15% de cashback no pedido todo.",
+"Os dois potes lado a lado com um '+' entre eles. Preços individuais abaixo de cada um. Sem inventar preço de kit."],
+
+// ---------- ECONOMIA / CARRINHO (8)
+["E01","economia","rmk","R$ 100 a menos no seu Future Protein.","De R$ 299,90 por R$ 199,90.",["33% OFF","3x sem juros"],"Aproveitar","R$ 100 de desconto no Future Protein",
+"O Future Protein 800g está R$ 100 mais barato: de R$ 299,90 por R$ 199,90.\n\nSão 25g de proteína vegetal por dose, zero lactose e três sabores gourmet. Em até 3x de R$ 66,63 sem juros, com frete grátis e 15% de cashback.",
+"Preço antigo riscado em vermelho, preço novo gigante. Nota de R$ 100 estilizada 'voltando' para o bolso. Pote em destaque."],
+["E02","economia","rmk","R$ 8 por dose de 25g de proteína.","Menos que um lanche na rua.",["~25 doses","800g"],"Comprar agora","Proteína vegetal por R$ 8 a dose",
+"Faça a conta: R$ 199,90 ÷ ~25 doses = cerca de R$ 8 por dose.\n\nCada dose entrega 25g de proteína vegetal, 4,2g de BCAA, vitaminas D e B12. Sem lactose, sem glúten, sem soja.\n\nAinda dá para parcelar em 3x sem juros e ganhar 15% de cashback.",
+"Comparativo visual: um lanche de rua com preço x scoop do Future Protein com 'R$ 8'. Tom leve e bem-humorado."],
+["E03","economia","rmk","33% OFF + 15% de cashback.","Paga R$ 199,90 e ganha R$ 29,98 para a próxima compra.",["Frete grátis","3x sem juros"],"Garantir o meu","Desconto agora, cashback depois",
+"Dois descontos em uma compra:\n\n1. 33% OFF agora: Future Protein de R$ 299,90 por R$ 199,90\n2. 15% de cashback: R$ 29,98 de volta para a próxima compra\n\nFrete grátis e 3x sem juros.",
+"Duas 'etiquetas' de desconto empilhadas (33% e 15%). Pote em primeiro plano. Cores fortes de oferta, sem poluir."],
+["E04","economia","rmk","3x de R$ 66,63. Sem juros.","Cerca de 25 dias de proteína vegetal.",["Frete grátis","15% cashback"],"Parcelar agora","Future Protein em 3x sem juros",
+"Cabe no mês: Future Protein 800g em 3x de R$ 66,63 sem juros.\n\nO pote rende cerca de 25 doses, quase um mês de suplementação com 25g de proteína vegetal por dia.",
+"Três 'parcelas' desenhadas como blocos de calendário com R$ 66,63. Pote ao lado."],
+["E05","economia","rmk","O carrinho ainda está aí.","E os 33% OFF também.",["R$ 199,90","Frete grátis"],"Voltar ao carrinho","Seu desconto continua valendo",
+"Você deixou o Future Protein no carrinho, e o desconto de 33% continua valendo.\n\nDe R$ 299,90 por R$ 199,90, em até 3x sem juros, com frete grátis e 15% de cashback.\n\n(Usar apenas enquanto a oferta estiver ativa.)",
+"Carrinho de compras estilizado com o pote dentro. Etiqueta '33% OFF' pendurada no carrinho."],
+["E06","economia","frio","Proteína premium. Preço que cabe.","R$ 199,90 por 800g, cerca de 25 doses.",["33% OFF","3 sabores"],"Ver oferta","Proteína vegetal premium por R$ 199,90",
+"Blend de ervilha isolada + arroz, vitaminas D e B12, 25g de proteína por dose e sabores gourmet.\n\nTudo isso de R$ 299,90 por R$ 199,90, em 3x de R$ 66,63 sem juros.\n\nFrete grátis acima de R$ 99 e 15% de cashback.",
+"Pote em fotografia de produto premium (luz de estúdio, sombra suave). Preço discreto mas legível no rodapé."],
+["E07","economia","rmk","Economize na proteína, não no sabor.","Cacau & Avelã · Baunilha & Macadâmia · Caramelo & Flor de Sal",["R$ 199,90","33% OFF"],"Escolher sabor","Os 3 sabores com 33% OFF",
+"Desconto não significa abrir mão de sabor.\n\nOs três sabores do Future Protein estão por R$ 199,90 (de R$ 299,90):\n🍫 Cacau & Avelã\n🍦 Baunilha & Macadâmia\n🍮 Caramelo & Flor de Sal\n\n3x sem juros, frete grátis e 15% de cashback.",
+"Os três sabores lado a lado com os ingredientes (cacau, avelã, baunilha, macadâmia, caramelo, flor de sal) ao redor. Preço único no topo."],
+["E08","economia","rmk","R$ 199,90 hoje. R$ 29,98 de volta depois.","Sua próxima compra já sai mais barata.",["15% cashback","Frete grátis"],"Comprar e ganhar","Cashback de 15% no Future Protein",
+"Na Strongest, toda compra devolve 15% em cashback.\n\nNo Future Protein (R$ 199,90), isso dá R$ 29,98 para usar na próxima compra, seja outro pote, creatina ou pré-treino.\n\n3x sem juros e frete grátis.",
+"Fluxo visual: pote → seta → moeda de 'R$ 29,98' voltando. Tipografia de conta simples."],
+
+// ---------- FÓRMULA COMPLETA (8)
+["F01","formula","frio","Ervilha + arroz = proteína completa.","Os aminoácidos de um completam os do outro.",["25g de proteína","4,2g de BCAA"],"Entender a fórmula","Por que ervilha + arroz",
+"Uma proteína vegetal de fonte única deixa lacunas no perfil de aminoácidos. Por isso o Future Protein combina duas.\n\nProteína isolada de ervilha + proteína de arroz: uma cobre o que falta na outra, e o resultado é um blend vegetal completo com 25g de proteína por dose.\n\n"+OFERTA,
+"Equação visual: ervilha + grão de arroz = pote do Future Protein. Fotografia real dos ingredientes, fundo limpo."],
+["F02","formula","frio","Uma fonte deixa lacunas. Duas fecham a conta.","Blend de proteína isolada de ervilha e proteína de arroz.",["100% vegana","Vit. D e B12"],"Conhecer o blend","Blend vegetal completo",
+"Nenhuma proteína vegetal sozinha tem tudo. A combinação certa tem.\n\nNo Future Protein, ervilha e arroz se complementam para formar um perfil de aminoácidos mais completo do que qualquer uma delas isolada.\n\n25g de proteína por dose, sem lactose, sem glúten, sem soja.\n\n"+OFERTA,
+"Duas peças de quebra-cabeça (ervilha e arroz) se encaixando, formando o pote. Visual didático e limpo."],
+["F03","formula","frio","Fórmula feita para quem treina.","25g de proteína + 4,2g de BCAA por dose.",["Pós-treino","Massa magra"],"Ver a fórmula","Proteína vegetal para quem treina",
+"Treino pede proteína de qualidade e em quantidade.\n\nO Future Protein entrega 25g de proteína e 4,2g de BCAA por dose, com blend de ervilha + arroz para ajudar a construir e manter massa muscular magra.\n\n"+OFERTA,
+"Pessoa treinando (anilha/halter) em segundo plano, pote em primeiro plano com '25g + 4,2g BCAA'. Sem antes/depois de corpo."],
+["F04","formula","morno","Muita proteína. Pouco do resto.","25g proteína · 3g carbo · 1,5g gordura",["Fórmula equilibrada","Sem açúcar adicionado"],"Ver detalhes","Equilíbrio em cada dose",
+"Equilíbrio é isso: proteína no alto, o resto lá embaixo.\n\nCada dose do Future Protein tem 25g de proteína, 3g de carboidratos e 1,5g de gordura. Sem açúcar adicionado, sem lactose.\n\n"+OFERTA,
+"Gráfico de barras simples: barra alta 'proteína 25g', barras baixas 'carbo 3g' e 'gordura 1,5g'. Pote ao lado."],
+["F05","formula","frio","Nutrição completa. Origem 100% vegetal.","Proteína, BCAA e vitaminas D e B12 no mesmo scoop.",["Vegano","Sem lactose"],"Saiba mais","Nutrição completa, 100% vegetal",
+"Um scoop, nutrição completa:\n\n▪ 25g de proteína vegetal (ervilha + arroz)\n▪ 4,2g de BCAA\n▪ Vitaminas D e B12\n\nIdeal para quem é vegano, vegetariano ou só quer reduzir proteína animal no dia a dia.\n\n"+OFERTA,
+"Scoop em close com ícones minimalistas saindo dele (proteína, BCAA, D, B12). Fundo verde muito escuro."],
+["F06","formula","frio","Proteína isolada de ervilha. Sabe o que isso muda?","Mais proteína por scoop, menos do que você não precisa.",["25g por dose","78% proteína"],"Descobrir","Por que proteína isolada",
+"'Isolada' quer dizer que a proteína foi separada do resto do grão. Na prática: mais proteína em cada scoop.\n\nNo Future Protein, a ervilha isolada se junta à proteína de arroz para entregar 25g de proteína em uma dose de 32g.\n\n"+OFERTA,
+"Ervilhas em close com uma 'lupa' gráfica mostrando o pó de proteína. Visual de laboratório limpo."],
+["F07","formula","morno","Massa magra também se constrói com planta.","25g de proteína vegetal completa por dose.",["Ervilha + arroz","4,2g de BCAA"],"Quero construir","Massa magra com proteína vegetal",
+"Proteína vegetal também constrói músculo, quando a fórmula é completa.\n\nO Future Protein combina ervilha isolada e arroz para entregar 25g de proteína e 4,2g de BCAA por dose, ajudando a construir e manter massa muscular magra.\n\n"+OFERTA,
+"Folha/broto crescendo e se transformando num halter (ilustração ou composição). Pote em destaque. Sem corpo antes/depois."],
+["F08","formula","frio","4 linhas na tabela. Todas importam.","Proteína 25g · BCAA 4,2g · Carbo 3g · Gordura 1,5g",["Fórmula aberta","100% vegana"],"Ver tabela","A tabela do Future Protein",
+"A tabela do Future Protein cabe em quatro linhas, e cada uma tem motivo de estar ali:\n\nProteína 25g, para o músculo.\nBCAA 4,2g, para o treino.\nCarbo 3g, para não pesar.\nGordura 1,5g, para ser leve.\n\n"+OFERTA,
+"Quatro linhas tipográficas grandes, cada uma com um ícone. Layout minimalista. Pote pequeno no canto."],
+
+// ---------- ÚLTIMAS UNIDADES / MAIS VENDIDO (7)
+["U01","ultimas","frio","Últimas unidades com 33% OFF.","Future Protein 800g por R$ 199,90 enquanto durar o estoque.",["Estoque limitado","3x sem juros"],"Garantir o meu","Últimas unidades com desconto",
+"Estoque acabando: o Future Protein 800g está nas últimas unidades com 33% OFF.\n\nDe R$ 299,90 por R$ 199,90, em 3x sem juros, frete grátis e 15% de cashback.\n\n(Subir apenas com estoque realmente baixo.)",
+"Prateleira com poucos potes restantes. Faixa 'ÚLTIMAS UNIDADES' em diagonal. Mesma linha visual do AD-IMG-FP-ULTIMAS-UNIDADES-V1."],
+["U02","ultimas","frio","Seu sabor favorito pode acabar.","Caramelo & Flor de Sal, Cacau & Avelã e Baunilha & Macadâmia com estoque limitado.",["33% OFF","R$ 199,90"],"Escolher sabor","Escolha seu sabor antes que acabe",
+"Os três sabores do Future Protein estão com estoque limitado:\n\n🍮 Caramelo & Flor de Sal\n🍫 Cacau & Avelã\n🍦 Baunilha & Macadâmia\n\nGaranta o seu por R$ 199,90 (33% OFF), em 3x sem juros.\n\n(Subir apenas com estoque realmente baixo.)",
+"Os três potes lado a lado, cada um com uma barra de 'estoque' quase vazia. Tom de urgência sem exagero."],
+["U03","ultimas","rmk","Ainda tem. Por pouco tempo.","O Future Protein que você viu está acabando.",["33% OFF","Frete grátis"],"Comprar agora","Ainda dá tempo",
+"O Future Protein que você olhou ainda está disponível, mas o estoque está no fim.\n\nR$ 199,90 em até 3x sem juros, frete grátis e 15% de cashback.\n\n(Subir apenas com estoque realmente baixo.)",
+"Ampulheta com areia quase no fim ao lado do pote. Fundo escuro, foco no produto."],
+["U04","ultimas","frio","O estoque está acabando. O desconto, ainda não.","De R$ 299,90 por R$ 199,90.",["Últimas unidades","3x sem juros"],"Aproveitar","Últimas unidades do Future Protein",
+"Poucas unidades do Future Protein 800g, ainda com 33% OFF.\n\n25g de proteína vegetal por dose, zero lactose, três sabores gourmet. 3x de R$ 66,63 sem juros, frete grátis e 15% de cashback.\n\n(Subir apenas com estoque realmente baixo.)",
+"Contraste de duas linhas: 'Estoque: acabando' (barra vazia) e 'Desconto: 33%' (selo cheio). Pote no centro."],
+["U05","ultimas","frio","O mais vendido da Strongest.","62 potes vendidos na última semana.",["Nº 1 da loja","33% OFF"],"Ver por quê","O nº 1 da Strongest",
+"Na última semana, o Future Protein 800g foi o produto mais vendido da Strongest: 62 potes.\n\nO motivo: 25g de proteína vegetal por dose, sabor de verdade e zero lactose.\n\n"+OFERTA,
+"Pote com coroa/medalha '#1'. Número '62' grande ao fundo. Atualizar o número antes de subir, se mudar."],
+["U06","ultimas","rmk","Garanta o seu antes da reposição.","Últimas unidades em 3x sem juros.",["R$ 199,90","15% cashback"],"Garantir agora","Antes que acabe",
+"O Future Protein está saindo rápido e o estoque atual está no fim.\n\nGaranta o seu agora por R$ 199,90, em até 3x de R$ 66,63 sem juros, com frete grátis.\n\n(Subir apenas com estoque realmente baixo.)",
+"Caixa de reposição vazia ao lado de um único pote. Etiqueta 'Últimas unidades'."],
+["U07","ultimas","frio","62 potes em 7 dias.","Quem prova, volta. Ainda dá tempo de garantir o seu.",["Mais vendido","Zero lactose"],"Quero o meu","62 potes vendidos em uma semana",
+"62 potes de Future Protein vendidos em uma semana.\n\nProteína vegetal com 25g por dose, textura lisa e três sabores gourmet: Cacau & Avelã, Baunilha & Macadâmia e Caramelo & Flor de Sal.\n\n"+OFERTA,
+"62 mini ícones de pote formando um grid; um deles colorido em destaque. Headline acima."],
+
+// ---------- DIGESTÃO LEVE / TROCA DO WHEY (9)
+["D01","digestao","frio","Proteína que não pesa no estômago.","100% vegetal, sem lactose e fácil de digerir.",["Zero lactose","Zero glúten"],"Experimentar","Leve no estômago",
+"Shake de proteína não precisa vir com estufamento.\n\nO Future Protein é 100% vegetal, sem lactose, sem glúten e sem soja, fácil de digerir e com 25g de proteína por dose.\n\n"+OFERTA,
+"Pessoa tomando shake com expressão leve, roupa de treino, luz natural. Pote em primeiro plano. Sem mostrar barriga/corpo."],
+["D02","digestao","frio","Trocou o whey e não sentiu falta.","25g de proteína vegetal com sabor de verdade.",["Sem lactose","3 sabores"],"Fazer a troca","A troca que vale a pena",
+"Muita gente troca o whey pelo Future Protein por causa da lactose, e fica pelo sabor.\n\n25g de proteína por dose, textura cremosa e três sabores gourmet. Sem lactose, sem glúten, sem soja.\n\n"+OFERTA,
+"Pote de 'whey' genérico (sem marca) saindo de cena e o Future Protein entrando. Seta de troca. Nunca mostrar marca concorrente."],
+["D03","digestao","frio","A proteína do seu shake, sem a lactose.","25g por dose, blend de ervilha e arroz.",["Zero lactose","4,2g de BCAA"],"Conhecer","Proteína em pó sem lactose",
+"Toda a proteína que você espera do seu shake, sem a lactose.\n\nO Future Protein entrega 25g de proteína e 4,2g de BCAA por dose, com blend vegetal de ervilha isolada + arroz.\n\n"+OFERTA,
+"Copo de leite riscado → copo de shake do Future Protein com check. Visual simples e direto."],
+["D04","digestao","frio","Leveza no pós-treino.","Proteína vegetal que cai bem e é fácil de digerir.",["100% vegetal","25g de proteína"],"Quero leveza","Pós-treino leve",
+"Terminou o treino, tomou o shake e seguiu o dia, sem sensação de peso.\n\nO Future Protein é 100% vegetal e sem lactose, com 25g de proteína por dose para o seu pós-treino.\n\n"+OFERTA,
+"Coqueteleira suada sobre banco de academia, toalha, luz da tarde. Pote ao lado. Clima leve, cores claras."],
+["D05","digestao","morno","Whey vegano existe. E é gostoso.","Future Protein: o 'whey' 100% vegetal da Strongest.",["Sem lactose","3 sabores"],"Provar","O whey vegano da Strongest",
+"Procurando whey vegano ou whey sem lactose? O Future Protein é a proteína em pó 100% vegetal da Strongest.\n\n25g de proteína por dose, vitaminas D e B12 e três sabores gourmet que não têm gosto de terra.\n\n"+OFERTA,
+"Palavra 'WHEY' riscada e 'VEGANO' escrito à mão por cima, pote ao lado. Tom bem-humorado."],
+["D06","digestao","frio","Treina pesado. Digere leve.","25g de proteína vegetal, zero lactose.",["4,2g de BCAA","Sem soja"],"Ver produto","Treina pesado, digere leve",
+"Treino pesado pede proteína de verdade, e o estômago agradece quando ela é leve.\n\nO Future Protein tem 25g de proteína e 4,2g de BCAA por dose, sem lactose, sem glúten e sem soja.\n\n"+OFERTA,
+"Arte dividida: metade 'TREINA PESADO' (anilha, tom escuro) e metade 'DIGERE LEVE' (shake, tom claro). Pote na divisão."],
+["D07","digestao","frio","Proteína sem desconforto depois.","Sem lactose, sem glúten, sem soja.",["Fácil de digerir","25g de proteína"],"Experimentar","Proteína sem desconforto",
+"Sua proteína deveria ajudar o treino, e não atrapalhar o resto do dia.\n\nO Future Protein é feito de ervilha e arroz, sem lactose, sem glúten e sem soja. Leve no estômago, com 25g de proteína por dose.\n\n"+OFERTA,
+"Lista de 'sem' com ícones riscados (leite, trigo, soja). Pote em destaque. Fundo claro."],
+["D08","digestao","rmk","Hora de trocar de proteína.","25g por dose, sem lactose e sem glúten.",["33% OFF","15% cashback"],"Trocar agora","Sua próxima proteína",
+"Se você estava pensando em trocar de proteína, a hora é agora.\n\nFuture Protein 800g: 25g de proteína vegetal por dose, sem lactose, sem glúten, com sabor de verdade.\n\n"+OFERTA,
+"Relógio/calendário marcando 'hoje' ao lado do pote. Selo 33% OFF."],
+["D09","digestao","frio","Whey comum × Future Protein","Mesma missão: proteína. Diferença: o que vem junto.",["Comparativo"],"Comparar","Whey comum ou Future Protein?",
+"Comparando lado a lado:\n\nLactose: whey comum pode ter / Future Protein: zero\nOrigem: animal / 100% vegetal\nProteína por dose: varia / 25g\nVitaminas D e B12: nem sempre / sim\n\n"+OFERTA,
+"Tabela comparativa em 2 colunas (genérico sem marca × Future Protein), checks verdes do lado Future Protein. Não citar marca concorrente."],
+
+// ---------- SHAKE DA NOITE / ROTINA REAL (6)
+["N01","rotina","frio","Shake da noite sem culpa.","25g de proteína, 3g de carbo e sem açúcar adicionado.",["Cacau & Avelã","Zero lactose"],"Quero o meu","O shake da noite",
+"Bateu aquela vontade de doce à noite? Troque por um shake de Future Protein.\n\n25g de proteína, 3g de carboidratos e sem açúcar adicionado, com sabor de sobremesa.\n\n"+OFERTA,
+"Cena noturna: cozinha com luz baixa, copo de shake de chocolate, pote ao lado. Mesma linha do MATRIZ2109-FP-SHAKENOITE."],
+["N02","rotina","frio","Sobremesa às 22h? Cacau & Avelã.","Proteína com gosto de doce, sem açúcar adicionado.",["25g de proteína","Sem lactose"],"Provar o sabor","Sobremesa com 25g de proteína",
+"Cacau & Avelã à noite, sem peso na consciência.\n\nO Future Protein tem 25g de proteína por dose, sem açúcar adicionado e sem lactose. Tem também Baunilha & Macadâmia e Caramelo & Flor de Sal.\n\n"+OFERTA,
+"Relógio marcando 22:00, taça com shake cremoso de chocolate e avelãs. Pote sabor Cacau & Avelã em destaque."],
+["N03","rotina","frio","Pós-treino. Lanche da tarde. Receita fit.","Um pote, três momentos do dia.",["25g de proteína","3 sabores"],"Ver ideias","Um pote, três usos",
+"O Future Protein vai além da coqueteleira:\n\n▪ Pós-treino: 1 scoop + 200ml de água ou leite vegetal\n▪ Lanche da tarde: batido com fruta\n▪ Receitas fit: panqueca, mingau, bolo de caneca\n\n25g de proteína vegetal por dose.\n\n"+OFERTA,
+"Três quadros (manhã/tarde/noite ou treino/lanche/receita) com o pote presente nos três."],
+["N04","rotina","morno","1 scoop + 200ml. Pronto.","Água, leite vegetal ou a bebida que você preferir.",["25g de proteína","Textura lisa"],"Comprar","Proteína pronta em segundos",
+"Rotina real não tem tempo a perder: 1 scoop (32g) em 200ml de água, leite vegetal ou a bebida que você preferir. Agita e pronto.\n\n25g de proteína vegetal, textura lisa e sabor de verdade.\n\n"+OFERTA,
+"Passo a passo em 3 ícones (scoop → líquido → agitar). Coqueteleira e pote no final."],
+["N05","rotina","frio","Proteína para quem não tem tempo.","Uma coqueteleira, 25g de proteína.",["Prático","Zero lactose"],"Quero praticidade","Proteína prática para a rotina",
+"Trabalho, treino, casa, e a proteína do dia ficando para depois?\n\nCom o Future Protein é uma coqueteleira e 25g de proteína vegetal. Sem lactose, sem açúcar adicionado, com sabor de sobremesa.\n\n"+OFERTA,
+"Mesa de trabalho bagunçada (notebook, agenda) com coqueteleira e pote no meio. Vida real, sem cenário perfeito. Linha do IMG-FP-ROTINA-VIDAREAL."],
+["N06","rotina","frio","Seu dia tem espaço para 25g de proteína.","Café da manhã, pós-treino ou ceia.",["Vegano","3 sabores"],"Encaixar na rotina","25g de proteína em qualquer hora",
+"Não importa a hora: o Future Protein encaixa no café da manhã, no pós-treino ou na ceia.\n\n25g de proteína vegetal por dose, vitaminas D e B12, zero lactose.\n\n"+OFERTA,
+"Linha do tempo de um dia (manhã → noite) com o scoop aparecendo em três horários. Pote na ponta."],
+
+// ---------- PROTEÍNA LIMPA / SABOR (6)
+["L01","limpa","frio","Proteína limpa. Sabor de verdade.","Sem lactose, sem glúten, sem soja e sem açúcar adicionado.",["25g de proteína","100% vegana"],"Provar","Proteína limpa e gostosa",
+"Proteína limpa costuma ter fama de sem graça. O Future Protein mudou isso.\n\nBlend de ervilha + arroz, 25g de proteína por dose, sem lactose, sem glúten, sem soja e sem açúcar adicionado, em três sabores gourmet.\n\n"+OFERTA,
+"Pote em fundo branco minimalista, ingredientes naturais ao redor. Linha estética do UGC-RAFA-PROTEINALIMPA (pode usar frame de depoimento estático)."],
+["L02","limpa","frio","Adeus, gosto de terra.","Proteína vegetal com textura lisa e sabor gourmet.",["3 sabores","Zero lactose"],"Provar o sabor","Proteína vegetal sem gosto de terra",
+"Se proteína vegetal para você lembra gosto de terra, é porque você ainda não provou o Future Protein.\n\nTextura lisa, sem resíduo, em Cacau & Avelã, Baunilha & Macadâmia e Caramelo & Flor de Sal.\n\n"+OFERTA,
+"Torrão de terra riscado ao lado de um shake cremoso. Tom bem-humorado, cores vivas."],
+["L03","limpa","frio","Caramelo & Flor de Sal. E é proteína.","25g de proteína vegetal com sabor de sobremesa.",["Sem açúcar adicionado","Zero lactose"],"Quero esse sabor","Caramelo & Flor de Sal com 25g de proteína",
+"Parece sobremesa, mas é proteína: Future Protein Caramelo & Flor de Sal.\n\n25g de proteína vegetal por dose, sem açúcar adicionado e sem lactose. Textura cremosa, sem gosto residual.\n\n"+OFERTA,
+"Close do pote sabor Caramelo & Flor de Sal, calda de caramelo escorrendo e cristais de sal. Fotografia apetitosa."],
+["L04","limpa","frio","Vegano, vegetariano ou não.","Proteína limpa para todo mundo que treina.",["Para todos","25g de proteína"],"Conhecer","Proteína vegetal para todo mundo",
+"Você não precisa ser vegano para escolher o Future Protein.\n\nMuita gente escolhe pelo sabor, por evitar lactose ou por querer reduzir proteína animal. O resultado é o mesmo: 25g de proteína vegetal completa por dose.\n\n"+OFERTA,
+"Três pessoas diferentes (perfis variados) cada uma com seu shake. Pote no centro. Tom inclusivo."],
+["L05","limpa","morno","Ingredientes que você reconhece.","Ervilha. Arroz. Vitaminas D e B12.",["Fórmula limpa","Zero soja"],"Ver ingredientes","Ingredientes de verdade",
+"Proteína limpa começa no ingrediente.\n\nNo Future Protein: proteína isolada de ervilha, proteína de arroz e vitaminas D e B12. Sem lactose, sem glúten, sem soja e sem açúcar adicionado.\n\n"+OFERTA,
+"Flat lay com ervilhas, arroz e o pote, organizados em grid limpo. Legendas finas apontando cada ingrediente."],
+["L06","limpa","frio","Proteína vegetal pode (e deve) ser deliciosa.","3 sabores gourmet. Zero lactose.",["Cacau & Avelã","Baunilha & Macadâmia","Caramelo & Flor de Sal"],"Escolher sabor","Proteína vegetal deliciosa",
+"Abrir mão de origem animal não significa abrir mão de sabor.\n\nO Future Protein tem três sabores gourmet, textura cremosa e 25g de proteína por dose, com blend de ervilha + arroz.\n\n"+OFERTA,
+"Os três potes em escada, com os ingredientes de cada sabor. Headline em tipografia grande no topo."]
+];
+
+const DATA = C.map(r=>({id:r[0],tema:r[1],aud:r[2],hl:r[3],sub:r[4],selos:r[5],cta:r[6],titulo:r[7],texto:r[8],visual:r[9]}));
+DATA.forEach(d=>d.code=`AD-IMG-FP-${THEMES[d.tema].code}-${d.id}`);
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmtRoas=n=>n.toFixed(2).replace(".",",")+"×";
+const store={get(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let done=store.get("fp-done",{});
+let fTema="all", fAud="all", q="";
+
+// tabela de temas
+const maxR=Math.max(...Object.values(THEMES).map(t=>t.roas));
+$("#themes tbody").innerHTML=Object.entries(THEMES).map(([k,t])=>{
+  const n=DATA.filter(d=>d.tema===k).length;
+  return `<tr><td><b>${esc(t.name)}</b><span class="bar" style="width:${(t.roas/maxR*100).toFixed(0)}%"></span></td><td class="ref">${esc(t.src)}</td><td class="num roas">${fmtRoas(t.roas)}</td><td class="num">${n}</td></tr>`}).join("")
+  +`<tr><td colspan="3"><b>Total</b></td><td class="num"><b>${DATA.length}</b></td></tr>`;
+
+// chips
+function chipRow(el,items,cur,onPick){
+  el.innerHTML=items.map(([k,l])=>`<button type="button" class="chip" data-k="${k}" aria-pressed="${k===cur}">${esc(l)}</button>`).join("");
+  el.onclick=e=>{const b=e.target.closest(".chip");if(!b)return;onPick(b.dataset.k)};
+}
+function renderChips(){
+  chipRow($("#themeChips"),[["all","Todos os temas"],...Object.entries(THEMES).map(([k,t])=>[k,`${t.name} · ${fmtRoas(t.roas)}`])],fTema,k=>{fTema=k;renderChips();render()});
+  chipRow($("#audChips"),[["all","Todos os públicos"],...Object.entries(AUD)],fAud,k=>{fAud=k;renderChips();render()});
+}
+
+function brief(d){
+  const t=THEMES[d.tema];
+  return [`[${d.id}] Nome do anúncio: ${d.code}`,`Tema: ${t.name} (ref.: ${t.src} · ROAS ${fmtRoas(t.roas)})`,`Público: ${AUD[d.aud]}`,`Formatos: 4:5 (1080×1350) + 1:1 (1080×1080)`,``,
+  `TEXTO NA ARTE`,`Headline: ${d.hl}`,`Apoio: ${d.sub}`,`Selos: ${d.selos.join(" | ")}`,`Botão na arte: ${d.cta}`,``,
+  `DIREÇÃO VISUAL`,d.visual,``,`NO GERENCIADOR (META)`,`Título: ${d.titulo}`,`Texto principal:`,d.texto,`Link: https://strongest.com.br/products/future-protein-800g`].join("\n");
+}
+function adText(d){return `${d.texto}\n\nTítulo: ${d.titulo}`}
+
+function list(){
+  const s=q.trim().toLowerCase();
+  return DATA.filter(d=>(fTema==="all"||d.tema===fTema)&&(fAud==="all"||d.aud===fAud)&&(!s||brief(d).toLowerCase().includes(s)));
+}
+function render(){
+  const L=list();
+  const nd=DATA.filter(d=>done[d.id]).length;
+  $("#count").textContent=`${L.length} de ${DATA.length} copys · ${nd} demandas abertas`;
+  $("#cards").innerHTML=L.map(d=>{const t=THEMES[d.tema];return `
+  <article class="card${done[d.id]?" done":""}" id="c-${d.id}">
+    <div class="card-head"><span class="id">${d.id}</span><span class="tag">${esc(t.name)}</span><span class="tag ${d.aud}">${esc(AUD[d.aud])}</span></div>
+    <div class="art" aria-label="Texto da arte">
+      <div class="hl">${esc(d.hl)}</div>
+      <div class="sub">${esc(d.sub)}</div>
+      <div class="selos">${d.selos.map(x=>`<span class="selo">${esc(x)}</span>`).join("")}</div>
+      <span class="cta">${esc(d.cta)}</span>
+    </div>
+    <div class="body">
+      <div><div class="lbl">Direção visual</div><div class="vis">${esc(d.visual)}</div></div>
+      <div><div class="lbl">Título do anúncio</div><div><b>${esc(d.titulo)}</b></div></div>
+      <div><div class="lbl">Texto principal</div><div class="txt">${esc(d.texto)}</div></div>
+      <div class="ref">${esc(d.code)} · ref. ${esc(t.src)} · ROAS ${fmtRoas(t.roas)}</div>
+    </div>
+    <div class="foot">
+      <button class="btn primary" type="button" data-act="brief" data-id="${d.id}">Copiar briefing</button>
+      <button class="btn" type="button" data-act="ad" data-id="${d.id}">Copiar texto do anúncio</button>
+      <label><input type="checkbox" id="done-${d.id}" data-id="${d.id}" ${done[d.id]?"checked":""}> Demanda aberta</label>
+    </div>
+  </article>`}).join("") || `<p class="lede">Nenhuma copy com esse filtro. Limpe a busca ou escolha "Todos os temas".</p>`;
+}
+
+let tt;
+function toast(m){const el=$("#toast");el.textContent=m;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,1800)}
+function copy(text,msg){
+  const fallback=()=>{const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand("copy")}catch(e){}ta.remove();toast(ok?msg:"Não foi possível copiar. Selecione o texto no cartão.")};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>toast(msg),fallback)}else fallback();
+}
+$("#cards").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-act]");if(!b)return;
+  const d=DATA.find(x=>x.id===b.dataset.id);
+  if(b.dataset.act==="brief")copy(brief(d),`Briefing ${d.id} copiado`);else copy(adText(d),`Texto do anúncio ${d.id} copiado`);
+});
+$("#cards").addEventListener("change",e=>{
+  const c=e.target;if(!c.matches("input[type=checkbox]"))return;
+  if(c.checked)done[c.dataset.id]=1;else delete done[c.dataset.id];
+  store.set("fp-done",done);render();
+});
+$("#q").addEventListener("input",e=>{q=e.target.value;render()});
+$("#copyAll").addEventListener("click",()=>{const L=list();copy(L.map(brief).join("\n\n————————————\n\n"),`${L.length} briefings copiados`)});
+renderChips();render();
+</script>

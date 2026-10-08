@@ -20,7 +20,7 @@ Como parceiro prescritor Strongest, você recebe:
 ✅ cupom exclusivo com 10% de desconto para os seus pacientes;
 ✅ 10% de comissão sobre as vendas feitas com o seu cupom;
 ✅ 30% de desconto nas suas compras;
-✅ kit degustação no início da parceria, para conhecer os produtos na prática;
+✅ kit degustação para conhecer os produtos na prática (sujeito à análise do cadastro);
 ✅ mimos exclusivos ao longo da parceria;
 ✅ participação em gamificações com bônus em dinheiro ou produtos.
 
@@ -100,9 +100,9 @@ Seus dados são de uso interno da Strongest Supplements e não serão compartilh
   - Placeholder: Ex: DRAANA, NUTRIJOAO, PEDROPERSONAL
   - Descrição: Use apenas letras e números, sem espaços. Se o nome já estiver em uso, nosso time te sugere uma alternativa.
 
-### Envio do kit degustação
+### Endereço para envio
 
-**Texto:** Logo no início da parceria você recebe um kit degustação para conhecer nossos produtos na prática. Informe o endereço onde prefere receber (pode ser o seu consultório!). 📦
+**Texto:** Após a análise do seu cadastro, você pode ser selecionado(a) para receber um kit degustação e conhecer nossos produtos na prática. Por isso, já deixe aqui o endereço onde prefere receber (pode ser o seu consultório!). 📦
 
 - **CEP** * — número
 - **Endereço completo** * — texto longo
@@ -143,8 +143,8 @@ Seus dados são de uso interno da Strongest Supplements e não serão compartilh
 
 Que alegria ter você com a gente! Recebemos suas informações e agora o seu cadastro passa por uma análise do nosso time.
 
-Em breve, nosso time comercial vai entrar em contato pelo WhatsApp para dar o retorno e organizar o envio do seu kit degustação. 📦
+Em breve, nosso time comercial vai entrar em contato pelo WhatsApp para dar o retorno sobre a parceria e alinhar os próximos passos, incluindo o envio do kit degustação, quando aplicável. 📦
 
 Fique de olho no seu WhatsApp e até logo! 💪
 
-**Importante:** preencher este cadastro não garante a aprovação da parceria. Cada cadastro é analisado individualmente, incluindo a validação do registro profissional no conselho.
+**Importante:** preencher este cadastro não garante a aprovação da parceria nem o envio do kit degustação. Cada cadastro é analisado individualmente, incluindo a validação do registro profissional no conselho.

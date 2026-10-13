@@ -1,0 +1,422 @@
+<title>Liga Black Friday Strongest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: deck 16:9, um slide por vez no desktop; no celular os slides empilham e rolam.
+   Visual único escuro de propósito (Black Friday), com metais do pódio como cores de posição. */
+:root{
+  --bg:#0f0e0d;
+  --surface:#1a1816;
+  --surface-2:#232019;
+  --ink:#f4efe8;
+  --muted:#a69c90;
+  --line:#33302b;
+  --accent:#ff5a1f;
+  --accent-soft:#3a1d10;
+  --gold:#e9b949;
+  --silver:#c8ccd4;
+  --bronze:#c98552;
+  --fourth:#8fa3b8;
+  --money:#5fd08a;
+  --display:"Big Shoulders Display","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Manrope","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+
+/* ---------- palco ---------- */
+.stage{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-inline:16px;padding-block:16px}
+.deck{position:relative;width:min(100%, calc((100vh - 110px) * 16 / 9));aspect-ratio:16/9;max-width:100%}
+.slide{position:absolute;inset:0;container-type:size;background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;display:none;padding:5cqh 5.5cqw;flex-direction:column;gap:2cqh}
+.slide.is-active{display:flex;animation:enter .35s ease-out}
+@keyframes enter{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.slide.is-active{animation:none}}
+
+/* tipografia em unidades do slide */
+.eyebrow{font-family:var(--mono);font-size:clamp(11px,1.15cqw,22px);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0}
+.h1{font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.88;letter-spacing:.005em;margin:0;text-wrap:balance}
+.h2{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(30px,5.2cqw,104px);line-height:.92;margin:0;text-wrap:balance}
+.lead{font-size:clamp(15px,1.7cqw,32px);color:var(--muted);max-width:60ch;margin:0;line-height:1.45}
+.lead strong{color:var(--ink);font-weight:700}
+.small{font-size:clamp(13px,1.3cqw,24px)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.head{display:flex;flex-direction:column;gap:1.2cqh}
+.body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+.foot{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;font-family:var(--mono);font-size:clamp(10px,1cqw,18px);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+
+/* ---------- capa ---------- */
+.cover{background:
+  repeating-linear-gradient(135deg, transparent 0 22px, rgba(255,255,255,.018) 22px 23px),
+  var(--surface)}
+.cover .h1{font-size:clamp(52px,12.5cqw,250px)}
+.cover .h1 .bf{color:var(--accent);display:block}
+.cover .tag{display:inline-flex;gap:.6em;align-items:center;font-family:var(--mono);font-size:clamp(11px,1.2cqw,22px);text-transform:uppercase;letter-spacing:.1em;border:1px solid var(--line);padding:.5em .9em;border-radius:3px;color:var(--ink);background:var(--surface-2)}
+.cover .tag i{width:.6em;height:.6em;border-radius:50%;background:var(--accent);display:inline-block}
+.cover-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:4cqw;align-items:end;flex:1}
+.cover-side{display:flex;flex-direction:column;gap:2cqh;border-left:2px solid var(--accent);padding-left:2cqw}
+
+/* ---------- visão geral ---------- */
+.fronts{display:grid;grid-template-columns:repeat(3,1fr);gap:2cqw}
+.front{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:3cqh 2cqw;display:flex;flex-direction:column;gap:1.4cqh;min-width:0}
+.front .kind{font-family:var(--mono);font-size:clamp(10px,1cqw,18px);text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.front h3{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(24px,3.2cqw,64px);line-height:.95;margin:0}
+.front p{margin:0;font-size:clamp(14px,1.45cqw,28px);color:var(--muted);line-height:1.4}
+.front p strong{color:var(--ink)}
+.front .who{margin-top:auto;padding-top:1.4cqh;border-top:1px solid var(--line);font-size:clamp(13px,1.3cqw,24px)}
+.front .who b{color:var(--accent)}
+
+/* ---------- pódio ---------- */
+.podium{display:grid;grid-template-columns:1fr 1.08fr 1fr .9fr;gap:1.4cqw;align-items:end;height:100%}
+.place{display:flex;flex-direction:column;min-width:0}
+.place .prizes{display:flex;flex-direction:column;gap:.8cqh;padding:0 0 1.6cqh}
+.chip{display:block;font-size:clamp(13px,1.35cqw,26px);font-weight:500;padding:.45em .7em;border-radius:3px;background:var(--surface-2);border:1px solid var(--line);line-height:1.2}
+.chip.new{border-color:var(--fourth);color:var(--ink)}
+.chip small{display:block;color:var(--muted);font-size:.78em;font-weight:400;margin-top:.15em}
+.block{border-radius:4px 4px 0 0;display:flex;flex-direction:column;justify-content:flex-start;padding:1.6cqh 1.2cqw;color:var(--bg)}
+.block .pos{font-family:var(--display);font-weight:900;font-size:clamp(40px,6cqw,120px);line-height:.85}
+.block .lbl{font-family:var(--mono);font-size:clamp(10px,1cqw,18px);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+.p1 .block{background:var(--gold);height:31cqh}
+.p2 .block{background:var(--silver);height:25cqh}
+.p3 .block{background:var(--bronze);height:20cqh}
+.p4 .block{background:var(--fourth);height:16cqh}
+
+/* ---------- produziu ---------- */
+.split{display:grid;grid-template-columns:1.1fr 1fr;gap:4cqw;align-items:center;height:100%}
+.top3{display:flex;flex-direction:column;gap:1.4cqh}
+.top3 .row{display:grid;grid-template-columns:auto 1fr;gap:1.6cqw;align-items:center;background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:1.8cqh 1.6cqw}
+.top3 .n{font-family:var(--display);font-weight:900;font-size:clamp(30px,4.2cqw,84px);line-height:.9;color:var(--accent);min-width:1.4em}
+.top3 .row div{font-size:clamp(14px,1.5cqw,28px);line-height:1.3}
+.top3 .row div span{display:block;color:var(--muted);font-size:.8em}
+.plus{font-family:var(--display);font-weight:900;color:var(--muted);font-size:clamp(20px,2.4cqw,48px);text-align:center;line-height:1}
+
+/* ---------- bateu, ganhou ---------- */
+.big-rule{display:flex;align-items:baseline;gap:2cqw;flex-wrap:wrap}
+.big-rule .v{font-family:var(--display);font-weight:900;font-size:clamp(44px,7cqw,140px);line-height:.85}
+.big-rule .v.pix{color:var(--money)}
+.big-rule .arrow{font-family:var(--display);font-size:clamp(28px,4.5cqw,90px);color:var(--muted)}
+.ladder{width:100%;border-collapse:collapse;font-size:clamp(13px,1.45cqw,28px)}
+.ladder th{font-family:var(--mono);font-size:.62em;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:left;font-weight:500;padding:0 0 .8cqh;border-bottom:1px solid var(--line)}
+.ladder td{padding:1cqh 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.ladder td.r,.ladder th.r{text-align:right}
+.ladder td.pix{color:var(--money);font-weight:700}
+.ladder tr.note td{color:var(--muted)}
+.meter{display:flex;gap:3px;height:.7em;align-items:stretch}
+.meter i{flex:1;background:var(--money);border-radius:1px}
+.meter i.off{background:var(--line)}
+
+/* ---------- resumo ---------- */
+.tbl-wrap{overflow-x:auto;min-width:0}
+.summary{width:100%;border-collapse:collapse;font-size:clamp(13px,1.4cqw,27px)}
+.summary th{font-family:var(--mono);font-size:.62em;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:left;font-weight:500;padding:0 1.2cqw 1cqh 0;border-bottom:1px solid var(--line)}
+.summary td{padding:1.5cqh 1.2cqw 1.5cqh 0;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.35}
+.summary td:first-child{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:1.3em;line-height:1;white-space:nowrap}
+.summary td .m{color:var(--muted);font-size:.85em}
+.dot{display:inline-block;width:.65em;height:.65em;border-radius:2px;margin-right:.35em;vertical-align:.05em}
+
+/* ---------- validar ---------- */
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:1.6cqh 3cqw;margin:0;padding:0;list-style:none}
+.checks li{display:grid;grid-template-columns:auto 1fr;gap:1.2cqw;align-items:start;padding-bottom:1.6cqh;border-bottom:1px solid var(--line);min-width:0}
+.checks .box{width:clamp(14px,1.6cqw,30px);aspect-ratio:1;border:2px solid var(--accent);border-radius:3px;margin-top:.2em}
+.checks b{display:block;font-size:clamp(14px,1.55cqw,30px);line-height:1.25}
+.checks span{display:block;color:var(--muted);font-size:clamp(12px,1.25cqw,24px);line-height:1.35;margin-top:.3em}
+
+/* ---------- fechamento ---------- */
+.closing .h1{font-size:clamp(46px,10cqw,200px)}
+.closing .h1 em{font-style:normal;color:var(--accent)}
+
+/* ---------- controles ---------- */
+.controls{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:13px;color:var(--muted);width:min(100%, calc((100vh - 110px) * 16 / 9))}
+.controls button{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:8px 14px;cursor:pointer}
+.controls button:hover{border-color:var(--accent)}
+.controls button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.controls button:disabled{opacity:.35;cursor:default}
+.progress{flex:1;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.count{font-variant-numeric:tabular-nums;min-width:4.5em;text-align:right}
+.hint{opacity:.7}
+
+/* ---------- celular: slides empilhados ---------- */
+@media (max-width:760px), (max-aspect-ratio:1/1){
+  html,body{height:auto}
+  .stage{height:auto;display:block;padding-block:16px}
+  .deck{width:100%;aspect-ratio:auto;display:flex;flex-direction:column;gap:16px}
+  .slide{position:relative;inset:auto;display:flex;container-type:inline-size;padding:28px 20px;gap:20px}
+  .slide.is-active{animation:none}
+  .controls{display:none}
+  .cover-grid,.fronts,.split,.checks{grid-template-columns:1fr}
+  .podium{grid-template-columns:1fr 1fr;align-items:stretch;gap:12px}
+  .p1{order:1}.p2{order:2}.p3{order:3}.p4{order:4}
+  .place{flex-direction:column-reverse;justify-content:flex-end}
+  .place .prizes{padding:10px 0 0}
+  .p1 .block,.p2 .block,.p3 .block,.p4 .block{height:auto;border-radius:4px}
+  .body{justify-content:flex-start}
+  .head{gap:10px}
+  .top3 .row,.front{padding:14px}
+  .checks li{gap:12px;padding-bottom:12px}
+}
+@media (max-width:420px){ .podium{grid-template-columns:1fr} }
+</style>
+
+<div class="stage">
+  <div class="deck" id="deck" aria-live="polite">
+
+    <!-- 1. Capa -->
+    <section class="slide cover is-active" id="s1" aria-label="Capa">
+      <p class="eyebrow">Strongest Supplements · Programa de Creators</p>
+      <div class="cover-grid">
+        <h1 class="h1">Liga <span class="bf">Black Friday</span></h1>
+        <div class="cover-side">
+          <p class="lead"><strong>Gamificação de creators com foco total em vendas na Black Friday.</strong> Três frentes de premiação para puxar o topo do ranking, a produção de conteúdo e a meta individual de cada creator.</p>
+          <span class="tag"><i></i>Proposta para a diretoria</span>
+        </div>
+      </div>
+      <div class="foot"><span>Together We Are Stronger</span><span>Black Friday 2026</span></div>
+    </section>
+
+    <!-- 2. Visão geral -->
+    <section class="slide" id="s2" aria-label="Visão geral">
+      <div class="head">
+        <p class="eyebrow">Visão geral</p>
+        <h2 class="h2">Três jeitos de ganhar</h2>
+        <p class="lead">Cada frente premia um comportamento diferente. Juntas, elas mantêm todos os creators jogando: quem disputa o topo, quem produz muito e quem bate meta.</p>
+      </div>
+      <div class="body">
+        <div class="fronts">
+          <article class="front">
+            <span class="kind">Frente 1 · Ranking de vendas</span>
+            <h3>Pódio Strong</h3>
+            <p>Os <strong>4 creators que mais venderem</strong> sobem ao pódio. Cada posição tem seu kit de prêmios.</p>
+            <div class="who">Premia <b>quem lidera em vendas</b></div>
+          </article>
+          <article class="front">
+            <span class="kind">Frente 2 · Produção de conteúdo</span>
+            <h3>Produziu? É seu</h3>
+            <p>Os <strong>3 creators que mais produzirem conteúdo</strong> levam energy drink e voucher em produtos.</p>
+            <div class="who">Premia <b>volume e constância</b></div>
+          </article>
+          <article class="front">
+            <span class="kind">Frente 3 · Meta individual</span>
+            <h3>Bateu, ganhou</h3>
+            <p>A <strong>cada R$ 2.500 em vendas, R$ 300 no Pix</strong>. Sem limite e sem disputa com outros creators.</p>
+            <div class="who">Premia <b>todo creator que vende</b></div>
+          </article>
+        </div>
+      </div>
+      <div class="foot"><span>Liga Black Friday</span><span>02</span></div>
+    </section>
+
+    <!-- 3. Pódio -->
+    <section class="slide" id="s3" aria-label="Frente 1: Pódio Strong">
+      <div class="head">
+        <p class="eyebrow">Frente 1 · Ranking de vendas</p>
+        <h2 class="h2">Pódio Strong</h2>
+      </div>
+      <div class="body">
+        <div class="podium">
+          <div class="place p2">
+            <div class="prizes">
+              <span class="chip">Garrafa térmica</span>
+              <span class="chip">Ecobag</span>
+              <span class="chip">Mixer</span>
+            </div>
+            <div class="block"><span class="pos">2º</span><span class="lbl">3 prêmios</span></div>
+          </div>
+          <div class="place p1">
+            <div class="prizes">
+              <span class="chip">Pipoqueira</span>
+              <span class="chip">Garrafa térmica</span>
+              <span class="chip">Ecobag</span>
+              <span class="chip">Mixer</span>
+            </div>
+            <div class="block"><span class="pos">1º</span><span class="lbl">4 prêmios</span></div>
+          </div>
+          <div class="place p3">
+            <div class="prizes">
+              <span class="chip">Ecobag</span>
+              <span class="chip">Mixer</span>
+            </div>
+            <div class="block"><span class="pos">3º</span><span class="lbl">2 prêmios</span></div>
+          </div>
+          <div class="place p4">
+            <div class="prizes">
+              <span class="chip">Ecobag</span>
+              <span class="chip new">Kit lançamentos<small>Palatinose, Glutamina e Force Hair</small></span>
+            </div>
+            <div class="block"><span class="pos">4º</span><span class="lbl">Ecobag + kit</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="foot"><span>Ranking pelo valor vendido por cada creator no período da campanha</span><span>03</span></div>
+    </section>
+
+    <!-- 4. Produziu? É seu -->
+    <section class="slide" id="s4" aria-label="Frente 2: Produziu? É seu">
+      <div class="split">
+        <div class="head">
+          <p class="eyebrow">Frente 2 · Produção de conteúdo</p>
+          <h2 class="h2">Produziu?<br>É seu.</h2>
+          <p class="lead">Venda na Black Friday depende de presença. Esta frente recompensa quem <strong>mais publica sobre a Strongest</strong> durante a campanha, independente do volume vendido.</p>
+        </div>
+        <div class="top3">
+          <div class="row"><span class="n">Top 3</span><div>Os 3 creators que mais produzirem conteúdo levam:</div></div>
+          <div class="row"><span class="n mono" style="font-family:var(--display)">6</span><div>Latas de Strong Fit Energy Drink<span>Sabor à escolha do creator</span></div></div>
+          <div class="plus">+</div>
+          <div class="row"><span class="n">R$100</span><div>Voucher em produtos Strongest<span>Para usar no site</span></div></div>
+        </div>
+      </div>
+      <div class="foot"><span>Liga Black Friday</span><span>04</span></div>
+    </section>
+
+    <!-- 5. Bateu, ganhou -->
+    <section class="slide" id="s5" aria-label="Frente 3: Bateu, ganhou">
+      <div class="head">
+        <p class="eyebrow">Frente 3 · Meta individual</p>
+        <h2 class="h2">Bateu, ganhou</h2>
+      </div>
+      <div class="body">
+        <div class="split" style="height:auto">
+          <div style="display:flex;flex-direction:column;gap:2.4cqh">
+            <div class="big-rule">
+              <span class="v mono" style="font-family:var(--display)">R$ 2.500</span>
+              <span class="arrow">→</span>
+              <span class="v pix" style="font-family:var(--display)">R$ 300</span>
+            </div>
+            <p class="lead"><strong>Cumulativo:</strong> a cada R$ 2.500 vendidos, o creator leva mais R$ 300 no Pix. Não há teto e não há disputa entre creators.</p>
+            <p class="lead small">Pagamento via Pix em <strong class="mono">10/11</strong>.</p>
+          </div>
+          <div class="tbl-wrap">
+            <table class="ladder">
+              <thead><tr><th>Vendas do creator</th><th>Faixas</th><th class="r">Pix</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">R$ 2.500</td><td><div class="meter"><i></i><i class="off"></i><i class="off"></i><i class="off"></i></div></td><td class="r pix mono">R$ 300</td></tr>
+                <tr><td class="mono">R$ 5.000</td><td><div class="meter"><i></i><i></i><i class="off"></i><i class="off"></i></div></td><td class="r pix mono">R$ 600</td></tr>
+                <tr><td class="mono">R$ 7.500</td><td><div class="meter"><i></i><i></i><i></i><i class="off"></i></div></td><td class="r pix mono">R$ 900</td></tr>
+                <tr><td class="mono">R$ 10.000</td><td><div class="meter"><i></i><i></i><i></i><i></i></div></td><td class="r pix mono">R$ 1.200</td></tr>
+                <tr class="note"><td class="mono">R$ 4.900</td><td class="small">1 faixa completa</td><td class="r mono">R$ 300</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="foot"><span>Custo da frente: R$ 300 a cada R$ 2.500 vendidos, ou 12% da venda gerada</span><span>05</span></div>
+    </section>
+
+    <!-- 6. Resumo -->
+    <section class="slide" id="s6" aria-label="Resumo da premiação">
+      <div class="head">
+        <p class="eyebrow">Resumo</p>
+        <h2 class="h2">Premiação completa</h2>
+      </div>
+      <div class="body">
+        <div class="tbl-wrap">
+          <table class="summary">
+            <thead><tr><th>Frente</th><th>Quem ganha</th><th>Prêmio</th><th>Critério</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Pódio Strong</td>
+                <td><span class="dot" style="background:var(--gold)"></span>1º<br><span class="dot" style="background:var(--silver)"></span>2º<br><span class="dot" style="background:var(--bronze)"></span>3º<br><span class="dot" style="background:var(--fourth)"></span>4º</td>
+                <td>Pipoqueira + garrafa térmica + ecobag + mixer<br>Garrafa térmica + ecobag + mixer<br>Ecobag + mixer<br>Ecobag + Palatinose, Glutamina e Force Hair</td>
+                <td class="m">Maior valor em vendas</td>
+              </tr>
+              <tr>
+                <td>Produziu? É seu</td>
+                <td>Top 3</td>
+                <td>6 latas de Strong Fit Energy Drink (sabor à escolha) + voucher de R$ 100 em produtos</td>
+                <td class="m">Maior produção de conteúdo</td>
+              </tr>
+              <tr>
+                <td>Bateu, ganhou</td>
+                <td>Todos que baterem a meta</td>
+                <td>R$ 300 no Pix a cada R$ 2.500 vendidos, cumulativo</td>
+                <td class="m">Faixas de R$ 2.500 · Pix em 10/11</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="foot"><span>Liga Black Friday</span><span>06</span></div>
+    </section>
+
+    <!-- 7. Pontos para validar -->
+    <section class="slide" id="s7" aria-label="Pontos para validar">
+      <div class="head">
+        <p class="eyebrow">Para decidir antes do lançamento</p>
+        <h2 class="h2">Pontos para validar</h2>
+        <p class="lead">As regras e os prêmios estão definidos. Estes detalhes operacionais precisam de resposta para o regulamento que vai aos creators.</p>
+      </div>
+      <div class="body">
+        <ul class="checks">
+          <li><span class="box"></span><div><b>Período de apuração</b><span>Datas de início e fim que valem para as três frentes.</span></div></li>
+          <li><span class="box"></span><div><b>Data do Pix (10/11)</b><span>A Black Friday cai em 27/11. Confirmar se o Pix de 10/11 fecha uma fase de esquenta ou se a data é 10/12.</span></div></li>
+          <li><span class="box"></span><div><b>Como medir venda</b><span>Pedidos com o cupom ou link do creator; valor bruto ou líquido; pedidos cancelados ou devolvidos saem da conta?</span></div></li>
+          <li><span class="box"></span><div><b>O que conta como conteúdo</b><span>Formatos válidos (Reels, Stories, TikTok, posts), marcação obrigatória e como a produção é contada.</span></div></li>
+          <li><span class="box"></span><div><b>Prêmios acumulam?</b><span>Um mesmo creator pode ganhar no Pódio, no Produziu? É seu e no Bateu, ganhou?</span></div></li>
+          <li><span class="box"></span><div><b>Critério de desempate</b><span>Para empate no ranking de vendas e no de conteúdo.</span></div></li>
+        </ul>
+      </div>
+      <div class="foot"><span>Liga Black Friday</span><span>07</span></div>
+    </section>
+
+    <!-- 8. Fechamento -->
+    <section class="slide closing cover" id="s8" aria-label="Fechamento">
+      <p class="eyebrow">Liga Black Friday Strongest</p>
+      <div class="body">
+        <h2 class="h1">Juntos somos <em>mais fortes.</em></h2>
+      </div>
+      <div class="cover-side" style="max-width:62cqw">
+        <p class="lead"><strong>Próximo passo:</strong> aprovar a proposta, responder os pontos de validação e publicar o regulamento para os creators.</p>
+      </div>
+      <div class="foot" style="margin-top:3cqh"><span>Together We Are Stronger</span><span>08</span></div>
+    </section>
+
+  </div>
+
+  <nav class="controls" aria-label="Navegação dos slides">
+    <button type="button" id="prev" aria-label="Slide anterior">←</button>
+    <button type="button" id="next" aria-label="Próximo slide">→</button>
+    <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+    <span class="hint">setas do teclado</span>
+    <span class="count" id="count">1 / 8</span>
+    <button type="button" id="fs" aria-label="Tela cheia">Tela cheia</button>
+  </nav>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0;
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var bar = document.getElementById('bar'), count = document.getElementById('count');
+
+  function show(n){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function(s, k){ s.classList.toggle('is-active', k === i); });
+    prev.disabled = i === 0;
+    next.disabled = i === slides.length - 1;
+    bar.style.width = ((i + 1) / slides.length * 100) + '%';
+    count.textContent = (i + 1) + ' / ' + slides.length;
+    try { history.replaceState(null, '', '#' + slides[i].id); } catch (e) {}
+  }
+
+  prev.addEventListener('click', function(){ show(i - 1); });
+  next.addEventListener('click', function(){ show(i + 1); });
+  document.addEventListener('keydown', function(e){
+    if (['ArrowRight','PageDown',' '].indexOf(e.key) > -1) { e.preventDefault(); show(i + 1); }
+    else if (['ArrowLeft','PageUp'].indexOf(e.key) > -1) { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+  });
+  document.getElementById('fs').addEventListener('click', function(){
+    var el = document.documentElement;
+    if (document.fullscreenElement) { document.exitFullscreen().catch(function(){}); }
+    else if (el.requestFullscreen) { el.requestFullscreen().catch(function(){}); }
+  });
+
+  var start = slides.findIndex(function(s){ return '#' + s.id === location.hash; });
+  show(start > -1 ? start : 0);
+})();
+</script>

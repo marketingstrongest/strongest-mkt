@@ -1,141 +1,156 @@
 <title>Liga Black Friday Strongest</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Montserrat:wght@400;500;600;700;800&display=swap">
 <style>
-/* Layout: deck 16:9, um slide por vez no desktop; no celular os slides empilham e rolam.
-   Visual único escuro de propósito (Black Friday), com metais do pódio como cores de posição. */
+/* Identidade Strongest (manual de marca): preto institucional, paleta vermelho/amarelo/lima/verde,
+   Bungee para chamadas curtas, Gotham para o resto (Montserrat como substituta web), pattern do "S" em contorno.
+   Layout: deck 16:9, um slide por vez no desktop; no celular os slides empilham. Visual único escuro de propósito. */
 :root{
-  --bg:#0f0e0d;
-  --surface:#1a1816;
-  --surface-2:#232019;
-  --ink:#f4efe8;
-  --muted:#a69c90;
-  --line:#33302b;
-  --accent:#ff5a1f;
-  --accent-soft:#3a1d10;
-  --gold:#e9b949;
-  --silver:#c8ccd4;
-  --bronze:#c98552;
-  --fourth:#8fa3b8;
-  --money:#5fd08a;
-  --display:"Big Shoulders Display","Arial Narrow","Helvetica Neue",Arial,sans-serif;
-  --body:"Manrope","Segoe UI",system-ui,-apple-system,sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --black:#000000;
+  --surface:#0b0b0b;
+  --card:#141414;
+  --line:#333333;
+  --ink:#ffffff;
+  --soft:#cccccc;
+  --muted:#999999;
+  --red:#e70029;
+  --yellow:#f4ea4f;
+  --lime:#bdd42f;
+  --green:#53b448;
+  --title:"Bungee","Arial Black",Impact,sans-serif;
+  --body:"Gotham","Montserrat","Segoe UI",system-ui,-apple-system,sans-serif;
   color-scheme:dark;
 }
 html,body{height:100%}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{background:var(--black);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
 *{box-sizing:border-box}
 
 /* ---------- palco ---------- */
 .stage{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-inline:16px;padding-block:16px}
 .deck{position:relative;width:min(100%, calc((100vh - 110px) * 16 / 9));aspect-ratio:16/9;max-width:100%}
-.slide{position:absolute;inset:0;container-type:size;background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;display:none;padding:5cqh 5.5cqw;flex-direction:column;gap:2cqh}
+.slide{position:absolute;inset:0;container-type:size;background:var(--surface);border:1px solid var(--line);overflow:hidden;display:none;padding:5cqh 5.5cqw;flex-direction:column;gap:2cqh;isolation:isolate}
 .slide.is-active{display:flex;animation:enter .35s ease-out}
 @keyframes enter{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.slide.is-active{animation:none}}
 
-/* tipografia em unidades do slide */
-.eyebrow{font-family:var(--mono);font-size:clamp(11px,1.15cqw,22px);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0}
-.h1{font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.88;letter-spacing:.005em;margin:0;text-wrap:balance}
-.h2{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(30px,5.2cqw,104px);line-height:.92;margin:0;text-wrap:balance}
-.lead{font-size:clamp(15px,1.7cqw,32px);color:var(--muted);max-width:60ch;margin:0;line-height:1.45}
+/* pattern do S em contorno, atrás do conteúdo */
+.pattern{position:absolute;inset:0;z-index:-1;color:#262626;pointer-events:none;overflow:hidden}
+.pattern svg{position:absolute}
+
+/* cabeçalho de marca, como no manual */
+.brandbar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brandbar .sec{font-size:clamp(9px,.95cqw,17px);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:.25em}
+.brandbar .doc{font-size:clamp(9px,.95cqw,17px);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.logo{display:block;color:var(--ink)}
+.logo-sm{width:clamp(80px,9cqw,170px);aspect-ratio:180.3/30.4}
+
+/* tipografia */
+.eyebrow{font-size:clamp(10px,1.1cqw,20px);letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:700;margin:0}
+.h2{font-family:var(--title);font-weight:400;font-size:clamp(26px,4.4cqw,88px);line-height:1;margin:0;text-wrap:balance;text-transform:uppercase}
+.lead{font-size:clamp(14px,1.65cqw,31px);color:var(--soft);max-width:62ch;margin:0;line-height:1.45}
 .lead strong{color:var(--ink);font-weight:700}
-.small{font-size:clamp(13px,1.3cqw,24px)}
-.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.small{font-size:clamp(12px,1.3cqw,24px)}
+.num{font-variant-numeric:tabular-nums}
 .head{display:flex;flex-direction:column;gap:1.2cqh}
 .body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
-.foot{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;font-family:var(--mono);font-size:clamp(10px,1cqw,18px);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.foot{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;font-size:clamp(9px,.95cqw,17px);color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
 
 /* ---------- capa ---------- */
-.cover{background:
-  repeating-linear-gradient(135deg, transparent 0 22px, rgba(255,255,255,.018) 22px 23px),
-  var(--surface)}
-.cover .h1{font-size:clamp(52px,12.5cqw,250px)}
-.cover .h1 .bf{color:var(--accent);display:block}
-.cover .tag{display:inline-flex;gap:.6em;align-items:center;font-family:var(--mono);font-size:clamp(11px,1.2cqw,22px);text-transform:uppercase;letter-spacing:.1em;border:1px solid var(--line);padding:.5em .9em;border-radius:3px;color:var(--ink);background:var(--surface-2)}
-.cover .tag i{width:.6em;height:.6em;border-radius:50%;background:var(--accent);display:inline-block}
-.cover-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:4cqw;align-items:end;flex:1}
-.cover-side{display:flex;flex-direction:column;gap:2cqh;border-left:2px solid var(--accent);padding-left:2cqw}
+.cover{background:var(--black);justify-content:space-between}
+.cover .title{font-family:var(--title);font-size:clamp(46px,10.5cqw,210px);line-height:.92;margin:0;text-transform:uppercase}
+.cover .title span{display:block;color:var(--yellow)}
+.ribbon{align-self:flex-start;background:var(--red);color:var(--ink);font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:clamp(12px,1.7cqw,32px);padding:1.4cqh 4cqw 1.4cqh 3cqw;clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,2% 50%);margin-left:-5.5cqw;padding-left:5.5cqw}
+.cover-row{display:flex;justify-content:space-between;align-items:flex-end;gap:3cqw}
+.cover .lead{max-width:44ch}
 
 /* ---------- visão geral ---------- */
-.fronts{display:grid;grid-template-columns:repeat(3,1fr);gap:2cqw}
-.front{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:3cqh 2cqw;display:flex;flex-direction:column;gap:1.4cqh;min-width:0}
-.front .kind{font-family:var(--mono);font-size:clamp(10px,1cqw,18px);text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
-.front h3{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(24px,3.2cqw,64px);line-height:.95;margin:0}
-.front p{margin:0;font-size:clamp(14px,1.45cqw,28px);color:var(--muted);line-height:1.4}
+.fronts{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6cqw}
+.front{background:var(--card);border-top:.6cqh solid var(--c);padding:3cqh 2cqw;display:flex;flex-direction:column;gap:1.4cqh;min-width:0}
+.front .kind{font-size:clamp(9px,.95cqw,17px);text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600}
+.front h3{font-family:var(--title);font-weight:400;font-size:clamp(18px,2.3cqw,46px);line-height:1.05;margin:0;text-transform:uppercase}
+.front p{margin:0;font-size:clamp(13px,1.4cqw,27px);color:var(--soft);line-height:1.4}
 .front p strong{color:var(--ink)}
-.front .who{margin-top:auto;padding-top:1.4cqh;border-top:1px solid var(--line);font-size:clamp(13px,1.3cqw,24px)}
-.front .who b{color:var(--accent)}
+.front .who{margin-top:auto;padding-top:1.4cqh;border-top:1px solid var(--line);font-size:clamp(12px,1.25cqw,24px);color:var(--soft)}
+.front .who b{color:var(--c)}
 
 /* ---------- pódio ---------- */
-.podium{display:grid;grid-template-columns:1fr 1.08fr 1fr .9fr;gap:1.4cqw;align-items:end;height:100%}
+.podium{display:grid;grid-template-columns:1fr 1.08fr 1fr .95fr;gap:1.2cqw;align-items:end;height:100%}
 .place{display:flex;flex-direction:column;min-width:0}
-.place .prizes{display:flex;flex-direction:column;gap:.8cqh;padding:0 0 1.6cqh}
-.chip{display:block;font-size:clamp(13px,1.35cqw,26px);font-weight:500;padding:.45em .7em;border-radius:3px;background:var(--surface-2);border:1px solid var(--line);line-height:1.2}
-.chip.new{border-color:var(--fourth);color:var(--ink)}
-.chip small{display:block;color:var(--muted);font-size:.78em;font-weight:400;margin-top:.15em}
-.block{border-radius:4px 4px 0 0;display:flex;flex-direction:column;justify-content:flex-start;padding:1.6cqh 1.2cqw;color:var(--bg)}
-.block .pos{font-family:var(--display);font-weight:900;font-size:clamp(40px,6cqw,120px);line-height:.85}
-.block .lbl{font-family:var(--mono);font-size:clamp(10px,1cqw,18px);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
-.p1 .block{background:var(--gold);height:31cqh}
-.p2 .block{background:var(--silver);height:25cqh}
-.p3 .block{background:var(--bronze);height:20cqh}
-.p4 .block{background:var(--fourth);height:16cqh}
+.place .prizes{display:flex;flex-direction:column;gap:.7cqh;padding:0 0 1.4cqh}
+.chip{display:block;font-size:clamp(12px,1.3cqw,25px);font-weight:600;padding:.45em .7em;background:var(--card);border-left:3px solid var(--c);line-height:1.2}
+.chip small{display:block;color:var(--muted);font-size:.78em;font-weight:500;margin-top:.15em}
+.block{display:flex;flex-direction:column;justify-content:flex-start;padding:1.6cqh 1.2cqw;background:var(--c);color:var(--black)}
+.block .pos{font-family:var(--title);font-size:clamp(34px,5.2cqw,104px);line-height:.95}
+.block .lbl{font-size:clamp(9px,.95cqw,17px);font-weight:800;text-transform:uppercase;letter-spacing:.1em}
+.p1{--c:var(--yellow)} .p2{--c:var(--lime)} .p3{--c:var(--green)} .p4{--c:var(--red)}
+.p4 .block{color:var(--ink)}
+.p1 .block{height:30cqh}.p2 .block{height:24cqh}.p3 .block{height:19cqh}.p4 .block{height:15cqh}
 
 /* ---------- produziu ---------- */
 .split{display:grid;grid-template-columns:1.1fr 1fr;gap:4cqw;align-items:center;height:100%}
-.top3{display:flex;flex-direction:column;gap:1.4cqh}
-.top3 .row{display:grid;grid-template-columns:auto 1fr;gap:1.6cqw;align-items:center;background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:1.8cqh 1.6cqw}
-.top3 .n{font-family:var(--display);font-weight:900;font-size:clamp(30px,4.2cqw,84px);line-height:.9;color:var(--accent);min-width:1.4em}
-.top3 .row div{font-size:clamp(14px,1.5cqw,28px);line-height:1.3}
-.top3 .row div span{display:block;color:var(--muted);font-size:.8em}
-.plus{font-family:var(--display);font-weight:900;color:var(--muted);font-size:clamp(20px,2.4cqw,48px);text-align:center;line-height:1}
+.top3{display:flex;flex-direction:column;gap:1.2cqh}
+.top3 .row{display:grid;grid-template-columns:10.5cqw 1fr;gap:1.6cqw;align-items:center;background:var(--card);padding:1.8cqh 1.6cqw}
+.top3 .n{font-family:var(--title);font-size:clamp(20px,2.4cqw,48px);white-space:nowrap;line-height:1;color:var(--lime)}
+.top3 .row div{font-size:clamp(13px,1.45cqw,27px);line-height:1.3;font-weight:600}
+.top3 .row div span{display:block;color:var(--muted);font-size:.82em;font-weight:500}
+.tag{display:inline-block;font-weight:700;color:var(--ink);background:var(--card);border:1px solid var(--line);padding:.15em .5em}
 
 /* ---------- bateu, ganhou ---------- */
-.big-rule{display:flex;align-items:baseline;gap:2cqw;flex-wrap:wrap}
-.big-rule .v{font-family:var(--display);font-weight:900;font-size:clamp(44px,7cqw,140px);line-height:.85}
-.big-rule .v.pix{color:var(--money)}
-.big-rule .arrow{font-family:var(--display);font-size:clamp(28px,4.5cqw,90px);color:var(--muted)}
+.big-rule{display:flex;align-items:center;gap:1.6cqw;flex-wrap:wrap}
+.big-rule .v{font-family:var(--title);font-size:clamp(34px,5.6cqw,112px);line-height:1}
+.big-rule .v.pix{color:var(--green)}
+.big-rule .arrow{font-family:var(--title);font-size:clamp(24px,3.4cqw,68px);color:var(--muted)}
 .ladder{width:100%;border-collapse:collapse;font-size:clamp(13px,1.45cqw,28px)}
-.ladder th{font-family:var(--mono);font-size:.62em;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:left;font-weight:500;padding:0 0 .8cqh;border-bottom:1px solid var(--line)}
-.ladder td{padding:1cqh 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.ladder th{font-size:.6em;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);text-align:left;font-weight:600;padding:0 0 .8cqh;border-bottom:1px solid var(--line)}
+.ladder td{padding:1cqh 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums;font-weight:600}
 .ladder td.r,.ladder th.r{text-align:right}
-.ladder td.pix{color:var(--money);font-weight:700}
-.ladder tr.note td{color:var(--muted)}
+.ladder td.pix{color:var(--green);font-weight:800}
+.ladder tr.note td{color:var(--muted);font-weight:500}
 .meter{display:flex;gap:3px;height:.7em;align-items:stretch}
-.meter i{flex:1;background:var(--money);border-radius:1px}
+.meter i{flex:1;background:var(--green)}
 .meter i.off{background:var(--line)}
+
+/* ---------- calendário ---------- */
+.timeline{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:1.6cqw;padding-top:4cqh}
+.timeline::before{content:"";position:absolute;left:0;right:0;top:1.3cqh;height:2px;background:var(--line)}
+.tl-range{position:absolute;top:calc(1.3cqh - 2px);left:0;width:calc(75% - 1.2cqw);height:6px;background:var(--red)}
+.step{position:relative;display:flex;flex-direction:column;gap:1cqh;min-width:0}
+.step::before{content:"";position:absolute;top:-4cqh;left:0;width:2.6cqh;height:2.6cqh;background:var(--c,var(--ink));transform:translateY(0)}
+.step .d{font-family:var(--title);font-size:clamp(24px,3.6cqw,72px);line-height:1;color:var(--c,var(--ink))}
+.step b{font-size:clamp(13px,1.5cqw,28px)}
+.step span{color:var(--soft);font-size:clamp(12px,1.25cqw,24px);line-height:1.35}
+
+/* ---------- regras ---------- */
+.rules{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2.4cqh 2.4cqw;margin:0;padding:0;list-style:none}
+.rules li{display:flex;flex-direction:column;gap:.8cqh;padding-top:1.6cqh;border-top:2px solid var(--line);min-width:0}
+.rules li:nth-child(1){border-color:var(--red)}
+.rules .k{font-size:clamp(9px,.95cqw,17px);text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700}
+.rules b{display:block;font-size:clamp(14px,1.55cqw,30px);line-height:1.25}
+.rules span{display:block;color:var(--soft);font-size:clamp(12px,1.25cqw,24px);line-height:1.4}
 
 /* ---------- resumo ---------- */
 .tbl-wrap{overflow-x:auto;min-width:0}
-.summary{width:100%;border-collapse:collapse;font-size:clamp(13px,1.4cqw,27px)}
-.summary th{font-family:var(--mono);font-size:.62em;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:left;font-weight:500;padding:0 1.2cqw 1cqh 0;border-bottom:1px solid var(--line)}
-.summary td{padding:1.5cqh 1.2cqw 1.5cqh 0;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.35}
-.summary td:first-child{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:1.3em;line-height:1;white-space:nowrap}
-.summary td .m{color:var(--muted);font-size:.85em}
-.dot{display:inline-block;width:.65em;height:.65em;border-radius:2px;margin-right:.35em;vertical-align:.05em}
-
-/* ---------- validar ---------- */
-.checks{display:grid;grid-template-columns:1fr 1fr;gap:1.6cqh 3cqw;margin:0;padding:0;list-style:none}
-.checks li{display:grid;grid-template-columns:auto 1fr;gap:1.2cqw;align-items:start;padding-bottom:1.6cqh;border-bottom:1px solid var(--line);min-width:0}
-.checks .box{width:clamp(14px,1.6cqw,30px);aspect-ratio:1;border:2px solid var(--accent);border-radius:3px;margin-top:.2em}
-.checks b{display:block;font-size:clamp(14px,1.55cqw,30px);line-height:1.25}
-.checks span{display:block;color:var(--muted);font-size:clamp(12px,1.25cqw,24px);line-height:1.35;margin-top:.3em}
+.summary{width:100%;border-collapse:collapse;font-size:clamp(12px,1.35cqw,26px)}
+.summary th{font-size:.62em;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);text-align:left;font-weight:600;padding:0 1.2cqw 1cqh 0;border-bottom:1px solid var(--line)}
+.summary td{padding:1.5cqh 1.2cqw 1.5cqh 0;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.4}
+.summary td:first-child{font-family:var(--title);font-size:1.05em;line-height:1.1;white-space:nowrap;text-transform:uppercase}
+.summary td .m{color:var(--soft)}
+.dot{display:inline-block;width:.65em;height:.65em;margin-right:.4em;vertical-align:.02em}
 
 /* ---------- fechamento ---------- */
-.closing .h1{font-size:clamp(46px,10cqw,200px)}
-.closing .h1 em{font-style:normal;color:var(--accent)}
+.closing{background:var(--black);justify-content:center;align-items:flex-start}
+.closing .title{font-family:var(--title);font-size:clamp(36px,7.4cqw,148px);line-height:1;margin:0;text-transform:uppercase}
+.closing .title span{color:var(--yellow)}
 
 /* ---------- controles ---------- */
-.controls{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:13px;color:var(--muted);width:min(100%, calc((100vh - 110px) * 16 / 9))}
-.controls button{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:8px 14px;cursor:pointer}
-.controls button:hover{border-color:var(--accent)}
-.controls button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.controls{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);width:min(100%, calc((100vh - 110px) * 16 / 9))}
+.controls button{font:inherit;font-weight:600;color:var(--ink);background:var(--card);border:1px solid var(--line);padding:8px 14px;cursor:pointer}
+.controls button:hover{border-color:var(--red)}
+.controls button:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
 .controls button:disabled{opacity:.35;cursor:default}
-.progress{flex:1;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
-.progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.progress{flex:1;height:3px;background:var(--line);overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--red);transition:width .25s}
 .count{font-variant-numeric:tabular-nums;min-width:4.5em;text-align:right}
 .hint{opacity:.7}
 
@@ -144,62 +159,79 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16p
   html,body{height:auto}
   .stage{height:auto;display:block;padding-block:16px}
   .deck{width:100%;aspect-ratio:auto;display:flex;flex-direction:column;gap:16px}
-  .slide{position:relative;inset:auto;display:flex;container-type:inline-size;padding:28px 20px;gap:20px}
+  .slide{position:relative;inset:auto;display:flex;container-type:inline-size;padding:24px 20px;gap:20px}
   .slide.is-active{animation:none}
   .controls{display:none}
-  .cover-grid,.fronts,.split,.checks{grid-template-columns:1fr}
+  .fronts,.split,.rules,.timeline{grid-template-columns:1fr}
+  .cover-row{flex-direction:column;align-items:flex-start}
+  .ribbon{margin-left:-20px;padding-left:20px}
   .podium{grid-template-columns:1fr 1fr;align-items:stretch;gap:12px}
   .p1{order:1}.p2{order:2}.p3{order:3}.p4{order:4}
   .place{flex-direction:column-reverse;justify-content:flex-end}
   .place .prizes{padding:10px 0 0}
-  .p1 .block,.p2 .block,.p3 .block,.p4 .block{height:auto;border-radius:4px}
+  .p1 .block,.p2 .block,.p3 .block,.p4 .block{height:auto}
   .body{justify-content:flex-start}
-  .head{gap:10px}
-  .top3 .row,.front{padding:14px}
-  .checks li{gap:12px;padding-bottom:12px}
+  .top3 .row{grid-template-columns:84px 1fr;padding:14px}
+  .front{padding:16px}
+  .timeline{padding-top:0;gap:18px}
+  .timeline::before,.tl-range{display:none}
+  .step{padding-left:22px}
+  .step::before{top:.35em;width:12px;height:12px}
 }
 @media (max-width:420px){ .podium{grid-template-columns:1fr} }
 </style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" fill="currentColor" viewBox="330.7 282.1 180.3 30.4"><path d="M 509.527344 288.9375 C 508.921875 288.9375 508.515625 288.511719 508.515625 287.875 C 508.515625 287.222656 508.914062 286.8125 509.527344 286.8125 C 510.136719 286.8125 510.535156 287.222656 510.535156 287.875 C 510.535156 288.511719 510.136719 288.9375 509.527344 288.9375 M 509.527344 288.761719 C 510.039062 288.761719 510.34375 288.429688 510.34375 287.875 C 510.34375 287.328125 510.046875 286.984375 509.527344 286.984375 C 509.003906 286.984375 508.703125 287.320312 508.703125 287.875 C 508.703125 288.429688 509.011719 288.761719 509.527344 288.761719 M 509.667969 288.28125 L 509.472656 288.003906 L 509.277344 288.003906 L 509.28125 288.4375 C 509.28125 288.46875 509.257812 288.492188 509.222656 288.492188 L 509.109375 288.492188 C 509.074219 288.492188 509.050781 288.46875 509.050781 288.4375 L 509.050781 287.304688 C 509.050781 287.269531 509.074219 287.246094 509.109375 287.246094 L 509.519531 287.246094 C 509.828125 287.246094 510.027344 287.375 510.027344 287.621094 C 510.027344 287.8125 509.917969 287.933594 509.730469 287.976562 L 510.027344 288.441406 C 510.039062 288.46875 510.027344 288.492188 510 288.492188 L 509.855469 288.492188 C 509.820312 288.492188 509.78125 288.472656 509.765625 288.441406 Z M 509.527344 287.417969 L 509.28125 287.417969 L 509.277344 287.824219 L 509.53125 287.824219 C 509.691406 287.824219 509.804688 287.769531 509.804688 287.628906 C 509.804688 287.488281 509.707031 287.417969 509.527344 287.417969"/><path d="M 387.652344 301.839844 C 387.125 301.839844 386.890625 301.609375 386.890625 301.089844 L 386.890625 298.644531 C 386.890625 298.125 387.125 297.894531 387.652344 297.894531 L 393.324219 297.894531 C 393.683594 297.894531 393.871094 297.625 393.871094 297.289062 C 393.871094 296.808594 393.683594 296.621094 393.324219 296.582031 L 390.160156 296.140625 C 388.179688 295.847656 386.890625 295.015625 386.890625 292.675781 L 386.890625 290.488281 C 386.890625 288.109375 388.515625 286.8125 391.257812 286.8125 L 397.164062 286.8125 C 397.691406 286.8125 397.921875 287.042969 397.921875 287.5625 L 397.921875 290.046875 C 397.921875 290.570312 397.691406 290.800781 397.164062 290.800781 L 392.25 290.800781 C 391.890625 290.800781 391.679688 291.050781 391.679688 291.425781 C 391.679688 291.800781 391.890625 292.050781 392.25 292.09375 L 395.390625 292.511719 C 397.375 292.804688 398.679688 293.636719 398.679688 295.976562 L 398.679688 298.167969 C 398.679688 300.546875 397.035156 301.839844 394.316406 301.839844 Z M 387.652344 301.839844"/><path d="M 403.726562 301.839844 C 403.199219 301.839844 402.964844 301.609375 402.964844 301.089844 L 402.964844 290.839844 L 399.867188 290.839844 C 399.339844 290.839844 399.105469 290.613281 399.105469 290.089844 L 399.105469 287.5625 C 399.105469 287.042969 399.339844 286.8125 399.867188 286.8125 L 411 286.8125 C 411.527344 286.8125 411.761719 287.042969 411.761719 287.5625 L 411.761719 290.089844 C 411.761719 290.613281 411.527344 290.839844 411 290.839844 L 407.902344 290.839844 L 407.902344 301.089844 C 407.902344 301.609375 407.667969 301.839844 407.140625 301.839844 Z M 403.726562 301.839844"/><path d="M 413.636719 301.839844 C 413.109375 301.839844 412.878906 301.609375 412.878906 301.089844 L 412.878906 287.5625 C 412.878906 287.042969 413.109375 286.8125 413.636719 286.8125 L 420.660156 286.8125 C 423.824219 286.8125 424.816406 288.234375 424.816406 290.300781 L 424.816406 291.257812 C 424.816406 292.425781 424.519531 293.261719 423.632812 293.636719 C 425.171875 293.804688 426.1875 294.910156 426.1875 296.664062 L 426.1875 301.089844 C 426.1875 301.609375 425.953125 301.839844 425.425781 301.839844 L 422.160156 301.839844 C 421.632812 301.839844 421.398438 301.609375 421.398438 301.089844 L 421.398438 297.894531 C 421.398438 297.269531 421.1875 296.996094 420.597656 296.996094 L 417.644531 296.996094 L 417.644531 301.089844 C 417.644531 301.609375 417.414062 301.839844 416.886719 301.839844 Z M 417.644531 293.242188 L 419.226562 293.242188 C 419.964844 293.242188 420.15625 292.824219 420.15625 292.261719 L 420.15625 291.550781 C 420.15625 290.988281 419.964844 290.570312 419.226562 290.570312 L 417.644531 290.570312 Z M 417.644531 293.242188"/><path d="M 433.902344 302.152344 C 428.628906 302.152344 427.34375 300.441406 427.34375 297.894531 L 427.34375 290.777344 C 427.34375 288.234375 428.628906 286.5 433.902344 286.5 C 439.171875 286.5 440.4375 288.234375 440.4375 290.777344 L 440.4375 297.894531 C 440.4375 300.441406 439.171875 302.152344 433.902344 302.152344 M 433.902344 298.125 C 435.441406 298.125 435.671875 297.707031 435.671875 297.144531 L 435.671875 291.53125 C 435.671875 290.988281 435.441406 290.570312 433.902344 290.570312 C 432.382812 290.570312 432.128906 290.988281 432.128906 291.53125 L 432.128906 297.144531 C 432.128906 297.707031 432.382812 298.125 433.902344 298.125"/><path d="M 442.660156 301.839844 C 442.132812 301.839844 441.902344 301.609375 441.902344 301.089844 L 441.902344 287.5625 C 441.902344 287.042969 442.132812 286.8125 442.660156 286.8125 L 444.855469 286.8125 C 445.402344 286.8125 445.742188 286.960938 446.097656 287.378906 L 450.191406 292.011719 L 450.191406 287.5625 C 450.191406 287.042969 450.421875 286.8125 450.949219 286.8125 L 454.113281 286.8125 C 454.640625 286.8125 454.871094 287.042969 454.871094 287.5625 L 454.871094 301.089844 C 454.871094 301.609375 454.640625 301.839844 454.113281 301.839844 L 450.949219 301.839844 C 450.421875 301.839844 450.191406 301.609375 450.191406 301.089844 L 450.191406 298.519531 L 446.582031 294.203125 L 446.582031 301.089844 C 446.582031 301.609375 446.351562 301.839844 445.824219 301.839844 Z M 442.660156 301.839844"/><path d="M 461.507812 301.839844 C 457.96875 301.839844 456.320312 300.484375 456.320312 297.582031 L 456.320312 291.070312 C 456.320312 288.171875 457.96875 286.8125 461.507812 286.8125 L 466.78125 286.8125 C 467.308594 286.8125 467.542969 287.042969 467.542969 287.5625 L 467.542969 290.089844 C 467.542969 290.613281 467.308594 290.839844 466.78125 290.839844 L 462.394531 290.839844 C 461.507812 290.839844 461.109375 291.175781 461.109375 291.886719 L 461.109375 296.871094 C 461.109375 297.582031 461.425781 297.894531 462.078125 297.894531 L 464.125 297.894531 L 464.125 294.640625 C 464.125 294.117188 464.355469 293.886719 464.882812 293.886719 L 468.152344 293.886719 C 468.679688 293.886719 468.910156 294.117188 468.910156 294.640625 L 468.910156 301.089844 C 468.910156 301.609375 468.679688 301.839844 468.152344 301.839844 Z M 461.507812 301.839844"/><path d="M 471.035156 301.839844 C 470.507812 301.839844 470.277344 301.609375 470.277344 301.089844 L 470.277344 287.5625 C 470.277344 287.042969 470.507812 286.8125 471.035156 286.8125 L 480.820312 286.8125 C 481.347656 286.8125 481.582031 287.042969 481.582031 287.5625 L 481.582031 290.007812 C 481.582031 290.527344 481.347656 290.757812 480.820312 290.757812 L 475 290.757812 L 475 292.363281 L 479.113281 292.363281 C 479.640625 292.363281 479.871094 292.59375 479.871094 293.117188 L 479.871094 295.347656 C 479.871094 295.871094 479.640625 296.101562 479.113281 296.101562 L 475 296.101562 L 475 297.894531 L 480.820312 297.894531 C 481.347656 297.894531 481.582031 298.125 481.582031 298.644531 L 481.582031 301.089844 C 481.582031 301.609375 481.347656 301.839844 480.820312 301.839844 Z M 471.035156 301.839844"/><path d="M 483.488281 301.839844 C 482.960938 301.839844 482.726562 301.609375 482.726562 301.089844 L 482.726562 298.644531 C 482.726562 298.125 482.960938 297.894531 483.488281 297.894531 L 489.160156 297.894531 C 489.519531 297.894531 489.707031 297.625 489.707031 297.289062 C 489.707031 296.808594 489.519531 296.621094 489.160156 296.582031 L 485.996094 296.140625 C 484.015625 295.847656 482.726562 295.015625 482.726562 292.675781 L 482.726562 290.488281 C 482.726562 288.109375 484.351562 286.8125 487.09375 286.8125 L 493 286.8125 C 493.527344 286.8125 493.757812 287.042969 493.757812 287.5625 L 493.757812 290.046875 C 493.757812 290.570312 493.527344 290.800781 493 290.800781 L 488.085938 290.800781 C 487.726562 290.800781 487.515625 291.050781 487.515625 291.425781 C 487.515625 291.800781 487.726562 292.050781 488.085938 292.09375 L 491.226562 292.511719 C 493.210938 292.804688 494.515625 293.636719 494.515625 295.976562 L 494.515625 298.167969 C 494.515625 300.546875 492.871094 301.839844 490.152344 301.839844 Z M 483.488281 301.839844"/><path d="M 499.5625 301.839844 C 499.035156 301.839844 498.804688 301.609375 498.804688 301.089844 L 498.804688 290.839844 L 495.703125 290.839844 C 495.175781 290.839844 494.945312 290.613281 494.945312 290.089844 L 494.945312 287.5625 C 494.945312 287.042969 495.175781 286.8125 495.703125 286.8125 L 506.839844 286.8125 C 507.363281 286.8125 507.597656 287.042969 507.597656 287.5625 L 507.597656 290.089844 C 507.597656 290.613281 507.363281 290.839844 506.839844 290.839844 L 503.738281 290.839844 L 503.738281 301.089844 C 503.738281 301.609375 503.507812 301.839844 502.980469 301.839844 Z M 499.5625 301.839844"/><path d="M 409.445312 309.804688 C 408.277344 309.804688 407.585938 309.25 407.539062 308.21875 C 407.539062 308.183594 407.566406 308.160156 407.597656 308.160156 L 408.113281 308.160156 C 408.144531 308.160156 408.171875 308.183594 408.179688 308.21875 C 408.238281 308.902344 408.566406 309.316406 409.464844 309.316406 C 410.144531 309.316406 410.628906 309.070312 410.628906 308.472656 C 410.628906 307.214844 407.632812 308.132812 407.632812 306.394531 C 407.632812 305.5625 408.304688 305.09375 409.320312 305.09375 C 410.375 305.09375 411.023438 305.53125 411.121094 306.46875 C 411.128906 306.5 411.101562 306.527344 411.070312 306.527344 L 410.550781 306.527344 C 410.519531 306.527344 410.492188 306.5 410.484375 306.46875 C 410.433594 305.882812 410.042969 305.589844 409.300781 305.589844 C 408.664062 305.589844 408.230469 305.824219 408.230469 306.335938 C 408.230469 307.507812 411.226562 306.609375 411.226562 308.394531 C 411.226562 309.332031 410.492188 309.804688 409.445312 309.804688"/><path d="M 417.164062 309.8125 C 416.023438 309.8125 415.453125 309.148438 415.453125 308.003906 L 415.460938 306.585938 L 415.441406 305.230469 C 415.441406 305.199219 415.46875 305.171875 415.5 305.171875 L 416.019531 305.171875 C 416.050781 305.171875 416.078125 305.199219 416.078125 305.230469 L 416.066406 306.570312 L 416.066406 308.003906 C 416.066406 308.777344 416.378906 309.296875 417.164062 309.296875 C 417.964844 309.296875 418.289062 308.777344 418.289062 308.003906 L 418.289062 306.585938 L 418.273438 305.230469 C 418.273438 305.199219 418.300781 305.171875 418.332031 305.171875 L 418.808594 305.171875 C 418.839844 305.171875 418.867188 305.199219 418.867188 305.230469 L 418.851562 306.585938 L 418.851562 308.003906 C 418.851562 309.148438 418.300781 309.8125 417.164062 309.8125"/><path d="M 424.859375 307.988281 L 423.902344 307.988281 L 423.914062 309.667969 C 423.914062 309.699219 423.886719 309.726562 423.855469 309.726562 L 423.339844 309.726562 C 423.308594 309.726562 423.28125 309.699219 423.28125 309.667969 L 423.308594 307.390625 L 423.28125 305.230469 C 423.28125 305.199219 423.308594 305.171875 423.339844 305.171875 L 424.847656 305.171875 C 425.859375 305.171875 426.484375 305.640625 426.484375 306.558594 C 426.484375 307.507812 425.839844 307.988281 424.859375 307.988281 M 423.894531 307.417969 L 423.894531 307.507812 L 424.894531 307.507812 C 425.484375 307.507812 425.886719 307.25 425.886719 306.570312 C 425.886719 305.945312 425.519531 305.65625 424.867188 305.65625 L 423.90625 305.65625 Z M 423.894531 307.417969"/><path d="M 432.222656 307.988281 L 431.265625 307.988281 L 431.277344 309.667969 C 431.277344 309.699219 431.25 309.726562 431.21875 309.726562 L 430.703125 309.726562 C 430.671875 309.726562 430.644531 309.699219 430.644531 309.667969 L 430.671875 307.390625 L 430.644531 305.230469 C 430.644531 305.199219 430.671875 305.171875 430.703125 305.171875 L 432.210938 305.171875 C 433.222656 305.171875 433.847656 305.640625 433.847656 306.558594 C 433.847656 307.507812 433.203125 307.988281 432.222656 307.988281 M 431.257812 307.417969 L 431.257812 307.507812 L 432.257812 307.507812 C 432.847656 307.507812 433.25 307.25 433.25 306.570312 C 433.25 305.945312 432.882812 305.65625 432.230469 305.65625 L 431.269531 305.65625 Z M 431.257812 307.417969"/><path d="M 438.070312 309.726562 C 438.039062 309.726562 438.011719 309.699219 438.011719 309.667969 L 438.039062 307.34375 L 438.011719 305.230469 C 438.011719 305.199219 438.039062 305.171875 438.070312 305.171875 L 438.578125 305.171875 C 438.609375 305.171875 438.636719 305.199219 438.636719 305.230469 L 438.617188 307.3125 L 438.636719 309.238281 L 440.667969 309.238281 C 440.703125 309.238281 440.726562 309.265625 440.726562 309.296875 L 440.726562 309.667969 C 440.726562 309.699219 440.703125 309.726562 440.667969 309.726562 Z M 438.070312 309.726562"/><path d="M 444.917969 309.726562 C 444.882812 309.726562 444.859375 309.699219 444.859375 309.667969 L 444.882812 307.378906 L 444.859375 305.230469 C 444.859375 305.199219 444.882812 305.171875 444.917969 305.171875 L 447.695312 305.171875 C 447.730469 305.171875 447.757812 305.199219 447.757812 305.230469 L 447.757812 305.601562 C 447.757812 305.632812 447.730469 305.660156 447.695312 305.660156 L 445.488281 305.660156 L 445.460938 307.054688 L 447.539062 307.054688 C 447.574219 307.054688 447.597656 307.078125 447.597656 307.113281 L 447.597656 307.480469 C 447.597656 307.515625 447.574219 307.542969 447.539062 307.542969 L 445.460938 307.542969 L 445.488281 309.238281 L 447.75 309.238281 C 447.78125 309.238281 447.808594 309.265625 447.808594 309.296875 L 447.808594 309.667969 C 447.808594 309.699219 447.78125 309.726562 447.75 309.726562 Z M 444.917969 309.726562"/><path d="M 452.578125 307.773438 L 452.582031 309.667969 C 452.582031 309.699219 452.554688 309.726562 452.523438 309.726562 L 452.070312 309.726562 C 452.035156 309.726562 452.011719 309.699219 452.011719 309.667969 L 452.035156 307.488281 L 452.015625 305.230469 C 452.015625 305.199219 452.042969 305.171875 452.078125 305.171875 L 452.789062 305.171875 C 452.820312 305.171875 452.851562 305.199219 452.863281 305.226562 L 454.332031 308.964844 L 455.757812 305.226562 C 455.773438 305.199219 455.804688 305.171875 455.835938 305.171875 L 456.5 305.171875 C 456.535156 305.171875 456.5625 305.199219 456.5625 305.230469 L 456.539062 307.488281 L 456.5625 309.667969 C 456.5625 309.699219 456.535156 309.726562 456.5 309.726562 L 456 309.726562 C 455.96875 309.726562 455.941406 309.699219 455.941406 309.667969 L 455.949219 307.773438 L 455.960938 306.566406 L 455.976562 305.984375 L 454.554688 309.675781 C 454.542969 309.699219 454.507812 309.726562 454.476562 309.726562 L 454.101562 309.726562 C 454.070312 309.726562 454.035156 309.699219 454.023438 309.675781 L 452.550781 305.949219 L 452.5625 306.578125 Z M 452.578125 307.773438"/><path d="M 461.09375 309.726562 C 461.0625 309.726562 461.035156 309.699219 461.035156 309.667969 L 461.0625 307.378906 L 461.035156 305.230469 C 461.035156 305.199219 461.0625 305.171875 461.09375 305.171875 L 463.875 305.171875 C 463.90625 305.171875 463.933594 305.199219 463.933594 305.230469 L 463.933594 305.601562 C 463.933594 305.632812 463.90625 305.660156 463.875 305.660156 L 461.667969 305.660156 L 461.640625 307.054688 L 463.71875 307.054688 C 463.75 307.054688 463.777344 307.078125 463.777344 307.113281 L 463.777344 307.480469 C 463.777344 307.515625 463.75 307.542969 463.71875 307.542969 L 461.640625 307.542969 L 461.667969 309.238281 L 463.929688 309.238281 C 463.960938 309.238281 463.988281 309.265625 463.988281 309.296875 L 463.988281 309.667969 C 463.988281 309.699219 463.960938 309.726562 463.929688 309.726562 Z M 461.09375 309.726562"/><path d="M 468.773438 307.652344 L 468.78125 309.667969 C 468.78125 309.699219 468.753906 309.726562 468.722656 309.726562 L 468.246094 309.726562 C 468.214844 309.726562 468.1875 309.699219 468.1875 309.667969 L 468.214844 307.417969 L 468.195312 305.230469 C 468.195312 305.199219 468.222656 305.171875 468.253906 305.171875 L 468.851562 305.171875 C 468.886719 305.171875 468.925781 305.191406 468.945312 305.222656 L 471.351562 308.957031 L 471.34375 308.566406 L 471.332031 307.300781 L 471.324219 305.230469 C 471.324219 305.199219 471.351562 305.171875 471.382812 305.171875 L 471.851562 305.171875 C 471.882812 305.171875 471.910156 305.199219 471.910156 305.230469 L 471.882812 307.417969 L 471.902344 309.667969 C 471.902344 309.699219 471.878906 309.726562 471.84375 309.726562 L 471.21875 309.726562 C 471.1875 309.726562 471.148438 309.707031 471.128906 309.675781 L 468.746094 306.003906 L 468.761719 306.449219 Z M 468.773438 307.652344"/><path d="M 477.4375 309.726562 C 477.402344 309.726562 477.375 309.699219 477.375 309.667969 L 477.410156 307.46875 L 477.382812 305.660156 L 476.105469 305.660156 C 476.074219 305.660156 476.046875 305.632812 476.046875 305.601562 L 476.046875 305.230469 C 476.046875 305.199219 476.074219 305.171875 476.105469 305.171875 L 479.285156 305.171875 C 479.316406 305.171875 479.34375 305.199219 479.34375 305.230469 L 479.34375 305.601562 C 479.34375 305.632812 479.316406 305.660156 479.285156 305.660156 L 478.015625 305.660156 L 477.988281 307.46875 L 478.019531 309.667969 C 478.019531 309.699219 477.992188 309.726562 477.960938 309.726562 Z M 477.4375 309.726562"/><path d="M 485.167969 309.804688 C 483.996094 309.804688 483.308594 309.25 483.261719 308.21875 C 483.261719 308.183594 483.289062 308.160156 483.320312 308.160156 L 483.832031 308.160156 C 483.867188 308.160156 483.890625 308.183594 483.898438 308.21875 C 483.957031 308.902344 484.285156 309.316406 485.1875 309.316406 C 485.863281 309.316406 486.351562 309.070312 486.351562 308.472656 C 486.351562 307.214844 483.351562 308.132812 483.351562 306.394531 C 483.351562 305.5625 484.023438 305.09375 485.042969 305.09375 C 486.09375 305.09375 486.746094 305.53125 486.84375 306.46875 C 486.851562 306.5 486.824219 306.527344 486.792969 306.527344 L 486.273438 306.527344 C 486.238281 306.527344 486.214844 306.5 486.207031 306.46875 C 486.152344 305.882812 485.765625 305.589844 485.023438 305.589844 C 484.386719 305.589844 483.949219 305.824219 483.949219 306.335938 C 483.949219 307.507812 486.949219 306.609375 486.949219 308.394531 C 486.949219 309.332031 486.214844 309.804688 485.167969 309.804688"/><path d="M 336.621094 302.839844 L 343.589844 302.839844 L 336.667969 291.472656 L 336.621094 291.394531 L 331.246094 282.566406 L 372.519531 282.566406 C 373.304688 282.566406 373.945312 283.199219 373.945312 283.976562 L 373.945312 291.472656 L 367.199219 291.472656 L 373.945312 302.550781 L 379.691406 311.988281 L 338.570312 311.988281 C 337.492188 311.988281 336.621094 311.125 336.621094 310.0625 Z M 336.621094 302.839844"/></symbol>
+  <symbol id="s-mark" fill="currentColor" viewBox="330.7 282.1 49.4 30.4"><path d="M 336.621094 302.839844 L 343.589844 302.839844 L 336.667969 291.472656 L 336.621094 291.394531 L 331.246094 282.566406 L 372.519531 282.566406 C 373.304688 282.566406 373.945312 283.199219 373.945312 283.976562 L 373.945312 291.472656 L 367.199219 291.472656 L 373.945312 302.550781 L 379.691406 311.988281 L 338.570312 311.988281 C 337.492188 311.988281 336.621094 311.125 336.621094 310.0625 Z M 336.621094 302.839844"/></symbol>
+  <symbol id="s-line" viewBox="330.7 282.1 49.4 30.4"><path d="M 336.621094 302.839844 L 343.589844 302.839844 L 336.667969 291.472656 L 336.621094 291.394531 L 331.246094 282.566406 L 372.519531 282.566406 C 373.304688 282.566406 373.945312 283.199219 373.945312 283.976562 L 373.945312 291.472656 L 367.199219 291.472656 L 373.945312 302.550781 L 379.691406 311.988281 L 338.570312 311.988281 C 337.492188 311.988281 336.621094 311.125 336.621094 310.0625 Z M 336.621094 302.839844" fill="none" stroke="currentColor" stroke-width=".6" vector-effect="non-scaling-stroke"/></symbol>
+</svg>
 
 <div class="stage">
   <div class="deck" id="deck" aria-live="polite">
 
     <!-- 1. Capa -->
     <section class="slide cover is-active" id="s1" aria-label="Capa">
-      <p class="eyebrow">Strongest Supplements · Programa de Creators</p>
-      <div class="cover-grid">
-        <h1 class="h1">Liga <span class="bf">Black Friday</span></h1>
-        <div class="cover-side">
-          <p class="lead"><strong>Gamificação de creators com foco total em vendas na Black Friday.</strong> Três frentes de premiação para puxar o topo do ranking, a produção de conteúdo e a meta individual de cada creator.</p>
-          <span class="tag"><i></i>Proposta para a diretoria</span>
-        </div>
+      <div class="pattern" aria-hidden="true">
+        <svg style="right:-6cqw;top:-8cqh;width:62cqw;height:auto;aspect-ratio:49.4/30.4"><use href="#s-line"/></svg>
+        <svg style="right:14cqw;top:30cqh;width:46cqw;height:auto;aspect-ratio:49.4/30.4"><use href="#s-line"/></svg>
+        <svg style="right:-14cqw;top:54cqh;width:52cqw;height:auto;aspect-ratio:49.4/30.4"><use href="#s-line"/></svg>
       </div>
-      <div class="foot"><span>Together We Are Stronger</span><span>Black Friday 2026</span></div>
+      <div class="brandbar">
+        <svg class="logo logo-sm" role="img" aria-label="Strongest Supplements"><use href="#logo"/></svg>
+        <span class="doc">Programa de creators</span>
+      </div>
+      <h1 class="title">Liga<span>Black Friday</span></h1>
+      <div class="ribbon">Gamificação de creators · Proposta para a diretoria</div>
+      <div class="cover-row">
+        <p class="lead"><strong>Foco total em vendas de 01 a 30/11.</strong> Três ações de premiação para puxar o topo do ranking, a produção de conteúdo e a meta individual de cada creator.</p>
+        <span class="foot">Together we are stronger</span>
+      </div>
     </section>
 
     <!-- 2. Visão geral -->
     <section class="slide" id="s2" aria-label="Visão geral">
+      <div class="brandbar"><span class="sec">Visão geral</span><svg class="logo logo-sm" aria-hidden="true"><use href="#logo"/></svg></div>
       <div class="head">
-        <p class="eyebrow">Visão geral</p>
         <h2 class="h2">Três jeitos de ganhar</h2>
-        <p class="lead">Cada frente premia um comportamento diferente. Juntas, elas mantêm todos os creators jogando: quem disputa o topo, quem produz muito e quem bate meta.</p>
+        <p class="lead">Cada ação premia um comportamento diferente. Juntas, mantêm todos os creators jogando: quem disputa o topo, quem produz muito e quem bate meta. <strong>Um mesmo creator pode ganhar em mais de uma ação.</strong></p>
       </div>
       <div class="body">
         <div class="fronts">
-          <article class="front">
-            <span class="kind">Frente 1 · Ranking de vendas</span>
+          <article class="front" style="--c:var(--yellow)">
+            <span class="kind">Ação 1 · Ranking de vendas</span>
             <h3>Pódio Strong</h3>
-            <p>Os <strong>4 creators que mais venderem</strong> sobem ao pódio. Cada posição tem seu kit de prêmios.</p>
+            <p>Os <strong>4 creators que mais venderem</strong> pelo cupom sobem ao pódio. Cada posição tem seu kit de prêmios.</p>
             <div class="who">Premia <b>quem lidera em vendas</b></div>
           </article>
-          <article class="front">
-            <span class="kind">Frente 2 · Produção de conteúdo</span>
+          <article class="front" style="--c:var(--lime)">
+            <span class="kind">Ação 2 · Produção de conteúdo</span>
             <h3>Produziu? É seu</h3>
             <p>Os <strong>3 creators que mais produzirem conteúdo</strong> levam energy drink e voucher em produtos.</p>
             <div class="who">Premia <b>volume e constância</b></div>
           </article>
-          <article class="front">
-            <span class="kind">Frente 3 · Meta individual</span>
+          <article class="front" style="--c:var(--green)">
+            <span class="kind">Ação 3 · Meta individual</span>
             <h3>Bateu, ganhou</h3>
             <p>A <strong>cada R$ 2.500 em vendas, R$ 300 no Pix</strong>. Sem limite e sem disputa com outros creators.</p>
             <div class="who">Premia <b>todo creator que vende</b></div>
@@ -210,11 +242,9 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16p
     </section>
 
     <!-- 3. Pódio -->
-    <section class="slide" id="s3" aria-label="Frente 1: Pódio Strong">
-      <div class="head">
-        <p class="eyebrow">Frente 1 · Ranking de vendas</p>
-        <h2 class="h2">Pódio Strong</h2>
-      </div>
+    <section class="slide" id="s3" aria-label="Ação 1: Pódio Strong">
+      <div class="brandbar"><span class="sec">Ação 1 · Ranking de vendas</span><svg class="logo logo-sm" aria-hidden="true"><use href="#logo"/></svg></div>
+      <h2 class="h2">Pódio Strong</h2>
       <div class="body">
         <div class="podium">
           <div class="place p2">
@@ -244,133 +274,146 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16p
           <div class="place p4">
             <div class="prizes">
               <span class="chip">Ecobag</span>
-              <span class="chip new">Kit lançamentos<small>Palatinose, Glutamina e Force Hair</small></span>
+              <span class="chip">Kit lançamentos<small>Palatinose, Glutamina e Force Hair</small></span>
             </div>
             <div class="block"><span class="pos">4º</span><span class="lbl">Ecobag + kit</span></div>
           </div>
         </div>
       </div>
-      <div class="foot"><span>Ranking pelo valor vendido por cada creator no período da campanha</span><span>03</span></div>
+      <div class="foot"><span>Valor vendido pelo cupom de 01 a 30/11, acompanhado na UauTeam · Desempate: quem produziu mais conteúdo</span><span>03</span></div>
     </section>
 
     <!-- 4. Produziu? É seu -->
-    <section class="slide" id="s4" aria-label="Frente 2: Produziu? É seu">
-      <div class="split">
-        <div class="head">
-          <p class="eyebrow">Frente 2 · Produção de conteúdo</p>
-          <h2 class="h2">Produziu?<br>É seu.</h2>
-          <p class="lead">Venda na Black Friday depende de presença. Esta frente recompensa quem <strong>mais publica sobre a Strongest</strong> durante a campanha, independente do volume vendido.</p>
-        </div>
-        <div class="top3">
-          <div class="row"><span class="n">Top 3</span><div>Os 3 creators que mais produzirem conteúdo levam:</div></div>
-          <div class="row"><span class="n mono" style="font-family:var(--display)">6</span><div>Latas de Strong Fit Energy Drink<span>Sabor à escolha do creator</span></div></div>
-          <div class="plus">+</div>
-          <div class="row"><span class="n">R$100</span><div>Voucher em produtos Strongest<span>Para usar no site</span></div></div>
+    <section class="slide" id="s4" aria-label="Ação 2: Produziu? É seu">
+      <div class="brandbar"><span class="sec">Ação 2 · Produção de conteúdo</span><svg class="logo logo-sm" aria-hidden="true"><use href="#logo"/></svg></div>
+      <div class="body">
+        <div class="split">
+          <div class="head">
+            <h2 class="h2">Produziu?<br>É seu.</h2>
+            <p class="lead">Venda na Black Friday depende de presença. Esta ação recompensa quem <strong>mais publica sobre a Strongest</strong> durante a campanha.</p>
+            <p class="lead small">Valem <strong>feed, stories e reels</strong> com marcação de <span class="tag">@strongestsupplements</span></p>
+          </div>
+          <div class="top3">
+            <div class="row"><span class="n">Top 3</span><div>Os 3 creators que mais produzirem conteúdo levam:</div></div>
+            <div class="row"><span class="n">6</span><div>Latas de Strong Fit Energy Drink<span>Sabor à escolha do creator</span></div></div>
+            <div class="row"><span class="n">R$100</span><div>Voucher em produtos Strongest<span>Para usar no site</span></div></div>
+          </div>
         </div>
       </div>
-      <div class="foot"><span>Liga Black Friday</span><span>04</span></div>
+      <div class="foot"><span>Desempate: maior valor em vendas pelo cupom</span><span>04</span></div>
     </section>
 
     <!-- 5. Bateu, ganhou -->
-    <section class="slide" id="s5" aria-label="Frente 3: Bateu, ganhou">
-      <div class="head">
-        <p class="eyebrow">Frente 3 · Meta individual</p>
-        <h2 class="h2">Bateu, ganhou</h2>
-      </div>
+    <section class="slide" id="s5" aria-label="Ação 3: Bateu, ganhou">
+      <div class="brandbar"><span class="sec">Ação 3 · Meta individual</span><svg class="logo logo-sm" aria-hidden="true"><use href="#logo"/></svg></div>
+      <h2 class="h2">Bateu, ganhou</h2>
       <div class="body">
         <div class="split" style="height:auto">
           <div style="display:flex;flex-direction:column;gap:2.4cqh">
             <div class="big-rule">
-              <span class="v mono" style="font-family:var(--display)">R$ 2.500</span>
+              <span class="v num">R$2.500</span>
               <span class="arrow">→</span>
-              <span class="v pix" style="font-family:var(--display)">R$ 300</span>
+              <span class="v pix num">R$300</span>
             </div>
-            <p class="lead"><strong>Cumulativo:</strong> a cada R$ 2.500 vendidos, o creator leva mais R$ 300 no Pix. Não há teto e não há disputa entre creators.</p>
-            <p class="lead small">Pagamento via Pix em <strong class="mono">10/11</strong>.</p>
+            <p class="lead"><strong>Cumulativo:</strong> a cada R$ 2.500 vendidos pelo cupom, o creator leva mais R$ 300 no Pix. Não há teto e não há disputa entre creators.</p>
+            <p class="lead small">Pagamento via Pix em <strong class="num">10/12</strong>.</p>
           </div>
           <div class="tbl-wrap">
             <table class="ladder">
               <thead><tr><th>Vendas do creator</th><th>Faixas</th><th class="r">Pix</th></tr></thead>
               <tbody>
-                <tr><td class="mono">R$ 2.500</td><td><div class="meter"><i></i><i class="off"></i><i class="off"></i><i class="off"></i></div></td><td class="r pix mono">R$ 300</td></tr>
-                <tr><td class="mono">R$ 5.000</td><td><div class="meter"><i></i><i></i><i class="off"></i><i class="off"></i></div></td><td class="r pix mono">R$ 600</td></tr>
-                <tr><td class="mono">R$ 7.500</td><td><div class="meter"><i></i><i></i><i></i><i class="off"></i></div></td><td class="r pix mono">R$ 900</td></tr>
-                <tr><td class="mono">R$ 10.000</td><td><div class="meter"><i></i><i></i><i></i><i></i></div></td><td class="r pix mono">R$ 1.200</td></tr>
-                <tr class="note"><td class="mono">R$ 4.900</td><td class="small">1 faixa completa</td><td class="r mono">R$ 300</td></tr>
+                <tr><td>R$ 2.500</td><td><div class="meter"><i></i><i class="off"></i><i class="off"></i><i class="off"></i></div></td><td class="r pix">R$ 300</td></tr>
+                <tr><td>R$ 5.000</td><td><div class="meter"><i></i><i></i><i class="off"></i><i class="off"></i></div></td><td class="r pix">R$ 600</td></tr>
+                <tr><td>R$ 7.500</td><td><div class="meter"><i></i><i></i><i></i><i class="off"></i></div></td><td class="r pix">R$ 900</td></tr>
+                <tr><td>R$ 10.000</td><td><div class="meter"><i></i><i></i><i></i><i></i></div></td><td class="r pix">R$ 1.200</td></tr>
+                <tr class="note"><td>R$ 4.900</td><td class="small">1 faixa completa</td><td class="r">R$ 300</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      <div class="foot"><span>Custo da frente: R$ 300 a cada R$ 2.500 vendidos, ou 12% da venda gerada</span><span>05</span></div>
+      <div class="foot"><span>Custo da ação: R$ 300 a cada R$ 2.500 vendidos, ou 12% da venda gerada</span><span>05</span></div>
     </section>
 
-    <!-- 6. Resumo -->
-    <section class="slide" id="s6" aria-label="Resumo da premiação">
+    <!-- 6. Calendário -->
+    <section class="slide" id="s6" aria-label="Calendário">
+      <div class="brandbar"><span class="sec">Calendário</span><svg class="logo logo-sm" aria-hidden="true"><use href="#logo"/></svg></div>
       <div class="head">
-        <p class="eyebrow">Resumo</p>
-        <h2 class="h2">Premiação completa</h2>
+        <h2 class="h2">Novembro inteiro</h2>
+        <p class="lead">A apuração cobre o mês todo, com a Black Friday no meio da reta final.</p>
       </div>
       <div class="body">
-        <div class="tbl-wrap">
-          <table class="summary">
-            <thead><tr><th>Frente</th><th>Quem ganha</th><th>Prêmio</th><th>Critério</th></tr></thead>
-            <tbody>
-              <tr>
-                <td>Pódio Strong</td>
-                <td><span class="dot" style="background:var(--gold)"></span>1º<br><span class="dot" style="background:var(--silver)"></span>2º<br><span class="dot" style="background:var(--bronze)"></span>3º<br><span class="dot" style="background:var(--fourth)"></span>4º</td>
-                <td>Pipoqueira + garrafa térmica + ecobag + mixer<br>Garrafa térmica + ecobag + mixer<br>Ecobag + mixer<br>Ecobag + Palatinose, Glutamina e Force Hair</td>
-                <td class="m">Maior valor em vendas</td>
-              </tr>
-              <tr>
-                <td>Produziu? É seu</td>
-                <td>Top 3</td>
-                <td>6 latas de Strong Fit Energy Drink (sabor à escolha) + voucher de R$ 100 em produtos</td>
-                <td class="m">Maior produção de conteúdo</td>
-              </tr>
-              <tr>
-                <td>Bateu, ganhou</td>
-                <td>Todos que baterem a meta</td>
-                <td>R$ 300 no Pix a cada R$ 2.500 vendidos, cumulativo</td>
-                <td class="m">Faixas de R$ 2.500 · Pix em 10/11</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="timeline">
+          <span class="tl-range" aria-hidden="true"></span>
+          <div class="step" style="--c:var(--ink)"><span class="d num">01/11</span><b>Início da apuração</b><span>Vendas pelo cupom e conteúdos publicados passam a contar.</span></div>
+          <div class="step" style="--c:var(--yellow)"><span class="d num">27/11</span><b>Black Friday</b><span>Pico de vendas da campanha.</span></div>
+          <div class="step" style="--c:var(--red)"><span class="d num">30/11</span><b>Fim da apuração</b><span>Fecham o ranking de vendas, o de conteúdo e as faixas do Bateu, ganhou.</span></div>
+          <div class="step" style="--c:var(--green)"><span class="d num">10/12</span><b>Pagamento do Pix</b><span>R$ 300 por faixa de R$ 2.500 para quem bateu a meta.</span></div>
         </div>
       </div>
       <div class="foot"><span>Liga Black Friday</span><span>06</span></div>
     </section>
 
-    <!-- 7. Pontos para validar -->
-    <section class="slide" id="s7" aria-label="Pontos para validar">
-      <div class="head">
-        <p class="eyebrow">Para decidir antes do lançamento</p>
-        <h2 class="h2">Pontos para validar</h2>
-        <p class="lead">As regras e os prêmios estão definidos. Estes detalhes operacionais precisam de resposta para o regulamento que vai aos creators.</p>
-      </div>
+    <!-- 7. Regras gerais -->
+    <section class="slide" id="s7" aria-label="Regras gerais">
+      <div class="brandbar"><span class="sec">Regulamento</span><svg class="logo logo-sm" aria-hidden="true"><use href="#logo"/></svg></div>
+      <h2 class="h2">Regras do jogo</h2>
       <div class="body">
-        <ul class="checks">
-          <li><span class="box"></span><div><b>Período de apuração</b><span>Datas de início e fim que valem para as três frentes.</span></div></li>
-          <li><span class="box"></span><div><b>Data do Pix (10/11)</b><span>A Black Friday cai em 27/11. Confirmar se o Pix de 10/11 fecha uma fase de esquenta ou se a data é 10/12.</span></div></li>
-          <li><span class="box"></span><div><b>Como medir venda</b><span>Pedidos com o cupom ou link do creator; valor bruto ou líquido; pedidos cancelados ou devolvidos saem da conta?</span></div></li>
-          <li><span class="box"></span><div><b>O que conta como conteúdo</b><span>Formatos válidos (Reels, Stories, TikTok, posts), marcação obrigatória e como a produção é contada.</span></div></li>
-          <li><span class="box"></span><div><b>Prêmios acumulam?</b><span>Um mesmo creator pode ganhar no Pódio, no Produziu? É seu e no Bateu, ganhou?</span></div></li>
-          <li><span class="box"></span><div><b>Critério de desempate</b><span>Para empate no ranking de vendas e no de conteúdo.</span></div></li>
+        <ul class="rules">
+          <li><span class="k">Período</span><b>De 01 a 30/11</b><span>Vale para as três ações.</span></li>
+          <li><span class="k">Como medimos vendas</span><b>Valor vendido pelo cupom do creator</b><span>Acompanhado pela UauTeam. Pedidos cancelados não contam.</span></li>
+          <li><span class="k">O que conta como conteúdo</span><b>Feed, stories e reels</b><span>Desde que marquem @strongestsupplements.</span></li>
+          <li><span class="k">Acúmulo</span><b>Pode ganhar mais de uma ação</b><span>O mesmo creator pode levar Pódio, Produziu? É seu e Bateu, ganhou.</span></li>
+          <li><span class="k">Desempate</span><b>Um ranking desempata o outro</b><span>No ranking de vendas, ganha quem produziu mais conteúdo. No de conteúdo, ganha quem vendeu mais.</span></li>
+          <li><span class="k">Pagamento</span><b>Pix em 10/12</b><span>Para quem bateu a meta no Bateu, ganhou. R$ 300 por faixa de R$ 2.500.</span></li>
         </ul>
       </div>
       <div class="foot"><span>Liga Black Friday</span><span>07</span></div>
     </section>
 
-    <!-- 8. Fechamento -->
-    <section class="slide closing cover" id="s8" aria-label="Fechamento">
-      <p class="eyebrow">Liga Black Friday Strongest</p>
+    <!-- 8. Resumo -->
+    <section class="slide" id="s8" aria-label="Resumo da premiação">
+      <div class="brandbar"><span class="sec">Resumo</span><svg class="logo logo-sm" aria-hidden="true"><use href="#logo"/></svg></div>
+      <h2 class="h2">Premiação completa</h2>
       <div class="body">
-        <h2 class="h1">Juntos somos <em>mais fortes.</em></h2>
+        <div class="tbl-wrap">
+          <table class="summary">
+            <thead><tr><th>Ação</th><th>Quem ganha</th><th>Prêmio</th><th>Critério</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Pódio Strong</td>
+                <td><span class="dot" style="background:var(--yellow)"></span>1º<br><span class="dot" style="background:var(--lime)"></span>2º<br><span class="dot" style="background:var(--green)"></span>3º<br><span class="dot" style="background:var(--red)"></span>4º</td>
+                <td>Pipoqueira + garrafa térmica + ecobag + mixer<br>Garrafa térmica + ecobag + mixer<br>Ecobag + mixer<br>Ecobag + Palatinose, Glutamina e Force Hair</td>
+                <td class="m">Maior valor em vendas pelo cupom<br>Desempate: mais conteúdo</td>
+              </tr>
+              <tr>
+                <td>Produziu? É seu</td>
+                <td>Top 3</td>
+                <td>6 latas de Strong Fit Energy Drink (sabor à escolha) + voucher de R$ 100 em produtos</td>
+                <td class="m">Mais conteúdos em feed, stories e reels<br>Desempate: maior valor em vendas</td>
+              </tr>
+              <tr>
+                <td>Bateu, ganhou</td>
+                <td>Todos que baterem a meta</td>
+                <td>R$ 300 no Pix a cada R$ 2.500 vendidos, cumulativo</td>
+                <td class="m">Faixas de R$ 2.500 · Pix em 10/12</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div class="cover-side" style="max-width:62cqw">
-        <p class="lead"><strong>Próximo passo:</strong> aprovar a proposta, responder os pontos de validação e publicar o regulamento para os creators.</p>
+      <div class="foot"><span>Apuração de 01 a 30/11 · Vendas pelo cupom na UauTeam, sem pedidos cancelados</span><span>08</span></div>
+    </section>
+
+    <!-- 9. Fechamento -->
+    <section class="slide closing" id="s9" aria-label="Fechamento">
+      <div class="pattern" aria-hidden="true" style="color:#1f1f1f">
+        <svg style="left:-10cqw;top:-12cqh;width:70cqw;height:auto;aspect-ratio:49.4/30.4"><use href="#s-line"/></svg>
+        <svg style="right:-12cqw;bottom:-14cqh;width:64cqw;height:auto;aspect-ratio:49.4/30.4"><use href="#s-line"/></svg>
       </div>
-      <div class="foot" style="margin-top:3cqh"><span>Together We Are Stronger</span><span>08</span></div>
+      <svg class="logo" style="width:clamp(140px,22cqw,420px);aspect-ratio:180.3/30.4" role="img" aria-label="Strongest Supplements"><use href="#logo"/></svg>
+      <h2 class="title" style="margin-top:4cqh">Together we are <span>stronger.</span></h2>
+      <p class="lead" style="margin-top:3cqh"><strong>Próximo passo:</strong> aprovar a proposta e publicar o regulamento para os creators antes de 01/11.</p>
     </section>
 
   </div>
@@ -380,7 +423,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16p
     <button type="button" id="next" aria-label="Próximo slide">→</button>
     <div class="progress" aria-hidden="true"><i id="bar"></i></div>
     <span class="hint">setas do teclado</span>
-    <span class="count" id="count">1 / 8</span>
+    <span class="count" id="count">1 / 9</span>
     <button type="button" id="fs" aria-label="Tela cheia">Tela cheia</button>
   </nav>
 </div>

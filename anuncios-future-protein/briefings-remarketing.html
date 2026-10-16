@@ -1,0 +1,342 @@
+<title>Briefings Future Protein</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky toolbar + one column of briefing cards; each card shows exactly the text that gets copied. */
+:root {
+  --bg: #f2f4f1;
+  --surface: #ffffff;
+  --ink: #17201b;
+  --muted: #5d6a62;
+  --line: #d7ddd8;
+  --accent: #1d6b45;
+  --accent-ink: #ffffff;
+  --accent-soft: #e2efe7;
+  --warn: #8a5a00;
+  --warn-soft: #fbf1dc;
+  --code-bg: #f7f9f7;
+  --display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111613; --surface: #19201c; --ink: #e6ece8; --muted: #9aa8a0; --line: #2c3631;
+    --accent: #4fbf85; --accent-ink: #0d1a13; --accent-soft: #1d3428; --warn: #f0c46b; --warn-soft: #2e2615; --code-bg: #141a17;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111613; --surface: #19201c; --ink: #e6ece8; --muted: #9aa8a0; --line: #2c3631;
+  --accent: #4fbf85; --accent-ink: #0d1a13; --accent-soft: #1d3428; --warn: #f0c46b; --warn-soft: #2e2615; --code-bg: #141a17;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.wrap { max-width: 920px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header.top { padding-block: 40px 24px; display: grid; gap: 12px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 6vw, 52px); line-height: 1; margin: 0; text-wrap: balance; text-transform: uppercase; letter-spacing: .01em; }
+.lead { margin: 0; max-width: 64ch; color: var(--muted); }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 8px; }
+.rules div { border-top: 2px solid var(--accent); padding-top: 8px; font-size: 14px; color: var(--muted); }
+.rules strong { display: block; color: var(--ink); font-weight: 600; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.bar .wrap { padding-block: 10px; display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+.field { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.field label { color: var(--muted); }
+select, .chip, button { font: inherit; font-size: 14px; }
+select { background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
+.check { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.spacer { flex: 1; }
+
+button.btn { border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); border-radius: 6px; padding: 7px 14px; font-weight: 600; cursor: pointer; }
+button.btn.ghost { background: transparent; color: var(--accent); }
+button.btn.done { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+button:focus-visible, select:focus-visible, .chip:focus-visible, .check input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+main { padding-block: 24px 64px; display: grid; gap: 40px; }
+.pillar { display: grid; gap: 16px; }
+.pillar h2 { font-family: var(--display); font-weight: 700; font-size: 26px; text-transform: uppercase; letter-spacing: .02em; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.pillar h2 small { font-family: var(--body); font-weight: 400; font-size: 15px; text-transform: none; letter-spacing: 0; color: var(--muted); }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; display: grid; grid-template-columns: 200px minmax(0, 1fr); }
+.meta { padding: 18px; border-right: 1px solid var(--line); display: grid; align-content: start; gap: 10px; }
+.num { font-family: var(--display); font-weight: 700; font-size: 44px; line-height: .9; color: var(--accent); }
+.meta h3 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.3; }
+.tag { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.persona { font-size: 14px; color: var(--muted); }
+.persona b { color: var(--ink); font-weight: 500; }
+.body { padding: 18px; display: grid; gap: 14px; min-width: 0; }
+.brief { margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; font-family: var(--body); font-size: 15px; line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
+.brief .hl { font-weight: 600; }
+.flag { background: var(--warn-soft); color: var(--ink); border-radius: 6px; padding: 10px 12px; font-size: 14px; display: grid; gap: 2px; }
+.flag b { color: var(--warn); font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 16px; border-radius: 6px; font-size: 14px; }
+
+@media (max-width: 680px) {
+  .card { grid-template-columns: 1fr; }
+  .meta { border-right: 0; border-bottom: 1px solid var(--line); grid-template-columns: auto 1fr; align-items: center; column-gap: 14px; }
+  .meta .num { grid-row: span 3; }
+}
+@media (prefers-reduced-motion: no-preference) { button.btn { transition: background .15s, color .15s; } }
+</style>
+
+<header class="wrap top">
+  <span class="eyebrow">Strongest Supplements · Remarketing · Matriz Axoly revisada</span>
+  <h1>Briefings Future Protein</h1>
+  <p class="lead">15 posts em 5 pilares, com a copy reescrita para caber na arte e sem promessas que a Meta ou a Anvisa barram. Cada card já sai no modelo do ClickUp: escolha o formato, clique em <b>Copiar briefing</b> e cole na descrição da tarefa.</p>
+  <div class="rules">
+    <div><strong>Copy curta na arte</strong>Título de até 9 palavras e apoio de até 25. O restante vai na legenda do anúncio.</div>
+    <div><strong>Fatos usados</strong>Frete grátis acima de R$ 99, 15% de cashback, laudo de cada lote público no site, matéria-prima importada.</div>
+    <div><strong>Caixas amarelas</strong>O que precisa ser confirmado antes de subir. Elas não vão para o texto copiado.</div>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="field">
+      <label for="fmt">Formato</label>
+      <select id="fmt">
+        <option value="1000x1000">1000x1000 (feed)</option>
+        <option value="1080x1350">1080x1350 (feed 4:5)</option>
+        <option value="1080x1920">1080x1920 (stories)</option>
+        <option value="all">Feed + 4:5 + stories</option>
+      </select>
+    </div>
+    <label class="check" for="art"><input type="checkbox" id="art" checked> Incluir direção de arte</label>
+    <div class="chips" id="chips" role="group" aria-label="Filtrar por pilar"></div>
+    <span class="spacer"></span>
+    <button class="btn ghost" id="copyAll" type="button">Copiar todos</button>
+  </div>
+</div>
+
+<main class="wrap" id="list"></main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const PILLARS = [
+  { id: 1, name: "Prova social", note: "Quem já tomou fala por você" },
+  { id: 2, name: "Unboxing", note: "O produto real, da caixa ao copo" },
+  { id: 3, name: "Bastidores", note: "Transparência de origem e qualidade" },
+  { id: 4, name: "Prova técnica", note: "O que tem em cada dose" },
+  { id: 5, name: "Preço e valor", note: "Reenquadrar o custo" }
+];
+
+const ADS = [
+  { n: 1, p: 1, theme: "Sabor sem gosto de terra", persona: "O Cliente Inseguro",
+    h: "“Achei que ia ter gosto de terra. Errei.”",
+    s: "Future Protein: shake cremoso, sem grumos e sem retrogosto. Proteína 100% vegetal com aminoácidos completos.",
+    cta: "Quero experimentar",
+    art: "Cozinha clara com luz natural de manhã. Copo de vidro com o shake cremoso, sem grumos, ao lado do pote com o rótulo nítido. Sobre a foto, no canto superior esquerdo, um card de avaliação no estilo Instagram/WhatsApp com 5 estrelas. Tem que parecer post de rede social, não catálogo.",
+    must: "pote, copo com o shake, card com avaliação real de cliente",
+    flag: "Use uma avaliação real, com autorização do cliente. Tirei “centenas de clientes” porque não temos esse número confirmado." },
+  { n: 2, p: 1, theme: "Desempenho no treino", persona: "O Comprador Prático",
+    h: "“Troquei pelo vegetal e não perdi nada no treino.”",
+    s: "Aminoácidos completos para apoiar sua recuperação, com digestão leve que não pesa antes nem depois do treino.",
+    cta: "Ver avaliações",
+    art: "Academia real com o fundo desfocado. Pessoa treinada segurando a coqueteleira depois do treino; o pote apoiado no banco, com luz lateral. Print de review no topo da arte. Tons de grafite e preto com o verde da linha Future Protein.",
+    must: "pote, coqueteleira, print de review real",
+    flag: "A versão do Axoly dizia “vi o ganho muscular acontecer rápido”. Promessa de resultado é reprovada pela Meta e vai contra a regra da Anvisa para suplementos. O depoimento precisa ser real." },
+  { n: 3, p: 1, theme: "Indicação de especialista", persona: "O Buscador de Resultado",
+    h: "Recomendado por quem entende de nutrição.",
+    s: "Aminoácidos completos, matéria-prima importada de alta pureza e laudo de cada lote aberto para você conferir.",
+    cta: "Garanta o seu",
+    art: "Mesa de consultório clara e organizada, pote no centro em primeiro plano. Ao lado, card com foto, nome e CRN da nutricionista e uma frase curta dela sobre o produto. Luz neutra, visual limpo.",
+    must: "pote, card da especialista com CRN, selo “Laudo de cada lote”",
+    flag: "Só suba com uma nutricionista real: nome, CRN e autorização por escrito para usar imagem e frase." },
+
+  { n: 4, p: 2, theme: "Da caixa ao scoop", persona: "O Comparador de Preço",
+    h: "Do lacre ao shake: qualidade que dá para ver.",
+    s: "Pote lacrado, pó fino e solto, sem grumos. Frete grátis acima de R$ 99 e postagem em até 1 dia útil.",
+    cta: "Conferir detalhes",
+    art: "Foto de cima (flat lay) sobre fundo cinza fosco. Caixa da Strongest aberta, pote fora da caixa com o lacre sendo retirado e scoop com uma dose de pó fino e solto. Sombras longas e suaves.",
+    must: "caixa com a marca, pote, scoop com o pó",
+    flag: "" },
+  { n: 5, p: 2, theme: "Mistura fácil, sem areia", persona: "O Cliente Premium",
+    h: "Agitou, misturou. Sem pelotas, sem areia.",
+    s: "O pó fino do Future Protein se dissolve fácil e vira um shake cremoso de verdade.",
+    cta: "Conhecer agora",
+    art: "Close no copo transparente com o shake homogêneo e gotas em movimento. Pote ao fundo, levemente desfocado, com o logo legível. Fundo em degradê de verde-oliva para grafite. Título no topo com bastante respiro.",
+    must: "copo transparente sem grumos à vista, pote ao fundo",
+    flag: "" },
+  { n: 6, p: 2, theme: "Rotina da manhã", persona: "O Explorador de Novidades",
+    h: "Sua nova rotina chega em uma caixa.",
+    s: "Proteína 100% vegetal, cremosa e de digestão leve para começar o dia. E toda compra volta 15% em cashback.",
+    cta: "Pedir o meu",
+    art: "Bancada de madeira clara com sol da manhã. Pote aberto no centro, coqueteleira e uma tigela de frutas ao lado; caixa da Strongest ao fundo; fone e toalha discretos no canto. Clima acolhedor, foco no pote.",
+    must: "pote, caixa da Strongest, coqueteleira",
+    flag: "" },
+
+  { n: 7, p: 3, theme: "Laudo aberto", persona: "O Cliente Inseguro",
+    h: "Cada lote vai para o laboratório. Cada laudo fica público.",
+    s: "Você não precisa confiar só na nossa palavra: os laudos do Future Protein estão no site para qualquer pessoa conferir.",
+    cta: "Ver laudos",
+    art: "Laboratório limpo com luz fria. Ao fundo, desfocadas, mãos de luva com uma amostra. Em primeiro plano, o pote lacrado ao lado de um laudo impresso. Visual sério e nítido.",
+    must: "pote, laudo, selo “Laudo de cada lote”",
+    flag: "Use um laudo real do Future Protein (strongest.com.br/pages/laudos), não um documento genérico." },
+  { n: 8, p: 3, theme: "História do fundador", persona: "O Comprador Prático",
+    h: "Criado por quem treina desde os 15 anos.",
+    s: "O Marcus cansou de escolher entre importado caro e nacional fraco. Criou a Strongest para acabar com essa escolha.",
+    cta: "Conhecer a história",
+    art: "Retrato do Marcus segurando o pote, luz lateral marcada. Ele no terço direito, espaço livre à esquerda para o texto. Preto, carvão e o verde do produto. Assinatura discreta: “Marcus, fundador da Strongest”.",
+    must: "foto real do Marcus, pote",
+    flag: "Precisa de foto real do Marcus. Banco de imagem aqui derruba a credibilidade do post." },
+  { n: 9, p: 3, theme: "Origem da matéria-prima", persona: "O Buscador de Resultado",
+    h: "Matéria-prima importada. Laudo em cada lote.",
+    s: "O Future Protein começa com matéria-prima de alta pureza e termina na análise de laboratório. O que está no rótulo está no pote.",
+    cta: "Saiba mais",
+    art: "Cena de produção e controle de qualidade: aço inox, luz técnica branca com toque azulado. Pote em primeiro plano, no centro-inferior. Dois selos laterais: “Matéria-prima importada” e “Laudo de cada lote”.",
+    must: "pote, os dois selos",
+    flag: "O Axoly falava em “tecnologia própria” e “peneiramento ultrassônico”. Não temos isso confirmado, então troquei pelos fatos da base. Não usar imagem que sugira fábrica própria sem confirmar." },
+
+  { n: 10, p: 4, theme: "Comparativo com vegetal comum", persona: "O Comparador de Preço",
+    h: "Vegetal não precisa ser incompleta nem ter gosto ruim.",
+    s: "Aminoácidos completos, textura cremosa e mistura fácil. Compare e veja a diferença.",
+    cta: "Ver comparativo",
+    art: "Tela dividida ao meio. Esquerda cinza e apagada: pote genérico sem marca, com X vermelho em “Gosto de terra”, “Textura arenosa” e “Mistura difícil”. Direita escura com verde: pote Future Protein iluminado, com check em “Aminoácidos completos”, “Sabor cremoso”, “Dissolve fácil” e “Laudo de cada lote”. Tem que ser lido em 3 segundos.",
+    must: "pote, lista comparativa",
+    flag: "Não mostrar nem citar marca concorrente." },
+  { n: 11, p: 4, theme: "Leve no estômago", persona: "O Cliente Premium",
+    h: "Leve no estômago. Completa no músculo.",
+    s: "Proteína 100% vegetal e sem lactose, com aminoácidos completos e digestão leve. Pureza comprovada em laudo.",
+    cta: "Consultar laudos",
+    art: "Fundo off-white limpo, pote sobre um pedestal cinza fosco. Linhas finas apontando para quatro atributos: “100% vegetal”, “Sem lactose”, “Aminoácidos completos”, “Laudo de cada lote”. Elegante, sem poluição visual.",
+    must: "pote, os quatro atributos",
+    flag: "Tirei “recomendação médica” e “zero desconforto gástrico”, que são alegações de saúde. Confirme que “sem lactose” está no rótulo." },
+  { n: 12, p: 4, theme: "Por dentro da dose", persona: "O Explorador de Novidades",
+    h: "Por dentro de uma dose de Future Protein.",
+    s: "[X] g de proteína vegetal, aminoácidos completos e zero lactose. Tudo o que está no rótulo, comprovado em laudo.",
+    cta: "Ver tabela nutricional",
+    art: "Fundo escuro em degradê para verde profundo. Pote em ângulo 3/4 com luz de borda verde. Infográfico limpo, estilo painel técnico, com os números da porção: proteína (g), calorias e aminoácidos.",
+    must: "pote, números da tabela nutricional real",
+    flag: "Preencha os [X] com a tabela nutricional. O Axoly citava “micronização”: só use se o fornecedor confirmar." },
+
+  { n: 13, p: 5, theme: "Padrão importado, preço nacional", persona: "O Cliente Inseguro",
+    h: "Padrão de importado. Preço de nacional.",
+    s: "Matéria-prima importada e laudo de cada lote, sem pagar dólar nem taxa de importação. E 15% de cashback na próxima compra.",
+    cta: "Comprar agora",
+    art: "Fundo grafite de estúdio, pote sobre base espelhada preta. No topo, selo “Padrão importado | Fabricação nacional”. Dois selos menores: “Frete grátis acima de R$ 99” e “15% de cashback”. Sofisticado, sem cara de liquidação.",
+    must: "pote, os três selos",
+    flag: "" },
+  { n: 14, p: 5, theme: "Custo por dose", persona: "O Comprador Prático",
+    h: "R$ [X] por dose. Menos que um cafezinho.",
+    s: "Cada dose entrega [X] g de proteína vegetal completa. Frete grátis acima de R$ 99 e 15% de cashback.",
+    cta: "Comprar agora",
+    art: "Bancada de madeira dividida ao meio por uma linha pontilhada. Esquerda: xícara de café com “R$ [X] um cafezinho”. Direita: scoop cheio e pote, com “R$ [X] por dose” em número grande. Luz quente de café da manhã.",
+    must: "pote, scoop, os dois preços",
+    flag: "Calcule o preço do pote dividido pelo número de doses. Só use a comparação com o café se a dose sair mesmo mais barata." },
+  { n: 15, p: 5, theme: "O custo de treinar sem resultado", persona: "O Buscador de Resultado",
+    h: "Treinar sem a proteína certa sai caro.",
+    s: "Mensalidade, tempo e esforço merecem retorno. Aminoácidos completos para apoiar sua recuperação, treino após treino.",
+    cta: "Finalizar pedido",
+    art: "Academia escura com luz de recorte forte. Atleta suado sentado ao fundo. Pote em primeiro plano, iluminado de cima, foto de baixo para cima. Slogan discreto: “Together We Are Stronger”.",
+    must: "pote, atleta, slogan",
+    flag: "" }
+];
+
+const FORMATS = { "1000x1000": "1000x1000", "1080x1350": "1080x1350", "1080x1920": "1080x1920", all: "1000x1000 (feed), 1080x1350 (feed 4:5) e 1080x1920 (stories)" };
+const state = { fmt: "1000x1000", art: true, pillar: 0 };
+const pad = n => String(n).padStart(2, "0");
+const pillarOf = ad => PILLARS.find(p => p.id === ad.p);
+
+function briefText(ad) {
+  let t = "Desenvolver um post para tráfego pago com o Future Protein\n" +
+    "→ Especificações: " + FORMATS[state.fmt] + "\n\n" +
+    "Conteúdo:\n" + ad.h + "\n\n" + ad.s + "\n\n" +
+    "CTA na arte: " + ad.cta;
+  if (state.art) t += "\n\nDireção de arte:\n" + ad.art + "\n→ Obrigatório: " + ad.must;
+  return t;
+}
+function taskTitle(ad) { return "Future Protein | Remarketing | " + pad(ad.n) + " " + pillarOf(ad).name + ": " + ad.theme; }
+
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+function briefHTML(ad) {
+  return esc(briefText(ad)).replace(esc(ad.h), '<span class="hl">' + esc(ad.h) + "</span>");
+}
+
+function render() {
+  const list = document.getElementById("list");
+  list.innerHTML = PILLARS.filter(p => !state.pillar || p.id === state.pillar).map(p => `
+    <section class="pillar">
+      <h2>Pilar ${p.id} · ${p.name} <small>${p.note}</small></h2>
+      ${ADS.filter(a => a.p === p.id).map(a => `
+        <article class="card">
+          <div class="meta">
+            <span class="num">${pad(a.n)}</span>
+            <h3>${esc(a.theme)}</h3>
+            <span class="persona">Persona: <b>${esc(a.persona)}</b></span>
+          </div>
+          <div class="body">
+            <pre class="brief" id="brief-${a.n}">${briefHTML(a)}</pre>
+            ${a.flag ? `<div class="flag"><b>Validar antes de subir</b>${esc(a.flag)}</div>` : ""}
+            <div class="actions">
+              <button class="btn" type="button" data-copy="brief" data-n="${a.n}">Copiar briefing</button>
+              <button class="btn ghost" type="button" data-copy="title" data-n="${a.n}">Copiar título da tarefa</button>
+            </div>
+          </div>
+        </article>`).join("")}
+    </section>`).join("");
+}
+
+function renderChips() {
+  const opts = [{ id: 0, name: "Todos" }].concat(PILLARS);
+  document.getElementById("chips").innerHTML = opts.map(p =>
+    `<button type="button" class="chip" data-pillar="${p.id}" aria-pressed="${state.pillar === p.id}">${p.id ? p.id + " " : ""}${p.name}</button>`).join("");
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { el.hidden = true; }, 1800);
+}
+function selectNode(node) {
+  const r = document.createRange(); r.selectNodeContents(node);
+  const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+}
+function copy(text, btn, fallbackNode, label) {
+  const ok = () => {
+    toast(label);
+    if (btn) { const old = btn.textContent; btn.textContent = "Copiado"; btn.classList.add("done"); setTimeout(() => { btn.textContent = old; btn.classList.remove("done"); }, 1500); }
+  };
+  const fail = () => {
+    if (fallbackNode) { selectNode(fallbackNode); toast("Texto selecionado. Use Ctrl+C (ou Cmd+C) para copiar."); }
+    else toast("Não deu para copiar automaticamente. Selecione o texto e copie.");
+  };
+  try { navigator.clipboard.writeText(text).then(ok, fail); } catch (e) { fail(); }
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-copy]");
+  if (b) {
+    const ad = ADS.find(a => a.n === +b.dataset.n);
+    if (b.dataset.copy === "brief") copy(briefText(ad), b, document.getElementById("brief-" + ad.n), "Briefing " + pad(ad.n) + " copiado");
+    else copy(taskTitle(ad), b, null, "Título copiado");
+    return;
+  }
+  const c = e.target.closest("[data-pillar]");
+  if (c) { state.pillar = +c.dataset.pillar; renderChips(); render(); }
+});
+document.getElementById("fmt").addEventListener("change", e => { state.fmt = e.target.value; render(); });
+document.getElementById("art").addEventListener("change", e => { state.art = e.target.checked; render(); });
+document.getElementById("copyAll").addEventListener("click", e => {
+  const ads = ADS.filter(a => !state.pillar || a.p === state.pillar);
+  const all = ads.map(a => "=== " + taskTitle(a) + " ===\n\n" + briefText(a)).join("\n\n\n");
+  copy(all, e.currentTarget, document.getElementById("list"), ads.length + " briefings copiados");
+});
+
+state.fmt = document.getElementById("fmt").value;
+state.art = document.getElementById("art").checked;
+renderChips(); render();
+</script>

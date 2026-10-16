@@ -242,7 +242,10 @@ function briefText(ad) {
   t += "\n\nCTA na arte: " + ad.cta;
   return t;
 }
-function taskTitle(ad) { return "Future Protein | Remarketing | " + pad(ad.n) + " " + pillarOf(ad).name + ": " + ad.theme; }
+function taskTitle(ad) {
+  const kind = state.fmt === "1080x1920" ? "Stories" : state.fmt === "all" ? "Post/Stories" : "Post";
+  return kind + " [PILAR " + ad.p + "] - " + ad.h + " (Future Protein - Remkt)";
+}
 
 const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 function briefHTML(ad) {

@@ -97,7 +97,7 @@ main { padding-block: 24px 64px; display: grid; gap: 40px; }
   <h1>Briefings Future Protein</h1>
   <p class="lead">15 posts em 5 pilares, com a copy reescrita para caber na arte e sem promessas que a Meta ou a Anvisa barram. Cada card já sai no modelo do ClickUp: escolha o formato, clique em <b>Copiar briefing</b> e cole na descrição da tarefa.</p>
   <div class="rules">
-    <div><strong>Copy curta na arte</strong>Título de até 9 palavras e apoio de até 25. O restante vai na legenda do anúncio.</div>
+    <div><strong>Copy curta na arte</strong>Título de até 9 palavras e apoio de até 25. Direção criativa em uma ou duas frases, logo abaixo das especificações.</div>
     <div><strong>Fatos usados</strong>Frete grátis acima de R$ 99, 15% de cashback, laudo de cada lote público no site, matéria-prima importada.</div>
     <div><strong>Caixas amarelas</strong>O que precisa ser confirmado antes de subir. Elas não vão para o texto copiado.</div>
   </div>
@@ -114,7 +114,7 @@ main { padding-block: 24px 64px; display: grid; gap: 40px; }
         <option value="all">Feed + 4:5 + stories</option>
       </select>
     </div>
-    <label class="check" for="art"><input type="checkbox" id="art" checked> Incluir direção de arte</label>
+    <label class="check" for="art"><input type="checkbox" id="art" checked> Incluir direção criativa</label>
     <div class="chips" id="chips" role="group" aria-label="Filtrar por pilar"></div>
     <span class="spacer"></span>
     <button class="btn ghost" id="copyAll" type="button">Copiar todos</button>
@@ -135,114 +135,97 @@ const PILLARS = [
 
 const ADS = [
   { n: 1, p: 1, theme: "Sabor sem gosto de terra", persona: "O Cliente Inseguro",
-    h: "“Achei que ia ter gosto de terra. Errei.”",
-    s: "Future Protein: shake cremoso, sem grumos e sem retrogosto. Proteína 100% vegetal com aminoácidos completos.",
+    art: "Cozinha clara, luz natural. Copo com shake cremoso ao lado do pote; card de avaliação 5 estrelas no canto superior esquerdo, com cara de post de Instagram.",
+    h: "Proteína vegetal com gosto de terra? Aqui não.",
+    s: "Future Protein: shake cremoso, sem grumos e sem retrogosto. 100% vegetal, com aminoácidos completos.",
+    slot: "Card de avaliação: [colar 1 avaliação 5 estrelas sobre sabor, com nome e cidade]",
     cta: "Quero experimentar",
-    art: "Cozinha clara com luz natural de manhã. Copo de vidro com o shake cremoso, sem grumos, ao lado do pote com o rótulo nítido. Sobre a foto, no canto superior esquerdo, um card de avaliação no estilo Instagram/WhatsApp com 5 estrelas. Tem que parecer post de rede social, não catálogo.",
-    must: "pote, copo com o shake, card com avaliação real de cliente",
-    flag: "Use uma avaliação real, com autorização do cliente. Tirei “centenas de clientes” porque não temos esse número confirmado." },
+    flag: "Use avaliações reais da loja (com autorização). Monte um banco com 10 a 20 avaliações uma vez e vá reaproveitando nas réplicas." },
   { n: 2, p: 1, theme: "Desempenho no treino", persona: "O Comprador Prático",
-    h: "“Troquei pelo vegetal e não perdi nada no treino.”",
-    s: "Aminoácidos completos para apoiar sua recuperação, com digestão leve que não pesa antes nem depois do treino.",
+    art: "Academia real, fundo desfocado. Pessoa segurando a coqueteleira pós-treino, pote apoiado no banco, print de review no topo. Grafite com o verde da linha.",
+    h: "Proteína vegetal aguenta treino pesado?",
+    s: "Quem treina com Future Protein responde. Aminoácidos completos para apoiar sua recuperação, com digestão leve.",
+    slot: "Print de review: [colar 1 avaliação real sobre treino ou digestão]",
     cta: "Ver avaliações",
-    art: "Academia real com o fundo desfocado. Pessoa treinada segurando a coqueteleira depois do treino; o pote apoiado no banco, com luz lateral. Print de review no topo da arte. Tons de grafite e preto com o verde da linha Future Protein.",
-    must: "pote, coqueteleira, print de review real",
-    flag: "A versão do Axoly dizia “vi o ganho muscular acontecer rápido”. Promessa de resultado é reprovada pela Meta e vai contra a regra da Anvisa para suplementos. O depoimento precisa ser real." },
+    flag: "Puxe a avaliação do mesmo banco de reviews reais. Evite reviews que prometam resultado (“ganhei X kg”): a Meta reprova." },
   { n: 3, p: 1, theme: "Indicação de especialista", persona: "O Buscador de Resultado",
+    art: "Mesa de consultório clara, pote no centro. Ao lado, card com foto, nome e CRN da nutricionista.",
     h: "Recomendado por quem entende de nutrição.",
     s: "Aminoácidos completos, matéria-prima importada de alta pureza e laudo de cada lote aberto para você conferir.",
+    slot: "Card da especialista: [nome, CRN e frase curta da nutricionista parceira]",
     cta: "Garanta o seu",
-    art: "Mesa de consultório clara e organizada, pote no centro em primeiro plano. Ao lado, card com foto, nome e CRN da nutricionista e uma frase curta dela sobre o produto. Luz neutra, visual limpo.",
-    must: "pote, card da especialista com CRN, selo “Laudo de cada lote”",
-    flag: "Só suba com uma nutricionista real: nome, CRN e autorização por escrito para usar imagem e frase." },
+    flag: "Só suba com uma nutricionista real: nome, CRN e autorização por escrito. Uma parceira já basta para todas as réplicas." },
 
   { n: 4, p: 2, theme: "Da caixa ao scoop", persona: "O Comparador de Preço",
+    art: "Vista de cima, fundo cinza fosco. Caixa da Strongest aberta, pote com o lacre saindo e scoop com pó fino e solto.",
     h: "Do lacre ao shake: qualidade que dá para ver.",
     s: "Pote lacrado, pó fino e solto, sem grumos. Frete grátis acima de R$ 99 e postagem em até 1 dia útil.",
-    cta: "Conferir detalhes",
-    art: "Foto de cima (flat lay) sobre fundo cinza fosco. Caixa da Strongest aberta, pote fora da caixa com o lacre sendo retirado e scoop com uma dose de pó fino e solto. Sombras longas e suaves.",
-    must: "caixa com a marca, pote, scoop com o pó",
-    flag: "" },
+    cta: "Conferir detalhes", flag: "" },
   { n: 5, p: 2, theme: "Mistura fácil, sem areia", persona: "O Cliente Premium",
+    art: "Close no copo transparente com shake liso e gotas em movimento. Pote desfocado ao fundo; degradê de verde-oliva para grafite.",
     h: "Agitou, misturou. Sem pelotas, sem areia.",
     s: "O pó fino do Future Protein se dissolve fácil e vira um shake cremoso de verdade.",
-    cta: "Conhecer agora",
-    art: "Close no copo transparente com o shake homogêneo e gotas em movimento. Pote ao fundo, levemente desfocado, com o logo legível. Fundo em degradê de verde-oliva para grafite. Título no topo com bastante respiro.",
-    must: "copo transparente sem grumos à vista, pote ao fundo",
-    flag: "" },
+    cta: "Conhecer agora", flag: "" },
   { n: 6, p: 2, theme: "Rotina da manhã", persona: "O Explorador de Novidades",
+    art: "Bancada de madeira com sol da manhã. Pote aberto, coqueteleira e frutas; caixa da Strongest ao fundo.",
     h: "Sua nova rotina chega em uma caixa.",
     s: "Proteína 100% vegetal, cremosa e de digestão leve para começar o dia. E toda compra volta 15% em cashback.",
-    cta: "Pedir o meu",
-    art: "Bancada de madeira clara com sol da manhã. Pote aberto no centro, coqueteleira e uma tigela de frutas ao lado; caixa da Strongest ao fundo; fone e toalha discretos no canto. Clima acolhedor, foco no pote.",
-    must: "pote, caixa da Strongest, coqueteleira",
-    flag: "" },
+    cta: "Pedir o meu", flag: "" },
 
   { n: 7, p: 3, theme: "Laudo aberto", persona: "O Cliente Inseguro",
+    art: "Laboratório com luz fria, desfocado ao fundo. Pote lacrado e laudo impresso em primeiro plano.",
     h: "Cada lote vai para o laboratório. Cada laudo fica público.",
     s: "Você não precisa confiar só na nossa palavra: os laudos do Future Protein estão no site para qualquer pessoa conferir.",
     cta: "Ver laudos",
-    art: "Laboratório limpo com luz fria. Ao fundo, desfocadas, mãos de luva com uma amostra. Em primeiro plano, o pote lacrado ao lado de um laudo impresso. Visual sério e nítido.",
-    must: "pote, laudo, selo “Laudo de cada lote”",
-    flag: "Use um laudo real do Future Protein (strongest.com.br/pages/laudos), não um documento genérico." },
+    flag: "Use um laudo real do Future Protein (strongest.com.br/pages/laudos)." },
   { n: 8, p: 3, theme: "História do fundador", persona: "O Comprador Prático",
+    art: "Retrato do Marcus segurando o pote, luz lateral marcada. Ele à direita, texto à esquerda.",
     h: "Criado por quem treina desde os 15 anos.",
     s: "O Marcus cansou de escolher entre importado caro e nacional fraco. Criou a Strongest para acabar com essa escolha.",
     cta: "Conhecer a história",
-    art: "Retrato do Marcus segurando o pote, luz lateral marcada. Ele no terço direito, espaço livre à esquerda para o texto. Preto, carvão e o verde do produto. Assinatura discreta: “Marcus, fundador da Strongest”.",
-    must: "foto real do Marcus, pote",
-    flag: "Precisa de foto real do Marcus. Banco de imagem aqui derruba a credibilidade do post." },
+    flag: "Precisa de foto real do Marcus." },
   { n: 9, p: 3, theme: "Origem da matéria-prima", persona: "O Buscador de Resultado",
+    art: "Ambiente de produção em inox, luz técnica. Pote em primeiro plano com os selos “Matéria-prima importada” e “Laudo de cada lote”.",
     h: "Matéria-prima importada. Laudo em cada lote.",
     s: "O Future Protein começa com matéria-prima de alta pureza e termina na análise de laboratório. O que está no rótulo está no pote.",
     cta: "Saiba mais",
-    art: "Cena de produção e controle de qualidade: aço inox, luz técnica branca com toque azulado. Pote em primeiro plano, no centro-inferior. Dois selos laterais: “Matéria-prima importada” e “Laudo de cada lote”.",
-    must: "pote, os dois selos",
-    flag: "O Axoly falava em “tecnologia própria” e “peneiramento ultrassônico”. Não temos isso confirmado, então troquei pelos fatos da base. Não usar imagem que sugira fábrica própria sem confirmar." },
+    flag: "Não use imagem que sugira fábrica própria sem confirmar." },
 
   { n: 10, p: 4, theme: "Comparativo com vegetal comum", persona: "O Comparador de Preço",
+    art: "Tela dividida. Esquerda cinza: pote genérico com X em “Gosto de terra”, “Textura arenosa”, “Mistura difícil”. Direita escura: Future Protein com check em “Aminoácidos completos”, “Sabor cremoso”, “Dissolve fácil”, “Laudo de cada lote”.",
     h: "Vegetal não precisa ser incompleta nem ter gosto ruim.",
     s: "Aminoácidos completos, textura cremosa e mistura fácil. Compare e veja a diferença.",
     cta: "Ver comparativo",
-    art: "Tela dividida ao meio. Esquerda cinza e apagada: pote genérico sem marca, com X vermelho em “Gosto de terra”, “Textura arenosa” e “Mistura difícil”. Direita escura com verde: pote Future Protein iluminado, com check em “Aminoácidos completos”, “Sabor cremoso”, “Dissolve fácil” e “Laudo de cada lote”. Tem que ser lido em 3 segundos.",
-    must: "pote, lista comparativa",
     flag: "Não mostrar nem citar marca concorrente." },
   { n: 11, p: 4, theme: "Leve no estômago", persona: "O Cliente Premium",
+    art: "Fundo off-white, pote sobre pedestal. Linhas finas apontando 4 atributos: 100% vegetal, sem lactose, aminoácidos completos, laudo de cada lote.",
     h: "Leve no estômago. Completa no músculo.",
     s: "Proteína 100% vegetal e sem lactose, com aminoácidos completos e digestão leve. Pureza comprovada em laudo.",
     cta: "Consultar laudos",
-    art: "Fundo off-white limpo, pote sobre um pedestal cinza fosco. Linhas finas apontando para quatro atributos: “100% vegetal”, “Sem lactose”, “Aminoácidos completos”, “Laudo de cada lote”. Elegante, sem poluição visual.",
-    must: "pote, os quatro atributos",
-    flag: "Tirei “recomendação médica” e “zero desconforto gástrico”, que são alegações de saúde. Confirme que “sem lactose” está no rótulo." },
+    flag: "Confirme que “sem lactose” está no rótulo." },
   { n: 12, p: 4, theme: "Por dentro da dose", persona: "O Explorador de Novidades",
+    art: "Fundo escuro com verde profundo, pote com luz de borda verde. Infográfico com proteína (g), calorias e aminoácidos da porção.",
     h: "Por dentro de uma dose de Future Protein.",
     s: "[X] g de proteína vegetal, aminoácidos completos e zero lactose. Tudo o que está no rótulo, comprovado em laudo.",
     cta: "Ver tabela nutricional",
-    art: "Fundo escuro em degradê para verde profundo. Pote em ângulo 3/4 com luz de borda verde. Infográfico limpo, estilo painel técnico, com os números da porção: proteína (g), calorias e aminoácidos.",
-    must: "pote, números da tabela nutricional real",
-    flag: "Preencha os [X] com a tabela nutricional. O Axoly citava “micronização”: só use se o fornecedor confirmar." },
+    flag: "Preencha os [X] com a tabela nutricional." },
 
   { n: 13, p: 5, theme: "Padrão importado, preço nacional", persona: "O Cliente Inseguro",
+    art: "Fundo grafite, pote sobre base espelhada. Selos: “Padrão importado | Fabricação nacional”, “Frete grátis acima de R$ 99” e “15% de cashback”.",
     h: "Padrão de importado. Preço de nacional.",
     s: "Matéria-prima importada e laudo de cada lote, sem pagar dólar nem taxa de importação. E 15% de cashback na próxima compra.",
-    cta: "Comprar agora",
-    art: "Fundo grafite de estúdio, pote sobre base espelhada preta. No topo, selo “Padrão importado | Fabricação nacional”. Dois selos menores: “Frete grátis acima de R$ 99” e “15% de cashback”. Sofisticado, sem cara de liquidação.",
-    must: "pote, os três selos",
-    flag: "" },
+    cta: "Comprar agora", flag: "" },
   { n: 14, p: 5, theme: "Custo por dose", persona: "O Comprador Prático",
+    art: "Bancada dividida ao meio: café com “R$ [X]” à esquerda; scoop e pote com “R$ [X] por dose” em número grande à direita.",
     h: "R$ [X] por dose. Menos que um cafezinho.",
     s: "Cada dose entrega [X] g de proteína vegetal completa. Frete grátis acima de R$ 99 e 15% de cashback.",
     cta: "Comprar agora",
-    art: "Bancada de madeira dividida ao meio por uma linha pontilhada. Esquerda: xícara de café com “R$ [X] um cafezinho”. Direita: scoop cheio e pote, com “R$ [X] por dose” em número grande. Luz quente de café da manhã.",
-    must: "pote, scoop, os dois preços",
-    flag: "Calcule o preço do pote dividido pelo número de doses. Só use a comparação com o café se a dose sair mesmo mais barata." },
+    flag: "Calcule preço do pote ÷ número de doses. Só compare com o café se a dose sair mesmo mais barata." },
   { n: 15, p: 5, theme: "O custo de treinar sem resultado", persona: "O Buscador de Resultado",
+    art: "Academia escura, luz de recorte. Atleta suado ao fundo, pote em primeiro plano visto de baixo. Slogan “Together We Are Stronger”.",
     h: "Treinar sem a proteína certa sai caro.",
     s: "Mensalidade, tempo e esforço merecem retorno. Aminoácidos completos para apoiar sua recuperação, treino após treino.",
-    cta: "Finalizar pedido",
-    art: "Academia escura com luz de recorte forte. Atleta suado sentado ao fundo. Pote em primeiro plano, iluminado de cima, foto de baixo para cima. Slogan discreto: “Together We Are Stronger”.",
-    must: "pote, atleta, slogan",
-    flag: "" }
+    cta: "Finalizar pedido", flag: "" }
 ];
 
 const FORMATS = { "1000x1000": "1000x1000", "1080x1350": "1080x1350", "1080x1920": "1080x1920", all: "1000x1000 (feed), 1080x1350 (feed 4:5) e 1080x1920 (stories)" };
@@ -252,10 +235,11 @@ const pillarOf = ad => PILLARS.find(p => p.id === ad.p);
 
 function briefText(ad) {
   let t = "Desenvolver um post para tráfego pago com o Future Protein\n" +
-    "→ Especificações: " + FORMATS[state.fmt] + "\n\n" +
-    "Conteúdo:\n" + ad.h + "\n\n" + ad.s + "\n\n" +
-    "CTA na arte: " + ad.cta;
-  if (state.art) t += "\n\nDireção de arte:\n" + ad.art + "\n→ Obrigatório: " + ad.must;
+    "→ Especificações: " + FORMATS[state.fmt];
+  if (state.art) t += "\n→ Direção criativa: " + ad.art;
+  t += "\n\nConteúdo:\n" + ad.h + "\n\n" + ad.s;
+  if (ad.slot) t += "\n\n" + ad.slot;
+  t += "\n\nCTA na arte: " + ad.cta;
   return t;
 }
 function taskTitle(ad) { return "Future Protein | Remarketing | " + pad(ad.n) + " " + pillarOf(ad).name + ": " + ad.theme; }

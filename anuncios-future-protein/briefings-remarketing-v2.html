@@ -1,0 +1,342 @@
+<title>Briefings Future Protein v2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky toolbar + one column of briefing cards; each card shows exactly the text that gets copied. */
+:root {
+  --bg: #f2f4f1;
+  --surface: #ffffff;
+  --ink: #17201b;
+  --muted: #5d6a62;
+  --line: #d7ddd8;
+  --accent: #1d6b45;
+  --accent-ink: #ffffff;
+  --accent-soft: #e2efe7;
+  --warn: #8a5a00;
+  --warn-soft: #fbf1dc;
+  --code-bg: #f7f9f7;
+  --display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111613; --surface: #19201c; --ink: #e6ece8; --muted: #9aa8a0; --line: #2c3631;
+    --accent: #4fbf85; --accent-ink: #0d1a13; --accent-soft: #1d3428; --warn: #f0c46b; --warn-soft: #2e2615; --code-bg: #141a17;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111613; --surface: #19201c; --ink: #e6ece8; --muted: #9aa8a0; --line: #2c3631;
+  --accent: #4fbf85; --accent-ink: #0d1a13; --accent-soft: #1d3428; --warn: #f0c46b; --warn-soft: #2e2615; --code-bg: #141a17;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.wrap { max-width: 920px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header.top { padding-block: 40px 24px; display: grid; gap: 12px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 6vw, 52px); line-height: 1; margin: 0; text-wrap: balance; text-transform: uppercase; letter-spacing: .01em; }
+.lead { margin: 0; max-width: 64ch; color: var(--muted); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 4px; }
+.stats div { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--muted); line-height: 1.3; }
+.stats b { display: block; font-family: var(--display); font-size: 30px; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 8px; }
+.rules div { border-top: 2px solid var(--accent); padding-top: 8px; font-size: 14px; color: var(--muted); }
+.rules strong { display: block; color: var(--ink); font-weight: 600; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.bar .wrap { padding-block: 10px; display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+.field { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.field label { color: var(--muted); }
+select, .chip, button { font: inherit; font-size: 14px; }
+select { background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
+.check { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.spacer { flex: 1; }
+
+button.btn { border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); border-radius: 6px; padding: 7px 14px; font-weight: 600; cursor: pointer; }
+button.btn.ghost { background: transparent; color: var(--accent); }
+button.btn.done { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+button:focus-visible, select:focus-visible, .chip:focus-visible, .check input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+main { padding-block: 24px 64px; display: grid; gap: 40px; }
+.pillar { display: grid; gap: 16px; }
+.pillar h2 { font-family: var(--display); font-weight: 700; font-size: 26px; text-transform: uppercase; letter-spacing: .02em; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.pillar h2 small { font-family: var(--body); font-weight: 400; font-size: 15px; text-transform: none; letter-spacing: 0; color: var(--muted); }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; display: grid; grid-template-columns: 200px minmax(0, 1fr); }
+.meta { padding: 18px; border-right: 1px solid var(--line); display: grid; align-content: start; gap: 10px; }
+.num { font-family: var(--display); font-weight: 700; font-size: 44px; line-height: .9; color: var(--accent); }
+.meta h3 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.3; }
+.tag { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.persona { font-size: 14px; color: var(--muted); }
+.persona b { color: var(--ink); font-weight: 500; }
+.body { padding: 18px; display: grid; gap: 14px; min-width: 0; }
+.brief { margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; font-family: var(--body); font-size: 15px; line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
+.brief .hl { font-weight: 600; }
+.flag { background: var(--warn-soft); color: var(--ink); border-radius: 6px; padding: 10px 12px; font-size: 14px; display: grid; gap: 2px; }
+.flag b { color: var(--warn); font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 16px; border-radius: 6px; font-size: 14px; }
+
+@media (max-width: 680px) {
+  .card { grid-template-columns: 1fr; }
+  .meta { border-right: 0; border-bottom: 1px solid var(--line); grid-template-columns: auto 1fr; align-items: center; column-gap: 14px; }
+  .meta .num { grid-row: span 3; }
+}
+@media (prefers-reduced-motion: no-preference) { button.btn { transition: background .15s, color .15s; } }
+</style>
+
+<header class="wrap top">
+  <span class="eyebrow">Strongest Supplements · Remarketing · Versão 2 · Público da pesquisa pós-compra</span>
+  <h1>Briefings Future Protein v2</h1>
+  <p class="lead">Os mesmos 5 pilares, com a copy reescrita para quem de fato compra da Strongest, segundo 784 respostas do questionário pós-compra. As provas sociais usam frases reais de clientes da pesquisa.</p>
+  <div class="stats">
+    <div><b>66%</b>têm mais de 45 anos</div>
+    <div><b>58%</b>são mulheres</div>
+    <div><b>63%</b>decidem pela qualidade</div>
+    <div><b>78%</b>conheceram pelo Instagram</div>
+    <div><b>43%</b>preferem cupom de desconto</div>
+    <div><b>45%</b>compram quando o pote acaba</div>
+  </div>
+  <div class="rules">
+    <div><strong>Quem aparece na arte</strong>Pessoas reais de 40 anos ou mais, na maioria mulheres. Nada de modelo fitness de 25 anos.</div>
+    <div><strong>Leitura fácil</strong>Fonte grande e bom contraste: o público lê no celular, quase sempre à noite.</div>
+    <div><strong>O que pesa na escolha</strong>Sabor sem resíduo, sem lactose, leve no estômago, qualidade comprovada e cupom.</div>
+    <div><strong>Caixas amarelas</strong>O que confirmar antes de subir. Elas não vão para o texto copiado.</div>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="field">
+      <label for="fmt">Formato</label>
+      <select id="fmt">
+        <option value="1000x1000">1000x1000 (feed)</option>
+        <option value="1080x1350">1080x1350 (feed 4:5)</option>
+        <option value="1080x1920">1080x1920 (stories)</option>
+        <option value="all">Feed + 4:5 + stories</option>
+      </select>
+    </div>
+    <label class="check" for="art"><input type="checkbox" id="art" checked> Incluir direção criativa</label>
+    <div class="chips" id="chips" role="group" aria-label="Filtrar por pilar"></div>
+    <span class="spacer"></span>
+    <button class="btn ghost" id="copyAll" type="button">Copiar todos</button>
+  </div>
+</div>
+
+<main class="wrap" id="list"></main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const PILLARS = [
+  { id: 1, name: "Prova social", note: "Frases reais da pesquisa pós-compra" },
+  { id: 2, name: "Experiência real", note: "O produto na rotina de quem compra" },
+  { id: 3, name: "Bastidores", note: "Qualidade que dá para conferir" },
+  { id: 4, name: "Prova técnica", note: "O que tem em cada dose" },
+  { id: 5, name: "Preço e valor", note: "Cupom, combo e custo por dose" }
+];
+
+const ADS = [
+  { n: 1, p: 1, theme: "Sabor de verdade", persona: "Quem já se frustrou com proteína vegana",
+    art: "Mulher de 45+ em cozinha clara, sorriso natural, segurando o copo com o shake cremoso; pote ao lado. Card de depoimento no topo, estilo comentário de Instagram.",
+    h: "Proteína vegetal que dá gosto de tomar.",
+    s: "100% vegetal, cremosa e sem gosto residual. Quem experimentou aprova.",
+    slot: "Card de depoimento: “Melhor whey vegano que já tomei.” (Cliente Strongest, 45+)",
+    cta: "Quero experimentar",
+    flag: "Frase real da pesquisa. Assine só como “Cliente Strongest, 45+”, sem nome nem foto do cliente, e sem estrelas (ninguém deu nota)." },
+  { n: 2, p: 1, theme: "Pensado para quem tem problema com lactose", persona: "Mulher 45+ com restrição alimentar",
+    art: "Mulher de 45+ em mesa de café da manhã leve, copo com shake e pote em destaque. Card de depoimento ao lado do copo.",
+    h: "Sem lactose e leve para o seu dia a dia.",
+    s: "Future Protein é 100% vegetal, com aminoácidos completos e digestão leve. Para quem sente o whey tradicional pesar.",
+    slot: "Card de depoimento: “Saber que o produto foi pensado para pessoas que têm problema com lactose.” (Cliente Strongest, 45+)",
+    cta: "Conhecer o Future Protein",
+    flag: "Frase real da pesquisa (resposta a “o que mais gostou”). Assine só como “Cliente Strongest, 45+”." },
+  { n: 3, p: 1, theme: "Resultado na dieta e no treino", persona: "45+ que quer manter e ganhar massa",
+    art: "Homem de 45+ na academia, roupa de treino comum, segurando a coqueteleira depois da musculação. Card de depoimento no topo.",
+    h: "Massa muscular depois dos 40 também é prioridade.",
+    s: "Aminoácidos completos para apoiar seus treinos, em uma proteína vegetal leve e gostosa.",
+    slot: "Card de depoimento: “Estou muito satisfeito com os resultados obtidos na minha dieta e treinamento usando o meu Future Protein.” (Cliente Strongest, 45+)",
+    cta: "Ver o Future Protein",
+    flag: "Frase real da pesquisa. Assine só como “Cliente Strongest, 45+”. Não escreva “você tem mais de 40?” na arte: a Meta reprova anúncio que aponta a idade de quem vê." },
+
+  { n: 4, p: 2, theme: "Sem resíduo no copo", persona: "Quem já se frustrou com proteína vegana",
+    art: "Mãos de mulher de 45+ agitando a coqueteleira; close no copo transparente com shake liso e sem pó no fundo. Pote ao fundo, desfocado.",
+    h: "Bateu, misturou, tomou. Sem resíduo no copo.",
+    s: "Pó fino que se dissolve fácil e vira um shake cremoso, sem aquele fundo arenoso.",
+    cta: "Conhecer agora", flag: "" },
+  { n: 5, p: 2, theme: "Café da manhã com mais proteína", persona: "Mulher 45+ que cuida da saúde",
+    art: "Mulher de 45+ preparando um smoothie em cozinha clara: liquidificador, frutas e o pote aberto. Luz da manhã, clima leve.",
+    h: "Seu café da manhã com mais proteína.",
+    s: "Bata com fruta, misture no iogurte ou tome só com água. 100% vegetal e sem lactose.",
+    cta: "Ver sabores", flag: "" },
+  { n: 6, p: 2, theme: "O pote está no fim", persona: "Quem compra quando o estoque acaba",
+    art: "Pote de Future Protein quase vazio, scoop raspando o fundo. Ao lado, uma caixa nova da Strongest fechada. Fundo claro e limpo.",
+    h: "Seu pote está no fim? O próximo sai em 1 dia útil.",
+    s: "Postagem em até 1 dia útil, frete grátis acima de R$ 99 e 15% de cashback para a próxima compra.",
+    cta: "Repor agora",
+    flag: "Não prometa prazo de entrega: o prazo depende da região. “Sai em 1 dia útil” é a postagem, e isso está confirmado." },
+
+  { n: 7, p: 3, theme: "Laudo aberto", persona: "Quem decide pela qualidade",
+    art: "Mulher de 45+ olhando o laudo no celular, sentada à mesa, pote ao lado. Na tela, a página de laudos do site.",
+    h: "Qualidade que você pode conferir.",
+    s: "Cada lote do Future Protein passa por análise em laboratório, e o laudo fica aberto no site.",
+    cta: "Ver laudos",
+    flag: "Use um print real da página strongest.com.br/pages/laudos." },
+  { n: 8, p: 3, theme: "História do fundador", persona: "45+ que quer manter e ganhar massa",
+    art: "Retrato do Marcus segurando o pote, luz lateral marcada. Ele à direita, texto à esquerda.",
+    h: "Criado por quem treina desde os 15 anos.",
+    s: "O Marcus criou a Strongest para ter no Brasil suplementos à altura dos importados. O Future Protein é a versão vegetal dessa ideia.",
+    cta: "Conhecer a história",
+    flag: "Precisa de foto real do Marcus." },
+  { n: 9, p: 3, theme: "Compare o que vai no pote", persona: "Quem pesquisa em outros sites antes",
+    art: "Pote em primeiro plano sobre bancada clara, com os selos “Matéria-prima importada” e “Laudo de cada lote”. Ao fundo, desfocado, um celular com várias abas de lojas.",
+    h: "Antes de comparar preço, compare o que vai no pote.",
+    s: "Future Protein: matéria-prima importada e laudo de cada lote, aberto no site para você conferir.",
+    cta: "Comparar agora", flag: "Não mostrar nem citar loja ou marca concorrente." },
+
+  { n: 10, p: 4, theme: "Comparativo com vegana comum", persona: "Quem já se frustrou com proteína vegana",
+    art: "Tela dividida. Esquerda cinza: pote genérico com X em “Gosto de terra”, “Textura arenosa”, “Resíduo no copo”. Direita clara com verde: Future Protein com check em “Sabor de verdade”, “Cremoso”, “Dissolve fácil”, “Aminoácidos completos”.",
+    h: "Já se decepcionou com proteína vegana?",
+    s: "O Future Protein foi feito para mudar isso: sabor de verdade, textura cremosa e aminoácidos completos.",
+    cta: "Ver comparativo", flag: "Não mostrar nem citar marca concorrente." },
+  { n: 11, p: 4, theme: "Leve no estômago", persona: "Mulher 45+ com restrição alimentar",
+    art: "Fundo claro, pote sobre pedestal. Linhas finas apontando 4 atributos: 100% vegetal, sem lactose, aminoácidos completos, laudo de cada lote. Letras grandes.",
+    h: "Leve no estômago. Completa em proteína.",
+    s: "100% vegetal, sem lactose e com aminoácidos completos. Para quem quer proteína sem abrir mão do bem-estar.",
+    cta: "Consultar laudos",
+    flag: "Clientes citaram “sem glúten” e “sem açúcar”. Se o rótulo confirmar, troque “laudo de cada lote” por um desses atributos." },
+  { n: 12, p: 4, theme: "Por dentro da dose", persona: "45+ que quer manter e ganhar massa",
+    art: "Fundo claro com verde profundo, pote em destaque. Infográfico simples e grande com proteína (g), calorias e aminoácidos da porção.",
+    h: "[X] g de proteína vegetal em cada dose.",
+    s: "Aminoácidos completos para apoiar a manutenção e o ganho de massa muscular, junto com treino e boa alimentação.",
+    cta: "Ver tabela nutricional",
+    flag: "Preencha os [X] com a tabela nutricional." },
+
+  { n: 13, p: 5, theme: "Cupom de primeira compra", persona: "Quem prefere cupom de desconto",
+    art: "Pote em destaque sobre fundo verde da marca. Cupom “PRIMEIRACOMPRA” em etiqueta grande, estilo ticket recortado. Selos menores: “Frete grátis acima de R$ 99” e “15% de cashback”.",
+    h: "Primeira compra? Ganhe 10% no Future Protein.",
+    s: "Use o cupom PRIMEIRACOMPRA. E ainda tem frete grátis acima de R$ 99 e 15% de cashback para a próxima.",
+    cta: "Usar meu cupom",
+    flag: "Suba só para quem nunca comprou (o cupom vale apenas na primeira compra). Os cupons não acumulam." },
+  { n: 14, p: 5, theme: "Custo por dose", persona: "Quem pesquisa em outros sites antes",
+    art: "Bancada clara: pote e scoop cheio, com “R$ [X] por dose” em número bem grande. Selo menor com frete grátis e cashback.",
+    h: "R$ [X] por dose de proteína vegetal.",
+    s: "Cada pote rende [X] doses. Com frete grátis acima de R$ 99 e 15% de cashback, a conta fica ainda melhor.",
+    cta: "Comprar agora",
+    flag: "Calcule preço do pote ÷ número de doses." },
+  { n: 15, p: 5, theme: "Combo com creatina", persona: "Quem prefere combo",
+    art: "Pote de Future Protein e pote de creatina lado a lado, com um laço ou faixa “Combo”. Fundo limpo, preço do combo em destaque.",
+    h: "Proteína e creatina: a dupla de quem treina.",
+    s: "Monte sua rotina com Future Protein e creatina em um kit que sai mais barato do que comprar separado.",
+    cta: "Ver combos",
+    flag: "Confirme que existe kit com Future Protein + creatina em strongest.com.br/collections/combos. Se não houver, use o kit que existir." }
+];
+
+const FORMATS = { "1000x1000": "1000x1000", "1080x1350": "1080x1350", "1080x1920": "1080x1920", all: "1000x1000 (feed), 1080x1350 (feed 4:5) e 1080x1920 (stories)" };
+const state = { fmt: "1000x1000", art: true, pillar: 0 };
+const pad = n => String(n).padStart(2, "0");
+const pillarOf = ad => PILLARS.find(p => p.id === ad.p);
+
+function briefText(ad) {
+  let t = "Desenvolver um post para tráfego pago com o Future Protein\n" +
+    "→ Especificações: " + FORMATS[state.fmt];
+  if (state.art) t += "\n→ Direção criativa: " + ad.art;
+  t += "\n\nConteúdo:\n" + ad.h + "\n\n" + ad.s;
+  if (ad.slot) t += "\n\n" + ad.slot;
+  t += "\n\nCTA na arte: " + ad.cta;
+  return t;
+}
+function taskTitle(ad) {
+  const kind = state.fmt === "1080x1920" ? "Stories" : state.fmt === "all" ? "Post/Stories" : "Post";
+  return kind + " [PILAR " + ad.p + "] - " + ad.h + " (Future Protein - Remkt)";
+}
+
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+function briefHTML(ad) {
+  return esc(briefText(ad)).replace(esc(ad.h), '<span class="hl">' + esc(ad.h) + "</span>");
+}
+
+function render() {
+  const list = document.getElementById("list");
+  list.innerHTML = PILLARS.filter(p => !state.pillar || p.id === state.pillar).map(p => `
+    <section class="pillar">
+      <h2>Pilar ${p.id} · ${p.name} <small>${p.note}</small></h2>
+      ${ADS.filter(a => a.p === p.id).map(a => `
+        <article class="card">
+          <div class="meta">
+            <span class="num">${pad(a.n)}</span>
+            <h3>${esc(a.theme)}</h3>
+            <span class="persona">Persona: <b>${esc(a.persona)}</b></span>
+          </div>
+          <div class="body">
+            <pre class="brief" id="brief-${a.n}">${briefHTML(a)}</pre>
+            ${a.flag ? `<div class="flag"><b>Validar antes de subir</b>${esc(a.flag)}</div>` : ""}
+            <div class="actions">
+              <button class="btn" type="button" data-copy="brief" data-n="${a.n}">Copiar briefing</button>
+              <button class="btn ghost" type="button" data-copy="title" data-n="${a.n}">Copiar título da tarefa</button>
+            </div>
+          </div>
+        </article>`).join("")}
+    </section>`).join("");
+}
+
+function renderChips() {
+  const opts = [{ id: 0, name: "Todos" }].concat(PILLARS);
+  document.getElementById("chips").innerHTML = opts.map(p =>
+    `<button type="button" class="chip" data-pillar="${p.id}" aria-pressed="${state.pillar === p.id}">${p.id ? p.id + " " : ""}${p.name}</button>`).join("");
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { el.hidden = true; }, 1800);
+}
+function selectNode(node) {
+  const r = document.createRange(); r.selectNodeContents(node);
+  const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+}
+function copy(text, btn, fallbackNode, label) {
+  const ok = () => {
+    toast(label);
+    if (btn) { const old = btn.textContent; btn.textContent = "Copiado"; btn.classList.add("done"); setTimeout(() => { btn.textContent = old; btn.classList.remove("done"); }, 1500); }
+  };
+  const fail = () => {
+    if (fallbackNode) { selectNode(fallbackNode); toast("Texto selecionado. Use Ctrl+C (ou Cmd+C) para copiar."); }
+    else toast("Não deu para copiar automaticamente. Selecione o texto e copie.");
+  };
+  try { navigator.clipboard.writeText(text).then(ok, fail); } catch (e) { fail(); }
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-copy]");
+  if (b) {
+    const ad = ADS.find(a => a.n === +b.dataset.n);
+    if (b.dataset.copy === "brief") copy(briefText(ad), b, document.getElementById("brief-" + ad.n), "Briefing " + pad(ad.n) + " copiado");
+    else copy(taskTitle(ad), b, null, "Título copiado");
+    return;
+  }
+  const c = e.target.closest("[data-pillar]");
+  if (c) { state.pillar = +c.dataset.pillar; renderChips(); render(); }
+});
+document.getElementById("fmt").addEventListener("change", e => { state.fmt = e.target.value; render(); });
+document.getElementById("art").addEventListener("change", e => { state.art = e.target.checked; render(); });
+document.getElementById("copyAll").addEventListener("click", e => {
+  const ads = ADS.filter(a => !state.pillar || a.p === state.pillar);
+  const all = ads.map(a => "=== " + taskTitle(a) + " ===\n\n" + briefText(a)).join("\n\n\n");
+  copy(all, e.currentTarget, document.getElementById("list"), ads.length + " briefings copiados");
+});
+
+state.fmt = document.getElementById("fmt").value;
+state.art = document.getElementById("art").checked;
+renderChips(); render();
+</script>

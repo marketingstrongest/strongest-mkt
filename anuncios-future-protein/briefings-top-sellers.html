@@ -1,0 +1,438 @@
+<title>Future Protein: top sellers</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky toolbar + one column of briefing cards; each card shows exactly the text that gets copied. */
+:root {
+  --bg: #f2f4f1;
+  --surface: #ffffff;
+  --ink: #17201b;
+  --muted: #5d6a62;
+  --line: #d7ddd8;
+  --accent: #1d6b45;
+  --accent-ink: #ffffff;
+  --accent-soft: #e2efe7;
+  --warn: #8a5a00;
+  --warn-soft: #fbf1dc;
+  --code-bg: #f7f9f7;
+  --display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111613; --surface: #19201c; --ink: #e6ece8; --muted: #9aa8a0; --line: #2c3631;
+    --accent: #4fbf85; --accent-ink: #0d1a13; --accent-soft: #1d3428; --warn: #f0c46b; --warn-soft: #2e2615; --code-bg: #141a17;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111613; --surface: #19201c; --ink: #e6ece8; --muted: #9aa8a0; --line: #2c3631;
+  --accent: #4fbf85; --accent-ink: #0d1a13; --accent-soft: #1d3428; --warn: #f0c46b; --warn-soft: #2e2615; --code-bg: #141a17;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.wrap { max-width: 920px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header.top { padding-block: 40px 24px; display: grid; gap: 12px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 6vw, 52px); line-height: 1; margin: 0; text-wrap: balance; text-transform: uppercase; letter-spacing: .01em; }
+.lead { margin: 0; max-width: 64ch; color: var(--muted); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 4px; }
+.stats div { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--muted); line-height: 1.3; }
+.stats b { display: block; font-family: var(--display); font-size: 30px; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+.learn { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 20px; }
+.learn h2 { margin: 0 0 8px; font-family: var(--display); font-size: 20px; text-transform: uppercase; letter-spacing: .02em; }
+.learn ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 15px; max-width: 75ch; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 8px; }
+.rules div { border-top: 2px solid var(--accent); padding-top: 8px; font-size: 14px; color: var(--muted); }
+.rules strong { display: block; color: var(--ink); font-weight: 600; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.bar .wrap { padding-block: 10px; display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+.field { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.field label { color: var(--muted); }
+select, .chip, button { font: inherit; font-size: 14px; }
+select { background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
+.check { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.spacer { flex: 1; }
+
+button.btn { border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); border-radius: 6px; padding: 7px 14px; font-weight: 600; cursor: pointer; }
+button.btn.ghost { background: transparent; color: var(--accent); }
+button.btn.done { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+button:focus-visible, select:focus-visible, .chip:focus-visible, .check input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+main { padding-block: 24px 64px; display: grid; gap: 40px; }
+.pillar { display: grid; gap: 16px; }
+.pillar h2 { font-family: var(--display); font-weight: 700; font-size: 26px; text-transform: uppercase; letter-spacing: .02em; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.pillar h2 small { font-family: var(--body); font-weight: 400; font-size: 15px; text-transform: none; letter-spacing: 0; color: var(--muted); }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; display: grid; grid-template-columns: 200px minmax(0, 1fr); }
+.meta { padding: 18px; border-right: 1px solid var(--line); display: grid; align-content: start; gap: 10px; }
+.num { font-family: var(--display); font-weight: 700; font-size: 44px; line-height: .9; color: var(--accent); }
+.meta h3 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.3; }
+.tag { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.persona { font-size: 14px; color: var(--muted); }
+.persona b { color: var(--ink); font-weight: 500; }
+.body { padding: 18px; display: grid; gap: 14px; min-width: 0; }
+.brief { margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; font-family: var(--body); font-size: 15px; line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
+.brief .hl { font-weight: 600; }
+.flag { background: var(--warn-soft); color: var(--ink); border-radius: 6px; padding: 10px 12px; font-size: 14px; display: grid; gap: 2px; }
+.flag b { color: var(--warn); font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 16px; border-radius: 6px; font-size: 14px; }
+
+@media (max-width: 680px) {
+  .card { grid-template-columns: 1fr; }
+  .meta { border-right: 0; border-bottom: 1px solid var(--line); grid-template-columns: auto 1fr; align-items: center; column-gap: 14px; }
+  .meta .num { grid-row: span 3; }
+}
+@media (prefers-reduced-motion: no-preference) { button.btn { transition: background .15s, color .15s; } }
+</style>
+
+<header class="wrap top">
+  <span class="eyebrow">Strongest Supplements · Variações dos top sellers · Pilares 17 a 22</span>
+  <h1>Future Protein: top sellers</h1>
+  <p class="lead">29 briefings: pelo menos 3 variações de cada um dos 5 anúncios que mais vendem, mais 12 posts novos que juntam essas fórmulas com o que aprendemos na pesquisa pós-compra. Cada briefing diz em qual top seller o designer deve se basear.</p>
+  <div class="learn">
+    <h2>O que os top sellers têm em comum</h2>
+    <ol>
+      <li><b>Título curto em caixa alta, em duas cores.</b> Frases de 2 a 4 palavras, em sequência: “Textura ultrafina. Dissolução incrível.” A parte que vende fica em verde.</li>
+      <li><b>Pergunta de identidade nos anúncios de sabor.</b> “É chocólatra de verdade?” e uma pílula verde que responde: “Cacau &amp; Avelã é a sua escolha.”</li>
+      <li><b>Benefícios em ícones.</b> De 3 a 4 ícones circulares com rótulo de 2 linhas, sempre concretos: “Dissolve rápido”, “Sem grumos”.</li>
+      <li><b>Fatos do rótulo como prova.</b> 25 g de proteína por dose, zero açúcar, zero lactose, vitaminas D e B12, prebióticos, rende 25 doses.</li>
+      <li><b>Pote grande e nítido.</b> Ele ocupa de um terço à metade da arte e o sabor fica legível no rótulo.</li>
+      <li><b>Sem botão de CTA na arte.</b> O fechamento é uma frase de marca numa faixa de rodapé. O CTA fica no botão do anúncio.</li>
+    </ol>
+  </div>
+  <div class="rules">
+    <div><strong>Teste a idade da modelo</strong>Os top sellers usam mulheres de uns 30 anos. 66% de quem compra tem 45+. Nos posts marcados, peça as duas versões e compare.</div>
+    <div><strong>GLP-1 em campanha separada</strong>Suba o pilar 17 em uma campanha própria, para uma reprovação não atingir os outros anúncios. Use do mais seguro (60) ao mais explícito (56).</div>
+    <div><strong>Alegações</strong>Para proteína, use “auxilia na manutenção da massa muscular”. Evite “preserva”, “absorção eficiente” e “imunidade” sem a frase aprovada da vitamina.</div>
+    <div><strong>Caixas amarelas</strong>O que confirmar antes de subir. Elas não vão para o texto copiado.</div>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="field">
+      <label for="fmt">Formato</label>
+      <select id="fmt">
+        <option value="1000x1000">1000x1000 (feed)</option>
+        <option value="1080x1350">1080x1350 (feed 4:5)</option>
+        <option value="1080x1920">1080x1920 (stories)</option>
+        <option value="all">Feed + 4:5 + stories</option>
+      </select>
+    </div>
+    <label class="check" for="art"><input type="checkbox" id="art" checked> Incluir direção criativa</label>
+    <div class="chips" id="chips" role="group" aria-label="Filtrar por pilar"></div>
+    <span class="spacer"></span>
+    <button class="btn ghost" id="copyAll" type="button">Copiar todos</button>
+  </div>
+</div>
+
+<main class="wrap" id="list"></main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const PILLARS = [
+  { id: 17, name: "GLP-1", note: "Variações do top seller “GLP-1 no controle”, da mais explícita à mais discreta" },
+  { id: 18, name: "Caramelo & Flor de Sal", note: "Variações do top seller “Gosta de combinações diferentes?”" },
+  { id: 19, name: "Cacau & Avelã", note: "Variações do top seller “É chocólatra de verdade?”" },
+  { id: 20, name: "Textura", note: "Variações do top seller “Textura ultrafina. Dissolução incrível.”" },
+  { id: 21, name: "Rotina", note: "Variações do top seller “Muitas coisas para fazer.”" },
+  { id: 22, name: "Novas oportunidades", note: "Fórmulas dos top sellers aplicadas ao que a pesquisa pós-compra mostrou" }
+];
+
+const G = "Base: top seller GLP-1 (fundo preto, foto à direita, título verde em 3 linhas, 4 ícones verdes à esquerda, card branco com o pote e checks, faixa verde no rodapé).";
+const C = "Base: top seller Caramelo & Flor de Sal (ingredientes do sabor desfocados ao fundo, pote grande à direita, pergunta em caixa alta à esquerda, pílula verde com o sabor, logo embaixo).";
+const H = "Base: top seller Chocólatra (fundo marrom quente, ingredientes desfocados, pote à direita, pergunta em caixa alta, pílula escura com o sabor em verde, linha de apoio em caixa alta espaçada).";
+const T = "Base: top seller Textura (fundo escuro, pote grande à direita, título em 3 frases alternando branco e verde, caixa com contorno, 4 ícones circulares, faixa de rodapé).";
+const R = "Base: top seller Rotina (foto da pessoa à esquerda, fundo verde em diagonal à direita, título preto e branco, 3 linhas de ícone com título e subtítulo, pote à direita).";
+
+const ADS = [
+  { n: 56, p: 17, theme: "Menos fome, mais proteína", persona: "Quem usa análogos de GLP-1",
+    art: G + " Mulher de 40+ bebendo o shake. Em verde: “MAIS PROTEÍNA.”",
+    h: "MENOS FOME.\nMAIS PROTEÍNA.\nMÚSCULO EM DIA.",
+    s: "Com os análogos de GLP-1, o apetite diminui. Cada dose de proteína precisa contar.",
+    slot: "Texto de apoio: Future Protein tem 25 g de proteína vegetal por dose, leve no estômago. As proteínas auxiliam na manutenção da massa muscular.\nÍcones: Fórmula 100% vegetal · Leve na digestão · Zero açúcar · Vitaminas D e B12\nCard do produto: 25 g de proteína por dose · Proteína vegetal completa · Zero lactose · Prebióticos · Rende 25 doses\nFaixa de rodapé: Converse com seu médico ou nutricionista sobre a sua alimentação.",
+    cta: "", flag: "Risco alto: cita GLP-1. Não mostrar caneta, seringa, balança nem antes e depois. Nunca escreva “você usa…?”." },
+  { n: 57, p: 17, theme: "Perder peso, não músculo", persona: "Quem usa análogos de GLP-1",
+    art: G + " Mulher de 45+ treinando leve com halter. Em verde: “PERDER MÚSCULO, NÃO.”",
+    h: "PERDER PESO, SIM.\nPERDER MÚSCULO, NÃO.",
+    s: "Durante tratamentos com GLP-1, a proteína é aliada da massa magra.",
+    slot: "Texto de apoio: 25 g de proteína vegetal em uma dose leve, fácil de tomar mesmo com pouco apetite.\nÍcones: 25 g por dose · Leve na digestão · Zero açúcar · Zero lactose\nCard do produto: 25 g de proteína por dose · Proteína vegetal completa · Vitaminas D e B12 · Rende 25 doses\nFaixa de rodapé: Este produto não substitui orientação médica.",
+    cta: "", flag: "Risco alto: cita GLP-1. Não diga que o produto “age junto” com o remédio." },
+  { n: 58, p: 17, theme: "Comendo menos", persona: "Quem usa análogos de GLP-1 ou faz dieta",
+    art: G + " Mesa com prato pequeno e o copo de shake ao lado; mulher de 40+ ao fundo. Em verde: “SUA PROTEÍNA NÃO PODE CAIR.”",
+    h: "COMENDO MENOS?\nSUA PROTEÍNA NÃO PODE CAIR.",
+    s: "Quando o apetite diminui, cada dose conta.",
+    slot: "Texto de apoio: 25 g de proteína vegetal em um shake leve e cremoso.\nÍcones: 25 g por dose · Leve na digestão · Zero açúcar · Prebióticos\nCard do produto: 25 g de proteína por dose · Proteína vegetal completa · Zero lactose · Rende 25 doses\nFaixa de rodapé: Nutrição inteligente para os seus resultados.",
+    cta: "", flag: "Risco médio: não cita o remédio e fala com quem usa e com quem faz dieta." },
+  { n: 59, p: 17, theme: "Pouca fome, muita proteína", persona: "Quem usa análogos de GLP-1 ou faz dieta",
+    art: G + " Close na mão segurando a coqueteleira, mulher de 40+ sorrindo ao fundo. Em verde: “MUITA PROTEÍNA.”",
+    h: "POUCA FOME.\nMUITA PROTEÍNA.",
+    s: "Uma dose, 25 g de proteína vegetal. Leve, cremosa e zero açúcar.",
+    slot: "Ícones: Fórmula 100% vegetal · Leve na digestão · Zero açúcar · Vitaminas D e B12\nCard do produto: 25 g de proteína por dose · Proteína vegetal completa · Zero lactose · Rende 25 doses\nFaixa de rodapé: Pouco volume, muita nutrição.",
+    cta: "", flag: "Risco baixo a médio." },
+  { n: 60, p: 17, theme: "A balança desce, o músculo fica", persona: "Quem está emagrecendo",
+    art: G + " Mulher de 45+ fazendo agachamento leve em casa. Em verde: “O MÚSCULO FICA.”",
+    h: "A BALANÇA DESCE.\nO MÚSCULO FICA.",
+    s: "As proteínas auxiliam na manutenção da massa muscular.",
+    slot: "Texto de apoio: Future Protein: 25 g de proteína vegetal por dose, zero açúcar e leve no estômago.\nÍcones: 25 g por dose · Leve na digestão · Zero açúcar · Zero lactose\nCard do produto: 25 g de proteína por dose · Proteína vegetal completa · Prebióticos · Rende 25 doses\nFaixa de rodapé: Emagrecer com força.",
+    cta: "", flag: "Risco baixo: não cita remédio. Não mostre balança com número nem antes e depois." },
+
+  { n: 61, p: 18, theme: "Doce com toque de sal", persona: "Quem gosta de sabor",
+    art: C + " Ao fundo: caramelo em cubos e flor de sal numa colher de madeira.",
+    h: "DOCE COM UM TOQUE DE SAL?",
+    s: "Caramelo & Flor de Sal foi feito para você.",
+    cta: "", flag: "" },
+  { n: 62, p: 18, theme: "Docinho ou salgadinho", persona: "Quem gosta de sabor",
+    art: C + " Ao fundo: metade da mesa com caramelo, metade com flor de sal.",
+    h: "DOCINHO OU SALGADINHO?\nPOR QUE NÃO OS DOIS?",
+    s: "Caramelo & Flor de Sal: o melhor dos dois em 25 g de proteína.",
+    cta: "", flag: "" },
+  { n: 63, p: 18, theme: "Paladar exigente", persona: "Quem já se frustrou com proteína vegana",
+    art: C + " Ao fundo: pote de iogurte com calda de caramelo e uma crepioca.",
+    h: "PALADAR EXIGENTE?",
+    s: "Caramelo & Flor de Sal vai te surpreender.",
+    slot: "Linha de apoio (caixa alta espaçada): NO SHAKE, NO IOGURTE OU NA CREPIOCA",
+    cta: "", flag: "" },
+
+  { n: 64, p: 19, theme: "Doce todo dia", persona: "Quem busca emagrecer ou definir",
+    art: H + " Ao fundo: barra de chocolate quebrada e avelãs.",
+    h: "SÓ COME DOCE\nNO FIM DE SEMANA?",
+    s: "Cacau & Avelã é doce todo dia.",
+    slot: "Linha de apoio (caixa alta espaçada): ZERO AÇÚCAR · 25 G DE PROTEÍNA",
+    cta: "", flag: "" },
+  { n: 65, p: 19, theme: "Fã de creme de avelã", persona: "Quem gosta de sabor",
+    art: H + " Ao fundo: pote de creme de avelã com colher e avelãs inteiras.",
+    h: "FÃ DE CREME\nDE AVELÃ?",
+    s: "Cacau & Avelã tem até pedacinho de avelã.",
+    slot: "Linha de apoio (caixa alta espaçada): VAI LEMBRAR SUA SOBREMESA FAVORITA",
+    cta: "", flag: "Os pedaços de avelã aparecem em várias avaliações do site. Confirme na lista de ingredientes." },
+  { n: 66, p: 19, theme: "Sobremesa pós-treino", persona: "Quem treina 3 a 4 vezes por semana",
+    art: H + " Ao fundo: taça com shake de chocolate e uma toalha de treino dobrada.",
+    h: "SOBREMESA\nDEPOIS DO TREINO?",
+    s: "Cacau & Avelã: 25 g de proteína com gosto de sobremesa.",
+    slot: "Linha de apoio (caixa alta espaçada): PODE, E DEVE",
+    cta: "", flag: "" },
+
+  { n: 67, p: 20, theme: "Só com água", persona: "Quem já se frustrou com proteína vegana",
+    art: T + " Em verde: “CREMOSO DE VERDADE.”",
+    h: "SÓ COM ÁGUA.\nCREMOSO DE VERDADE.\nSEM GRUMOS.",
+    s: "Cada dose do Future Protein vira um shake encorpado, mesmo sem leite.",
+    slot: "Ícones: Só com água · Sem grumos · Encorpado · Zero lactose\nFaixa de rodapé: PROTEÍNA VEGETAL. CREMOSIDADE DE SOBREMESA.",
+    cta: "", flag: "" },
+  { n: 68, p: 20, theme: "Esqueça o gosto de terra", persona: "Quem já se frustrou com proteína vegana",
+    art: T + " Em verde: “ESQUEÇA A AREIA NO COPO.”",
+    h: "ESQUEÇA O GOSTO DE TERRA.\nESQUEÇA A AREIA NO COPO.",
+    s: "Future Protein é a proteína vegetal que se mistura fácil e fica cremosa.",
+    slot: "Ícones: Sem gosto residual · Sem textura arenosa · Dissolve rápido · Cremoso\nFaixa de rodapé: VEGETAL DO JEITO QUE DEVERIA SER.",
+    cta: "", flag: "" },
+  { n: 69, p: 20, theme: "Poucas sacudidas", persona: "Quem tem rotina corrida",
+    art: T + " Em verde: “ZERO GRUMOS.”",
+    h: "POUCAS SACUDIDAS.\nZERO GRUMOS.\n25 G DE PROTEÍNA.",
+    s: "Coqueteleira, água e uma dose. Pronto.",
+    slot: "Ícones: Pó ultrafino · Pronto em segundos · 25 g por dose · Rende 25 doses\nFaixa de rodapé: PRATICIDADE QUE CABE NO SEU DIA.",
+    cta: "", flag: "" },
+
+  { n: 70, p: 21, theme: "Reunião, casa, treino", persona: "Mulher 45+ com rotina cheia",
+    art: R + " Mulher de 40+ de roupa social colocando o scoop na coqueteleira. Peça também a versão com mulher de 30+.",
+    h: "REUNIÃO, CASA, TREINO.\nSUA PROTEÍNA VAI JUNTO.",
+    s: "",
+    slot: "Linhas de ícone:\nPronto em segundos: água, coqueteleira e pronto.\n25 g por dose: proteína vegetal completa.\nLeve no estômago: toma e segue o dia.",
+    cta: "", flag: "Teste a modelo de 40+ contra a de 30+." },
+  { n: 71, p: 21, theme: "O dia começa cedo", persona: "Quem tem rotina corrida",
+    art: R + " Cozinha às 6h da manhã, luz do nascer do sol, mulher de 40+ preparando o shake. Peça também a versão com mulher de 30+.",
+    h: "O DIA COMEÇA CEDO.\nA PROTEÍNA TAMBÉM.",
+    s: "",
+    slot: "Linhas de ícone:\nCafé da manhã reforçado: 25 g de proteína em um copo.\nZero açúcar: adoçado com stevia.\nFácil de levar: prepare e leve na coqueteleira.",
+    cta: "", flag: "Teste a modelo de 40+ contra a de 30+." },
+  { n: 72, p: 21, theme: "Sem tempo para cozinhar", persona: "Mulher 45+ com rotina cheia",
+    art: R + " Mulher de 40+ com bolsa no ombro, saindo de casa com a coqueteleira na mão.",
+    h: "SEM TEMPO PARA COZINHAR?\nTEM TEMPO PARA UM SHAKE.",
+    s: "",
+    slot: "Linhas de ícone:\nPronto em segundos: só água e uma dose.\n25 g de proteína: nutrição que acompanha seu dia.\nLeve no estômago: sem sensação de peso.",
+    cta: "", flag: "Não posicione o shake como substituto de refeição." },
+
+  { n: 73, p: 22, theme: "Time baunilha", persona: "Quem gosta de sabor",
+    art: C + " Sabor Baunilha & Macadâmia: favas de baunilha e macadâmias ao fundo, fundo creme.",
+    h: "TIME BAUNILHA?",
+    s: "Baunilha & Macadâmia é a sua escolha.",
+    slot: "Linha de apoio (caixa alta espaçada): LEMBRA UM MILKSHAKE, MESMO COM ÁGUA",
+    cta: "", flag: "Oportunidade: é o único sabor sem anúncio no formato de pergunta. Confirme o nome do sabor no rótulo." },
+  { n: 74, p: 22, theme: "Clássico com toque especial", persona: "Quem gosta de sabor",
+    art: C + " Sabor Baunilha & Macadâmia: macadâmias quebradas numa tábua.",
+    h: "GOSTA DO CLÁSSICO\nCOM UM TOQUE ESPECIAL?",
+    s: "Baunilha & Macadâmia combina com você.",
+    cta: "", flag: "" },
+  { n: 75, p: 22, theme: "Vai bem em tudo", persona: "Quem gosta de cozinhar",
+    art: C + " Sabor Baunilha & Macadâmia: smoothie, fatia de bolo e shake lado a lado ao fundo.",
+    h: "SMOOTHIE, BOLO\nOU SHAKE?",
+    s: "Baunilha & Macadâmia vai bem em tudo.",
+    cta: "", flag: "" },
+  { n: 76, p: 22, theme: "Força não tem idade", persona: "45+ que quer manter e ganhar massa",
+    art: G + " Mulher de 50+ treinando com halter, foto real. Em verde: “FORÇA NÃO TEM IDADE.”",
+    h: "40, 50, 60.\nFORÇA NÃO TEM IDADE.",
+    s: "As proteínas auxiliam na manutenção da massa muscular.",
+    slot: "Texto de apoio: 25 g de proteína vegetal por dose, leve no estômago e zero lactose.\nÍcones: 25 g por dose · Leve na digestão · Zero lactose · Vitaminas D e B12\nCard do produto: 25 g de proteína por dose · Proteína vegetal completa · Zero açúcar · Rende 25 doses\nFaixa de rodapé: Together We Are Stronger.",
+    cta: "", flag: "Oportunidade: 66% de quem compra tem 45+, e nenhum top seller fala com esse público." },
+  { n: 77, p: 22, theme: "Músculo é investimento", persona: "45+ que quer manter e ganhar massa",
+    art: R + " Casal de 50+ preparando shake na cozinha depois da caminhada.",
+    h: "MÚSCULO É\nO SEU MELHOR INVESTIMENTO.",
+    s: "",
+    slot: "Linhas de ícone:\n25 g por dose: proteína vegetal completa.\nLeve no estômago: zero lactose.\nRende 25 doses: um pote para quase um mês.",
+    cta: "", flag: "" },
+  { n: 78, p: 22, theme: "Treinar depois dos 40", persona: "Iniciante 45+",
+    art: T + " Foto de mulher de 45+ na academia no lugar do fundo escuro liso. Em verde: “PEDE PROTEÍNA DE VERDADE.”",
+    h: "TREINAR DEPOIS DOS 40\nPEDE PROTEÍNA DE VERDADE.",
+    s: "Future Protein: 25 g de proteína vegetal completa em cada dose.",
+    slot: "Ícones: 25 g por dose · Aminoácidos completos · Leve na digestão · Zero lactose\nFaixa de rodapé: NUNCA É TARDE PARA FICAR MAIS FORTE.",
+    cta: "", flag: "Não escreva “você tem mais de 40?”. A frase fala da fase da vida, não de quem vê." },
+  { n: 79, p: 22, theme: "Zero tudo", persona: "Mulher 45+ com restrição alimentar",
+    art: T + " Em verde: “ZERO LACTOSE. ZERO SOJA.” Os 4 ícones são os mesmos do rótulo.",
+    h: "ZERO AÇÚCAR. ZERO GLÚTEN.\nZERO LACTOSE. ZERO SOJA.",
+    s: "Só o que importa: 25 g de proteína vegetal, vitaminas D e B12 e prebióticos.",
+    slot: "Ícones: Zero açúcar · Zero glúten · Zero lactose · Zero soja\nFaixa de rodapé: RÓTULO LIMPO. NUTRIÇÃO COMPLETA.",
+    cta: "", flag: "Oportunidade: clientes da pesquisa pediram produtos sem lactose, sem glúten e sem açúcar." },
+  { n: 80, p: 22, theme: "Leia o rótulo", persona: "Quem decide pela qualidade",
+    art: T + " Close no rótulo, com setas finas apontando os selos. Em verde: “A GENTE ESPERA.”",
+    h: "LEIA O RÓTULO.\nA GENTE ESPERA.",
+    s: "100% vegetal, adoçado com stevia, sem açúcar, sem glúten, sem lactose e sem soja.",
+    slot: "Ícones: 100% vegano · Adoçado com stevia · Prebióticos · Vitaminas D e B12\nFaixa de rodapé: TRANSPARÊNCIA EM CADA DOSE.",
+    cta: "", flag: "" },
+  { n: 81, p: 22, theme: "Restrições alimentares", persona: "Mulher 45+ com restrição alimentar",
+    art: R + " Mulher de 45+ lendo o rótulo do pote no mercado ou na cozinha.",
+    h: "SEM LACTOSE, SEM GLÚTEN, SEM SOJA.\nCOM MUITO SABOR.",
+    s: "",
+    slot: "Linhas de ícone:\nRótulo limpo: zero açúcar, zero glúten, zero lactose, zero soja.\n25 g de proteína: vegetal e completa.\nSabores que surpreendem: Cacau & Avelã, Caramelo & Flor de Sal, Baunilha & Macadâmia.",
+    cta: "", flag: "" },
+  { n: 82, p: 22, theme: "25 doses", persona: "Quem pesquisa em outros sites antes",
+    art: T + " 25 scoops enfileirados em grade ao redor do pote. Em verde: “25 G DE PROTEÍNA EM CADA.”",
+    h: "25 DOSES.\n25 G DE PROTEÍNA EM CADA.",
+    s: "Um pote de Future Protein rende quase um mês de proteína vegetal.",
+    slot: "Ícones: Rende 25 doses · 25 g por dose · Zero açúcar · Frete grátis acima de R$ 99\nFaixa de rodapé: FAÇA A CONTA.",
+    cta: "", flag: "" },
+  { n: 83, p: 22, theme: "Preço por dose", persona: "Quem pesquisa em outros sites antes",
+    art: C + " No lugar dos ingredientes: um scoop cheio em destaque e o valor em número grande.",
+    h: "QUANTO CUSTA\nUMA DOSE?",
+    s: "R$ [X] por 25 g de proteína vegetal.",
+    slot: "Linha de apoio (caixa alta espaçada): COM FRETE GRÁTIS ACIMA DE R$ 99 E 15% DE CASHBACK",
+    cta: "", flag: "Calcule: preço do pote ÷ 25 doses. Use o preço de venda do dia." },
+  { n: 84, p: 22, theme: "Um pote, 25 dias", persona: "Quem compra quando o estoque acaba",
+    art: R + " Calendário de parede com 25 dias marcados, mulher de 40+ preparando o shake.",
+    h: "1 POTE.\n25 DIAS DE PROTEÍNA.",
+    s: "",
+    slot: "Linhas de ícone:\n25 g por dose: proteína vegetal completa.\n15% de cashback: desconto garantido no próximo pote.\nPostagem em até 1 dia útil: o próximo pote sai rápido.",
+    cta: "", flag: "" }
+];
+
+const FORMATS = { "1000x1000": "1000x1000", "1080x1350": "1080x1350", "1080x1920": "1080x1920", all: "1000x1000 (feed), 1080x1350 (feed 4:5) e 1080x1920 (stories)" };
+const state = { fmt: "1000x1000", art: true, pillar: 0 };
+const pad = n => String(n).padStart(2, "0");
+const pillarOf = ad => PILLARS.find(p => p.id === ad.p);
+
+function briefText(ad) {
+  let t = "Desenvolver um post para tráfego pago com o Future Protein\n" +
+    "→ Especificações: " + FORMATS[state.fmt];
+  if (state.art) t += "\n→ Direção criativa: " + ad.art;
+  t += "\n\nConteúdo:\n" + ad.h;
+  if (ad.s) t += "\n\n" + ad.s;
+  if (ad.slot) t += "\n\n" + ad.slot;
+  if (ad.cta) t += "\n\nCTA na arte: " + ad.cta;
+  return t;
+}
+function taskTitle(ad) {
+  const kind = state.fmt === "1080x1920" ? "Stories" : state.fmt === "all" ? "Post/Stories" : "Post";
+  return kind + " [PILAR " + ad.p + "] - " + ad.h.replace(/\n/g, " ") + " (Future Protein - Remkt)";
+}
+
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+function briefHTML(ad) {
+  return esc(briefText(ad)).replace(esc(ad.h), '<span class="hl">' + esc(ad.h) + "</span>");
+}
+
+function render() {
+  const list = document.getElementById("list");
+  list.innerHTML = PILLARS.filter(p => !state.pillar || p.id === state.pillar).map(p => `
+    <section class="pillar">
+      <h2>Pilar ${p.id} · ${p.name} <small>${p.note}</small></h2>
+      ${ADS.filter(a => a.p === p.id).map(a => `
+        <article class="card">
+          <div class="meta">
+            <span class="num">${pad(a.n)}</span>
+            <h3>${esc(a.theme)}</h3>
+            <span class="persona">Persona: <b>${esc(a.persona)}</b></span>
+          </div>
+          <div class="body">
+            <pre class="brief" id="brief-${a.n}">${briefHTML(a)}</pre>
+            ${a.flag ? `<div class="flag"><b>Validar antes de subir</b>${esc(a.flag)}</div>` : ""}
+            <div class="actions">
+              <button class="btn" type="button" data-copy="brief" data-n="${a.n}">Copiar briefing</button>
+              <button class="btn ghost" type="button" data-copy="title" data-n="${a.n}">Copiar título da tarefa</button>
+            </div>
+          </div>
+        </article>`).join("")}
+    </section>`).join("");
+}
+
+function renderChips() {
+  const opts = [{ id: 0, name: "Todos" }].concat(PILLARS);
+  document.getElementById("chips").innerHTML = opts.map(p =>
+    `<button type="button" class="chip" data-pillar="${p.id}" aria-pressed="${state.pillar === p.id}">${p.id ? p.id + " " : ""}${p.name}</button>`).join("");
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { el.hidden = true; }, 1800);
+}
+function selectNode(node) {
+  const r = document.createRange(); r.selectNodeContents(node);
+  const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+}
+function copy(text, btn, fallbackNode, label) {
+  const ok = () => {
+    toast(label);
+    if (btn) { const old = btn.textContent; btn.textContent = "Copiado"; btn.classList.add("done"); setTimeout(() => { btn.textContent = old; btn.classList.remove("done"); }, 1500); }
+  };
+  const fail = () => {
+    if (fallbackNode) { selectNode(fallbackNode); toast("Texto selecionado. Use Ctrl+C (ou Cmd+C) para copiar."); }
+    else toast("Não deu para copiar automaticamente. Selecione o texto e copie.");
+  };
+  try { navigator.clipboard.writeText(text).then(ok, fail); } catch (e) { fail(); }
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-copy]");
+  if (b) {
+    const ad = ADS.find(a => a.n === +b.dataset.n);
+    if (b.dataset.copy === "brief") copy(briefText(ad), b, document.getElementById("brief-" + ad.n), "Briefing " + pad(ad.n) + " copiado");
+    else copy(taskTitle(ad), b, null, "Título copiado");
+    return;
+  }
+  const c = e.target.closest("[data-pillar]");
+  if (c) { state.pillar = +c.dataset.pillar; renderChips(); render(); }
+});
+document.getElementById("fmt").addEventListener("change", e => { state.fmt = e.target.value; render(); });
+document.getElementById("art").addEventListener("change", e => { state.art = e.target.checked; render(); });
+document.getElementById("copyAll").addEventListener("click", e => {
+  const ads = ADS.filter(a => !state.pillar || a.p === state.pillar);
+  const all = ads.map(a => "=== " + taskTitle(a) + " ===\n\n" + briefText(a)).join("\n\n\n");
+  copy(all, e.currentTarget, document.getElementById("list"), ads.length + " briefings copiados");
+});
+
+state.fmt = document.getElementById("fmt").value;
+state.art = document.getElementById("art").checked;
+renderChips(); render();
+</script>

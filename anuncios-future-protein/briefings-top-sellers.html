@@ -99,9 +99,9 @@ main { padding-block: 24px 64px; display: grid; gap: 40px; }
 </style>
 
 <header class="wrap top">
-  <span class="eyebrow">Strongest Supplements · Variações dos top sellers · Pilares 17 a 26</span>
+  <span class="eyebrow">Strongest Supplements · Variações dos top sellers · Pilares 17 a 28</span>
   <h1>Future Protein: top sellers</h1>
-  <p class="lead">44 briefings: pelo menos 3 variações de cada um dos 10 anúncios que mais vendem, mais 12 posts novos que juntam essas fórmulas com o que aprendemos na pesquisa pós-compra. Cada briefing diz em qual top seller o designer deve se basear.</p>
+  <p class="lead">50 briefings: pelo menos 3 variações de cada um dos 12 anúncios que mais vendem, mais 12 posts novos que juntam essas fórmulas com o que aprendemos na pesquisa pós-compra. Cada briefing diz em qual top seller o designer deve se basear.</p>
   <div class="learn">
     <h2>O que os top sellers têm em comum</h2>
     <ol>
@@ -157,7 +157,9 @@ const PILLARS = [
   { id: 23, name: "Cuidar de si", note: "Variações do top seller “Nem todo mundo quer virar atleta.”" },
   { id: 24, name: "Comentários", note: "Variações do top seller “Todo mundo está amando.”, com avaliações reais" },
   { id: 25, name: "Pedido com cuidado", note: "Variações do top seller “Seu pedido não é só mais um número...”" },
-  { id: 26, name: "Força para a vida", note: "Variações do top seller “Força para o que realmente importa.”" }
+  { id: 26, name: "Força para a vida", note: "Variações do top seller “Força para o que realmente importa.”" },
+  { id: 27, name: "Mais leve que o whey", note: "Variações do top seller “Mais leve que o whey e perfeito para sua rotina.”" },
+  { id: 28, name: "Receitas", note: "Variações do top seller “Mais sabor para a sua rotina”, uma receita e um sabor por post" }
 ];
 
 const G = "Base: top seller GLP-1 (fundo preto, foto à direita, título verde em 3 linhas, 4 ícones verdes à esquerda, card branco com o pote e checks, faixa verde no rodapé).";
@@ -171,6 +173,9 @@ const U = "Base: top seller “Nem todo mundo quer virar atleta” (foto de pess
 const K = "Base: top seller “Todo mundo está amando” (fundo verde, título branco com a segunda linha em verde-claro, 3 cards de comentário estilo Facebook, faixa de 4 ícones no rodapé, box branco de fechamento à direita, pote grande inclinado).";
 const P = "Base: top seller “Seu pedido não é só mais um número” (foto real do pote e da caixa da Strongest, fundo verde desfocado, primeira linha do título em contorno e o resto sólido, texto curto com trecho em negrito).";
 const F = "Base: top seller “Força para o que realmente importa” (foto da pessoa cozinhando à direita, fundo verde em diagonal, título escuro em 3 ou 4 linhas, texto com barra lateral, card branco com o pote e frase “25 g de proteína para…”).";
+
+const W = "Base: top seller “Mais leve que o whey” (casal treinando à esquerda sobre painel verde, foto de academia escura à direita, título verde no alto à direita, frase curta em branco, card branco com o pote e 3 bullets verdes).";
+const Rc = "Base: top seller “Mais sabor para a sua rotina” (comida em close no primeiro plano, pote grande desfocado ao fundo, bloco escuro translúcido no topo com título verde, texto curto em branco e nome da receita em verde).";
 
 const ADS = [
   { n: 56, p: 17, theme: "Menos fome, mais proteína", persona: "Quem usa análogos de GLP-1",
@@ -441,7 +446,44 @@ const ADS = [
     h: "SEU CAFÉ DA MANHÃ\nMERECE MAIS FORÇA.",
     s: "Bowl de frutas com uma dose de Future Protein: 25 g de proteína vegetal para começar bem.",
     slot: "Card do produto: 25 g de proteína para começar o dia.",
-    cta: "", flag: "" }
+    cta: "", flag: "" },
+  { n: 100, p: 27, theme: "Mais leve e cremoso", persona: "Quem não se dá bem com whey de leite",
+    art: W + " Casal de 40+ treinando com halter, corpo real e não de fisiculturista.",
+    h: "MAIS LEVE QUE O WHEY\nE CREMOSO DO MESMO JEITO.",
+    s: "Aproveite uma nutrição de altíssima qualidade com 25 g de proteína:",
+    slot: "Bullets do card: Zero lactose · Leve no estômago · Aminoácidos essenciais completos",
+    cta: "", flag: "Não compare com marca de whey específica." },
+  { n: 101, p: 27, theme: "Trocou o whey", persona: "Mulher 45+ com restrição alimentar",
+    art: W + " Mulher de 45+ treinando sozinha, expressão leve.",
+    h: "TROCOU O WHEY?\nSEU ESTÔMAGO AGRADECE.",
+    s: "Proteína vegetal de altíssima qualidade, com 25 g por dose:",
+    slot: "Bullets do card: 100% vegetal e zero lactose · Leve no estômago · 25 g de proteína por dose",
+    cta: "", flag: "" },
+  { n: 102, p: 27, theme: "Proteína sem peso", persona: "Quem treina 3 a 4 vezes por semana",
+    art: W + " Homem de 40+ no fim do treino, coqueteleira na mão.",
+    h: "25 G DE PROTEÍNA.\nNADA DE PESO NO ESTÔMAGO.",
+    s: "Nutrição vegetal completa para a sua rotina de treino:",
+    slot: "Bullets do card: Aminoácidos essenciais completos · Zero açúcar · Rende 25 doses",
+    cta: "", flag: "" },
+
+  { n: 103, p: 28, theme: "Iogurte Caramelo & Flor de Sal", persona: "Mulher 45+ que cuida da saúde",
+    art: Rc + " Taça de iogurte com granola, banana e fio de calda; pote de Caramelo & Flor de Sal ao fundo.",
+    h: "MAIS SABOR\nPARA O SEU CAFÉ DA MANHÃ",
+    s: "Receitas rápidas e nutritivas para incluir o Future em qualquer momento do dia.",
+    slot: "Nome da receita (em verde): Iogurte proteico Caramelo & Flor de Sal\nReceita para a legenda: 170 g de iogurte natural, 1 dose de Future Protein Caramelo & Flor de Sal, granola e banana em rodelas. Misture o pó no iogurte e monte as camadas.",
+    cta: "", flag: "Teste a receita e use foto real dela." },
+  { n: 104, p: 28, theme: "Panqueca Baunilha & Macadâmia", persona: "Quem gosta de cozinhar",
+    art: Rc + " Pilha de panquecas com frutas e macadâmias; pote de Baunilha & Macadâmia ao fundo.",
+    h: "MAIS SABOR\nPARA O SEU LANCHE",
+    s: "Receitas rápidas e nutritivas para incluir o Future em qualquer momento do dia.",
+    slot: "Nome da receita (em verde): Panqueca proteica Baunilha & Macadâmia\nReceita para a legenda: 1 banana amassada, 2 colheres de aveia, 1 dose de Future Protein Baunilha & Macadâmia e 50 ml de leite vegetal. Misture e doure dos dois lados em frigideira antiaderente.",
+    cta: "", flag: "Teste a receita e use foto real dela." },
+  { n: 105, p: 28, theme: "Crepioca recheada", persona: "Quem busca emagrecer ou definir",
+    art: Rc + " Crepioca dobrada com recheio cremoso e banana em rodelas; pote de Caramelo & Flor de Sal ao fundo.",
+    h: "MAIS SABOR\nSEM SAIR DA DIETA",
+    s: "Receitas rápidas e nutritivas para incluir o Future em qualquer momento do dia.",
+    slot: "Nome da receita (em verde): Crepioca recheada Caramelo & Flor de Sal\nReceita para a legenda: massa com 1 ovo e 2 colheres de tapioca. Recheio: meia dose de Future Protein Caramelo & Flor de Sal com 2 colheres de água e banana em rodelas.\nIdeia vinda de uma avaliação real do site (Marina B.).",
+    cta: "", flag: "Teste a receita e use foto real dela." }
 ];
 
 const FORMATS = { "1000x1000": "1000x1000", "1080x1350": "1080x1350", "1080x1920": "1080x1920", all: "1000x1000 (feed), 1080x1350 (feed 4:5) e 1080x1920 (stories)" };

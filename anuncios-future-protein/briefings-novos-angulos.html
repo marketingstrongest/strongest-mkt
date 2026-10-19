@@ -96,9 +96,9 @@ main { padding-block: 24px 64px; display: grid; gap: 40px; }
 </style>
 
 <header class="wrap top">
-  <span class="eyebrow">Strongest Supplements · Remarketing · Novos ângulos · Pilares 6 a 15</span>
+  <span class="eyebrow">Strongest Supplements · Remarketing · Novos ângulos · Pilares 6 a 16</span>
   <h1>Future Protein: novos ângulos</h1>
-  <p class="lead">30 briefings em 10 ângulos que a pesquisa pós-compra abriu e as versões anteriores não exploravam. A numeração dos pilares continua da v2 (1 a 5) para não repetir títulos no ClickUp. Ao lado de cada pilar está o dado da pesquisa que justifica o ângulo.</p>
+  <p class="lead">40 briefings: 30 em 10 ângulos que a pesquisa pós-compra abriu e 10 de prova social com avaliações reais da página do produto (pilar 16). A numeração dos pilares continua da v2 (1 a 5) para não repetir títulos no ClickUp. Ao lado de cada pilar está o dado da pesquisa que justifica o ângulo.</p>
   <div class="rules">
     <div><strong>Quem aparece na arte</strong>Pessoas reais de 40 anos ou mais, na maioria mulheres, em situações do dia a dia.</div>
     <div><strong>Alegações</strong>Para proteína, use “auxilia” e “apoia”. Nunca prometa perda de peso, prazo de resultado nem cura de sintomas.</div>
@@ -139,7 +139,8 @@ const PILLARS = [
   { id: 12, name: "Compra segura", note: "42% também compram em marketplace; 63% decidem pela qualidade" },
   { id: 13, name: "Sabor como desejo", note: "Sabor é o motivo mais citado para indicar a loja, depois de qualidade" },
   { id: 14, name: "Cashback e reposição", note: "45% compram quando o pote acaba; 38% preferem frete grátis" },
-  { id: 15, name: "Dúvidas respondidas", note: "Clientes elogiam as explicações nos anúncios e chamam o produto de “whey vegano”" }
+  { id: 15, name: "Dúvidas respondidas", note: "Clientes elogiam as explicações nos anúncios e chamam o produto de “whey vegano”" },
+  { id: 16, name: "Avaliações do site", note: "65 avaliações na página do produto, nota média 4,58; 55 delas com 5 estrelas" }
 ];
 
 const ADS = [
@@ -303,7 +304,69 @@ const ADS = [
     art: "Card de pergunta e resposta com ilustração simples de prato e copo de shake. Pote ao lado.",
     h: "Quanta proteína você precisa por dia?",
     s: "Depende do seu peso, rotina e objetivo. Um nutricionista calcula, e uma dose de Future Protein ajuda a chegar lá.",
-    cta: "Saiba mais", flag: "" }
+    cta: "Saiba mais", flag: "" },
+  { n: 46, p: 16, theme: "Nota das avaliações", persona: "Quem decide pela reputação",
+    art: "Pote no centro, nota “4,6” com 5 estrelas em tamanho grande no topo. Embaixo, 3 mini-cards de avaliação no estilo do site.",
+    h: "Nota 4,6 de 5 em 65 avaliações.",
+    s: "Quem comprou o Future Protein fala de sabor, textura e leveza. Leia as avaliações no site.",
+    slot: "Mini-cards: “Delicioso e leve.” (Comprador verificado) · “Melhor whey vegano. Sabor e textura incomparáveis.” (Marcelo A.) · “É a melhor que já experimentei.” (Gisele G.)",
+    cta: "Ver avaliações",
+    flag: "Confira a nota e o total de avaliações na página no dia de subir: os números mudam." },
+  { n: 47, p: 16, theme: "Sem gosto residual", persona: "Quem já se frustrou com proteína vegana",
+    art: "Print da avaliação em card grande, com 5 estrelas e selo “Comprador verificado”. Copo de shake cremoso e pote no canto inferior.",
+    h: "Sem aquele gosto residual.",
+    s: "Proteína 100% vegetal com sabor de verdade. Quem diz são os clientes.",
+    slot: "Card de avaliação (5 estrelas): “Muito saboroso! Não tem aquele gosto residual que alguns wheys costumam deixar. Sinceramente, me surpreendeu bastante!” (Felipe M., comprador verificado)",
+    cta: "Ver avaliações", flag: "" },
+  { n: 48, p: 16, theme: "Leve, segundo quem toma", persona: "Mulher 45+ com restrição alimentar",
+    art: "Mulher de 40+ relaxada no sofá com o copo de shake. Card de avaliação grande sobre a foto.",
+    h: "Leve de verdade, segundo quem toma.",
+    s: "Future Protein: 100% vegetal, sem lactose e com digestão leve.",
+    slot: "Card de avaliação (5 estrelas): “Eu sempre tive problemas com suplementos por conta do sabor e de me sentir pesada depois de tomar. Me surpreendi totalmente com o Future Protein.” (Marjorie, compradora verificada)",
+    cta: "Quero experimentar",
+    flag: "Use só avaliações sobre sensação (“leve”, “não pesa”). Não use as que falam de intestino, dor ou alergia: depoimento com efeito de saúde é vetado pela Anvisa e pela Meta." },
+  { n: 49, p: 16, theme: "Pedaços de avelã", persona: "Quem gosta de sabor",
+    art: "Close no pó e no shake de Cacau com Avelã, com pedacinhos de avelã à vista. Dois cards de avaliação sobrepostos.",
+    h: "Tem pedaço de avelã de verdade.",
+    s: "Future Protein Cacau com Avelã: cremoso, 100% vegetal e um dos sabores mais elogiados no site.",
+    slot: "Cards de avaliação (5 estrelas): “Me surpreendi quando descobri que tem pedaços de avelã, é incrível!” (Letícia B.) · “Ele é cremoso e tem até pedaços de avelã mesmo.” (Felipe B.)",
+    cta: "Quero esse sabor", flag: "" },
+  { n: 50, p: 16, theme: "Do shake à crepioca", persona: "Quem gosta de cozinhar",
+    art: "Lado a lado: copo de shake e crepioca recheada com banana. Pote de Caramelo e Flor de Sal ao centro. Card de avaliação no topo.",
+    h: "Shake hoje, crepioca amanhã.",
+    s: "Caramelo e Flor de Sal vai bem no copo e nas receitas. 100% vegetal.",
+    slot: "Card de avaliação (5 estrelas): “A versatilidade de receitas é top: ontem fiz o shake, hoje fiz crepioca com recheio de whey com banana! Ficou delicioso!” (Marina B., compradora verificada)",
+    cta: "Ver sabores", flag: "" },
+  { n: 51, p: 16, theme: "Cremoso só com água", persona: "Quem já se frustrou com proteína vegana",
+    art: "Coqueteleira transparente só com água e o shake já batido, espesso e cremoso. Card de avaliação ao lado.",
+    h: "Só com água. E continua cremoso.",
+    s: "O pó fino do Future Protein se dissolve fácil e não fica aguado.",
+    slot: "Card de avaliação (5 estrelas): “A textura dele é muito aceitável, bati com água e ainda assim ficou cremosa.” (Laysa R., compradora verificada)",
+    cta: "Quero experimentar", flag: "" },
+  { n: 52, p: 16, theme: "Aprovado por quem toma whey há décadas", persona: "45+ que quer manter e ganhar massa",
+    art: "Homem de 50+ em academia de bairro, coqueteleira na mão. Card de avaliação grande no topo.",
+    h: "Aprovado por quem toma whey há décadas.",
+    s: "Future Protein: proteína vegetal com qualidade, sabor e textura de quem entende do assunto.",
+    slot: "Card de avaliação (5 estrelas): “Eu tomo whey protein há décadas e quando experimentei o Future Protein, identifiquei na hora que se tratava de um produto de alta qualidade.” (Jônatas C., comprador verificado)",
+    cta: "Ver o Future Protein", flag: "" },
+  { n: 53, p: 16, theme: "Vegano sem sacrifício", persona: "Quem já se frustrou com proteína vegana",
+    art: "Antes e depois em duas metades: à esquerda, careta para um copo genérico; à direita, sorriso com o Future Protein. Card de avaliação na parte de baixo.",
+    h: "Quando proteína vegana deixa de ser sacrifício.",
+    s: "Sabor de verdade, textura cremosa e 100% vegetal.",
+    slot: "Card de avaliação (5 estrelas): “Tomar whey era um sacrifício porque todos que eu comprava vegano ou sem lactose o gosto era terrível. O Future entrega um sabor maravilhoso, é cremoso mesmo.” (Gabriel A., comprador verificado)",
+    cta: "Quero experimentar", flag: "Trecho editado: tirei a parte em que ele cita um problema de saúde. Mantenha o corte." },
+  { n: 54, p: 16, theme: "Quem prova, volta", persona: "Quem compra quando o estoque acaba",
+    art: "Três potes de Future Protein enfileirados, o primeiro já vazio. Dois cards de avaliação sobre a cena.",
+    h: "Quem prova, volta.",
+    s: "Experimente o seu e use 15% de cashback no próximo pote.",
+    slot: "Cards de avaliação (5 estrelas): “Já estou no meu segundo pote, gostei do sabor e pretendo continuar comprando.” (Edneide N.) · “Comprei 3 potes e provavelmente voltarei a comprar.” (Mônica G.)",
+    cta: "Comprar agora", flag: "" },
+  { n: 55, p: 16, theme: "Mural de avaliações", persona: "Quem decide pela reputação",
+    art: "Formato stories: mural de 5 cards de avaliação empilhados como prints, pote no rodapé. Fundo verde da marca.",
+    h: "O que estão dizendo do Future Protein.",
+    s: "65 avaliações no site, nota média 4,6.",
+    slot: "Cards: “Delicioso e leve.” · “Melhor whey vegano.” (Marcelo A.) · “Meu novo vício.” (Gabriella) · “Não troco por outro.” (Jean L.) · “Doce na medida, sem gosto residual.” (Maiara)",
+    cta: "Ver avaliações", flag: "Pensado para 1080x1920. Atualize a nota e o total de avaliações no dia." }
 ];
 
 const FORMATS = { "1000x1000": "1000x1000", "1080x1350": "1080x1350", "1080x1920": "1080x1920", all: "1000x1000 (feed), 1080x1350 (feed 4:5) e 1080x1920 (stories)" };

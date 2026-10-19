@@ -99,9 +99,9 @@ main { padding-block: 24px 64px; display: grid; gap: 40px; }
 </style>
 
 <header class="wrap top">
-  <span class="eyebrow">Strongest Supplements · Variações dos top sellers · Pilares 17 a 22</span>
+  <span class="eyebrow">Strongest Supplements · Variações dos top sellers · Pilares 17 a 26</span>
   <h1>Future Protein: top sellers</h1>
-  <p class="lead">29 briefings: pelo menos 3 variações de cada um dos 5 anúncios que mais vendem, mais 12 posts novos que juntam essas fórmulas com o que aprendemos na pesquisa pós-compra. Cada briefing diz em qual top seller o designer deve se basear.</p>
+  <p class="lead">44 briefings: pelo menos 3 variações de cada um dos 10 anúncios que mais vendem, mais 12 posts novos que juntam essas fórmulas com o que aprendemos na pesquisa pós-compra. Cada briefing diz em qual top seller o designer deve se basear.</p>
   <div class="learn">
     <h2>O que os top sellers têm em comum</h2>
     <ol>
@@ -110,6 +110,10 @@ main { padding-block: 24px 64px; display: grid; gap: 40px; }
       <li><b>Benefícios em ícones.</b> De 3 a 4 ícones circulares com rótulo de 2 linhas, sempre concretos: “Dissolve rápido”, “Sem grumos”.</li>
       <li><b>Fatos do rótulo como prova.</b> 25 g de proteína por dose, zero açúcar, zero lactose, vitaminas D e B12, prebióticos, rende 25 doses.</li>
       <li><b>Pote grande e nítido.</b> Ele ocupa de um terço à metade da arte e o sabor fica legível no rótulo.</li>
+      <li><b>Contraste “nem todo mundo… mas todo mundo…”.</b> Abre negando o estereótipo do atleta e fecha com algo que serve para qualquer pessoa.</li>
+      <li><b>Card branco com o pote e “25 g de proteína para…”.</b> Liga o número do rótulo a um benefício de vida: movimento, saúde, a performance que a vida exige.</li>
+      <li><b>Gente comum em cena real.</b> Cidade, cozinha, sala de casa. A academia é só um dos cenários.</li>
+      <li><b>Prova em formato de comentário.</b> Cards no estilo Facebook, com nome e foto, deixam o anúncio com cara de conversa.</li>
       <li><b>Sem botão de CTA na arte.</b> O fechamento é uma frase de marca numa faixa de rodapé. O CTA fica no botão do anúncio.</li>
     </ol>
   </div>
@@ -149,7 +153,11 @@ const PILLARS = [
   { id: 19, name: "Cacau & Avelã", note: "Variações do top seller “É chocólatra de verdade?”" },
   { id: 20, name: "Textura", note: "Variações do top seller “Textura ultrafina. Dissolução incrível.”" },
   { id: 21, name: "Rotina", note: "Variações do top seller “Muitas coisas para fazer.”" },
-  { id: 22, name: "Novas oportunidades", note: "Fórmulas dos top sellers aplicadas ao que a pesquisa pós-compra mostrou" }
+  { id: 22, name: "Novas oportunidades", note: "Fórmulas dos top sellers aplicadas ao que a pesquisa pós-compra mostrou" },
+  { id: 23, name: "Cuidar de si", note: "Variações do top seller “Nem todo mundo quer virar atleta.”" },
+  { id: 24, name: "Comentários", note: "Variações do top seller “Todo mundo está amando.”, com avaliações reais" },
+  { id: 25, name: "Pedido com cuidado", note: "Variações do top seller “Seu pedido não é só mais um número...”" },
+  { id: 26, name: "Força para a vida", note: "Variações do top seller “Força para o que realmente importa.”" }
 ];
 
 const G = "Base: top seller GLP-1 (fundo preto, foto à direita, título verde em 3 linhas, 4 ícones verdes à esquerda, card branco com o pote e checks, faixa verde no rodapé).";
@@ -157,6 +165,12 @@ const C = "Base: top seller Caramelo & Flor de Sal (ingredientes do sabor desfoc
 const H = "Base: top seller Chocólatra (fundo marrom quente, ingredientes desfocados, pote à direita, pergunta em caixa alta, pílula escura com o sabor em verde, linha de apoio em caixa alta espaçada).";
 const T = "Base: top seller Textura (fundo escuro, pote grande à direita, título em 3 frases alternando branco e verde, caixa com contorno, 4 ícones circulares, faixa de rodapé).";
 const R = "Base: top seller Rotina (foto da pessoa à esquerda, fundo verde em diagonal à direita, título preto e branco, 3 linhas de ícone com título e subtítulo, pote à direita).";
+
+const G2 = "Base: top seller “Proteína inteligente” (foto da mulher à direita, bloco verde arredondado à esquerda com título branco grande, texto curto, 4 ícones, card branco com o pote, frase de fechamento em caixa alta com destaque verde).";
+const U = "Base: top seller “Nem todo mundo quer virar atleta” (foto de pessoa comum na cidade à esquerda, painel verde em diagonal à direita, primeira frase em preto e segunda em branco, card branco pequeno com o pote e uma frase “25 g de proteína para…”).";
+const K = "Base: top seller “Todo mundo está amando” (fundo verde, título branco com a segunda linha em verde-claro, 3 cards de comentário estilo Facebook, faixa de 4 ícones no rodapé, box branco de fechamento à direita, pote grande inclinado).";
+const P = "Base: top seller “Seu pedido não é só mais um número” (foto real do pote e da caixa da Strongest, fundo verde desfocado, primeira linha do título em contorno e o resto sólido, texto curto com trecho em negrito).";
+const F = "Base: top seller “Força para o que realmente importa” (foto da pessoa cozinhando à direita, fundo verde em diagonal, título escuro em 3 ou 4 linhas, texto com barra lateral, card branco com o pote e frase “25 g de proteína para…”).";
 
 const ADS = [
   { n: 56, p: 17, theme: "Menos fome, mais proteína", persona: "Quem usa análogos de GLP-1",
@@ -333,6 +347,100 @@ const ADS = [
     h: "1 POTE.\n25 DIAS DE PROTEÍNA.",
     s: "",
     slot: "Linhas de ícone:\n25 g por dose: proteína vegetal completa.\n15% de cashback: desconto garantido no próximo pote.\nPostagem em até 1 dia útil: o próximo pote sai rápido.",
+    cta: "", flag: "" },
+  { n: 85, p: 17, theme: "Proteína inteligente para quem come menos", persona: "Quem usa análogos de GLP-1 ou faz dieta",
+    art: G2 + " Mulher de 40+ sentada no tapete com a coqueteleira. Destaque verde no fechamento: “SEUS RESULTADOS.”",
+    h: "PROTEÍNA INTELIGENTE\nPARA QUEM COME MENOS.",
+    s: "Quando o apetite diminui, 25 g de proteína vegetal por dose fazem diferença. As proteínas auxiliam na manutenção da massa muscular.",
+    slot: "Ícones: Fórmula plant based · Leve e de fácil digestão · 25 g por dose · Zero açúcar\nCard do produto: 25 g de proteína vegetal por dose, zero lactose, prebióticos e sabor incrível.\nFechamento: NUTRIÇÃO QUE CUIDA DA SUA MASSA, DA SUA FORÇA E DOS SEUS RESULTADOS.",
+    cta: "", flag: "Risco médio: não cita o remédio." },
+  { n: 86, p: 17, theme: "Proteína inteligente no tratamento", persona: "Quem usa análogos de GLP-1",
+    art: G2 + " Mulher de 45+ sorrindo com a coqueteleira, sala clara. Destaque verde no fechamento: “SUA FORÇA.”",
+    h: "PROTEÍNA INTELIGENTE\nNA FASE DO GLP-1.",
+    s: "Durante o emagrecimento, as proteínas auxiliam na manutenção da massa muscular.",
+    slot: "Ícones: Fórmula plant based · Leve e de fácil digestão · 25 g por dose · Vitaminas D e B12\nCard do produto: 25 g de proteína vegetal por dose, zero lactose, zero açúcar e sabor incrível.\nFechamento: NUTRIÇÃO PARA PROTEGER O QUE É SEU: SUA FORÇA.\nRodapé pequeno: Este produto não substitui orientação médica.",
+    cta: "", flag: "Risco alto: cita GLP-1. Evite “para quem usa GLP-1” no título, que aponta a condição de quem vê." },
+  { n: 87, p: 17, theme: "Menos prato, mais proteína", persona: "Quem está emagrecendo",
+    art: G2 + " Mesa com prato pequeno, a coqueteleira e mulher de 40+ ao fundo. Destaque verde no fechamento: “MAIS PROTEÍNA.”",
+    h: "MENOS PRATO.\nMAIS PROTEÍNA.",
+    s: "Uma dose de Future Protein: 25 g de proteína vegetal, leve no estômago e zero açúcar.",
+    slot: "Ícones: Fórmula plant based · Leve e de fácil digestão · Zero açúcar · Zero lactose\nCard do produto: 25 g de proteína vegetal por dose, prebióticos e sabor incrível.\nFechamento: POUCO VOLUME. MUITA NUTRIÇÃO.",
+    cta: "", flag: "Risco baixo." },
+
+  { n: 88, p: 23, theme: "Nem todo mundo corre maratona", persona: "Quem caminha",
+    art: U + " Mulher de 45+ caminhando no bairro de manhã, tênis e fone.",
+    h: "NEM TODO MUNDO CORRE MARATONA.\nMAS TODO MUNDO PRECISA DE PROTEÍNA.",
+    s: "",
+    slot: "Card do produto: 25 g de proteína para o seu dia a dia.",
+    cta: "", flag: "" },
+  { n: 89, p: 23, theme: "Não precisa morar na academia", persona: "Iniciante 45+",
+    art: U + " Homem de 50+ de bicicleta na ciclovia da cidade, roupa comum.",
+    h: "NÃO PRECISA MORAR NA ACADEMIA.\nSÓ PRECISA SE CUIDAR.",
+    s: "",
+    slot: "Card do produto: 25 g de proteína vegetal, sem complicação.",
+    cta: "", flag: "" },
+  { n: 90, p: 23, theme: "Chegar bem aos 80", persona: "45+ que quer manter e ganhar massa",
+    art: U + " Mulher de 60+ brincando com o neto na praça, cena alegre e real.",
+    h: "NÃO É SOBRE SHAPE.\nÉ SOBRE CHEGAR BEM AOS 80.",
+    s: "",
+    slot: "Card do produto: 25 g de proteína para mais movimento ao longo dos anos.",
+    cta: "", flag: "Oportunidade forte para o público 45+ da pesquisa." },
+
+  { n: 91, p: 24, theme: "Veja o que estão dizendo", persona: "Quem decide pela reputação",
+    art: K + " Em verde: “VEJA O QUE ESTÃO DIZENDO.”",
+    h: "TODO MUNDO ESTÁ AMANDO.\nVEJA O QUE ESTÃO DIZENDO.",
+    s: "",
+    slot: "Comentário 1, Felipe M.: Muito saboroso! Não tem aquele gosto residual que alguns wheys costumam deixar.\nComentário 2, Gabriella: Ótimo gosto, amei a cremosidade, foi aprovado em todas as minhas receitinhas! Meu novo vício.\nComentário 3, Marcelo A.: Melhor whey vegano. Sabor e textura incomparáveis.\nÍcones: 100% vegano · Textura ultrafina · Digestão leve · Sabor viciante\nBox de fechamento: GARANTA O SEU / COM 15% DE CASHBACK",
+    cta: "", flag: "Avaliações reais do site. Avatar com as iniciais do nome, sem foto de banco de imagem." },
+  { n: 92, p: 24, theme: "Quem prova, aprova", persona: "Quem decide pela reputação",
+    art: K + " Em verde: “QUEM PROVA, APROVA.” Estrelas amarelas ao lado da nota.",
+    h: "NOTA 4,6 DE 5.\nQUEM PROVA, APROVA.",
+    s: "",
+    slot: "Comentário 1, Jônatas C.: Tomo whey há décadas e quando experimentei o Future Protein, identifiquei na hora que era um produto de alta qualidade.\nComentário 2, Claudia S.: Gostei do sabor, não é muito doce e muito menos enjoativo. Dissolveu facilmente.\nComentário 3, Edneide N.: Já estou no meu segundo pote e pretendo continuar comprando.\nÍcones: 100% vegano · Textura ultrafina · Digestão leve · Sabor viciante\nBox de fechamento: PRIMEIRA COMPRA? / 10% OFF COM PRIMEIRACOMPRA",
+    cta: "", flag: "Avaliações reais do site. Confira a nota no dia de subir." },
+  { n: 93, p: 24, theme: "Cacau & Avelã virou vício", persona: "Quem gosta de sabor",
+    art: K + " Pote do sabor Cacau & Avelã. Em verde: “VIROU VÍCIO.”",
+    h: "CACAU & AVELÃ\nVIROU VÍCIO.",
+    s: "",
+    slot: "Comentário 1, Letícia B.: Me surpreendi quando descobri que tem pedaços de avelã, é incrível!\nComentário 2, Felipe B.: Ele é cremoso e tem até pedaços de avelã mesmo.\nComentário 3, Adriana S.: Comprei o caramelo flor de sal, mas o cacau e avelã ainda é meu predileto.\nÍcones: 100% vegano · Pedaços de avelã · Digestão leve · Zero açúcar\nBox de fechamento: GARANTA O SEU / FRETE GRÁTIS ACIMA DE R$ 99",
+    cta: "", flag: "Avaliações reais do site." },
+
+  { n: 94, p: 25, theme: "Sai em 1 dia útil", persona: "Quem tem receio de comprar online",
+    art: P + " “SEU PEDIDO” em contorno; o resto sólido.",
+    h: "SEU PEDIDO\nSAI EM ATÉ 1 DIA ÚTIL.",
+    s: "Separado, conferido e embalado com cuidado. Você acompanha tudo pelo código de rastreio.",
+    slot: "Negrito no texto: “Você acompanha tudo pelo código de rastreio.”",
+    cta: "", flag: "Não prometa prazo de entrega. “Sai em 1 dia útil” é a postagem." },
+  { n: 95, p: 25, theme: "Abriu a caixa", persona: "Quem compra quando o estoque acaba",
+    art: P + " Mão abrindo a caixa, pote lacrado aparecendo. “ABRIU A CAIXA,” em contorno.",
+    h: "ABRIU A CAIXA,\nSENTIU A DIFERENÇA.",
+    s: "Pote lacrado, caixa protegida e 15% de cashback esperando no seu WhatsApp.",
+    slot: "Negrito no texto: “15% de cashback”",
+    cta: "", flag: "" },
+  { n: 96, p: 25, theme: "Quem recebe conta", persona: "Quem tem receio de comprar online",
+    art: P + " Card de avaliação sobre a foto, perto da caixa. “QUEM RECEBE” em contorno.",
+    h: "QUEM RECEBE\nCONTA COMO CHEGA.",
+    s: "",
+    slot: "Card de avaliação (5 estrelas): “A entrega foi super rápida e o produto chegou em perfeitas condições e muito bem embalado.” (Bruna A., compradora verificada)",
+    cta: "", flag: "Na pesquisa houve reclamações de atraso na entrega. Não use “chega rápido” como promessa, só na fala da cliente." },
+
+  { n: 97, p: 26, theme: "Força para as compras e os netos", persona: "45+ que quer manter e ganhar massa",
+    art: F + " Mulher de 55+ chegando em casa com sacolas de feira, sorrindo.",
+    h: "FORÇA PARA\nAS COMPRAS, OS NETOS\nE O QUE VIER.",
+    s: "Músculo é o que leva longe no dia a dia. O Future Protein acompanha você em todas as fases da vida.",
+    slot: "Card do produto: 25 g de proteína para a força do dia a dia.",
+    cta: "", flag: "" },
+  { n: 98, p: 26, theme: "Força para o que importa (45+)", persona: "Mulher 45+ que cuida da saúde",
+    art: F + " Mesma cena do top seller, com mulher de 45+ montando o bowl de frutas.",
+    h: "FORÇA PARA O\nQUE REALMENTE\nIMPORTA.",
+    s: "Proteína de verdade no café da manhã. O Future Protein vai no bowl, no shake e na sua rotina.",
+    slot: "Card do produto: 25 g de proteína para a vida que você leva.",
+    cta: "", flag: "Teste contra o original: mesma copy, modelo de 45+." },
+  { n: 99, p: 26, theme: "Café da manhã com mais força", persona: "Quem gosta de cozinhar",
+    art: F + " Close no bowl de frutas com uma colher de Future Protein sendo misturada.",
+    h: "SEU CAFÉ DA MANHÃ\nMERECE MAIS FORÇA.",
+    s: "Bowl de frutas com uma dose de Future Protein: 25 g de proteína vegetal para começar bem.",
+    slot: "Card do produto: 25 g de proteína para começar o dia.",
     cta: "", flag: "" }
 ];
 

@@ -1,0 +1,459 @@
+<title>Briefings Black Friday Estáticos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky toolbar + tabela de preços + uma coluna de cards de briefing; cada card mostra exatamente o texto que vai ser copiado. */
+:root {
+  --bg: #f1f2f0;
+  --surface: #ffffff;
+  --ink: #141816;
+  --muted: #5b6660;
+  --line: #d6dbd7;
+  --accent: #1d6b45;
+  --accent-ink: #ffffff;
+  --accent-soft: #e2efe7;
+  --warn: #8a5a00;
+  --warn-soft: #fbf1dc;
+  --code-bg: #f7f8f7;
+  --black: #0e100f;
+  --black-ink: #f3f5f4;
+  --display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1311; --surface: #181e1b; --ink: #e6ece8; --muted: #9aa8a0; --line: #2c3631;
+    --accent: #4fbf85; --accent-ink: #0d1a13; --accent-soft: #1d3428; --warn: #f0c46b; --warn-soft: #2e2615; --code-bg: #131916;
+    --black: #050706; --black-ink: #f3f5f4;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1311; --surface: #181e1b; --ink: #e6ece8; --muted: #9aa8a0; --line: #2c3631;
+  --accent: #4fbf85; --accent-ink: #0d1a13; --accent-soft: #1d3428; --warn: #f0c46b; --warn-soft: #2e2615; --code-bg: #131916;
+  --black: #050706; --black-ink: #f3f5f4;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.wrap { max-width: 920px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+.hero { background: var(--black); color: var(--black-ink); }
+header.top { padding-block: 40px 28px; display: grid; gap: 12px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #4fbf85; }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 6vw, 52px); line-height: 1; margin: 0; text-wrap: balance; text-transform: uppercase; letter-spacing: .01em; }
+.lead { margin: 0; max-width: 64ch; color: #b9c4be; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 4px; }
+.stats div { background: #1a201d; border: 1px solid #2c3631; border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #b9c4be; line-height: 1.3; }
+.stats b { display: block; font-family: var(--display); font-size: 30px; line-height: 1; color: #4fbf85; font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+
+.intro { padding-block: 24px 8px; display: grid; gap: 20px; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.rules div { border-top: 2px solid var(--accent); padding-top: 8px; font-size: 14px; color: var(--muted); }
+.rules strong { display: block; color: var(--ink); font-weight: 600; }
+
+details.prices { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+details.prices summary { cursor: pointer; padding: 12px 16px; font-weight: 600; }
+details.prices summary span { font-weight: 400; color: var(--muted); font-size: 14px; }
+.tablebox { overflow-x: auto; border-top: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+td.kit { white-space: normal; min-width: 220px; }
+td.kit small { display: block; color: var(--muted); }
+td.off { font-weight: 600; color: var(--accent); }
+td.de { color: var(--muted); text-decoration: line-through; }
+td.por { font-weight: 600; }
+.src { padding: 10px 16px; font-size: 13px; color: var(--muted); }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); margin-top: 16px; }
+.bar .wrap { padding-block: 10px; display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+.field { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.field label { color: var(--muted); }
+select, .chip, button { font: inherit; font-size: 14px; }
+select { background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
+.check { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.spacer { flex: 1; }
+
+button.btn { border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); border-radius: 6px; padding: 7px 14px; font-weight: 600; cursor: pointer; }
+button.btn.ghost { background: transparent; color: var(--accent); }
+button.btn.done { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+button:focus-visible, select:focus-visible, .chip:focus-visible, .check input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+main { padding-block: 24px 64px; display: grid; gap: 40px; }
+.pillar { display: grid; gap: 16px; }
+.pillar h2 { font-family: var(--display); font-weight: 700; font-size: 26px; text-transform: uppercase; letter-spacing: .02em; margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.pillar h2 small { font-family: var(--body); font-weight: 400; font-size: 15px; text-transform: none; letter-spacing: 0; color: var(--muted); }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; display: grid; grid-template-columns: 200px minmax(0, 1fr); }
+.meta { padding: 18px; border-right: 1px solid var(--line); display: grid; align-content: start; gap: 10px; }
+.num { font-family: var(--display); font-weight: 700; font-size: 44px; line-height: .9; color: var(--accent); }
+.meta h3 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.3; }
+.persona { font-size: 14px; color: var(--muted); }
+.persona b { color: var(--ink); font-weight: 500; }
+.offpill { justify-self: start; font-family: var(--mono); font-size: 12px; background: var(--black); color: var(--black-ink); border-radius: 4px; padding: 2px 8px; }
+.body { padding: 18px; display: grid; gap: 14px; min-width: 0; }
+.brief { margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; font-family: var(--body); font-size: 15px; line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
+.brief .hl { font-weight: 600; }
+.flag { background: var(--warn-soft); color: var(--ink); border-radius: 6px; padding: 10px 12px; font-size: 14px; display: grid; gap: 2px; }
+.flag b { color: var(--warn); font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 16px; border-radius: 6px; font-size: 14px; }
+
+@media (max-width: 680px) {
+  .card { grid-template-columns: 1fr; }
+  .meta { border-right: 0; border-bottom: 1px solid var(--line); grid-template-columns: auto 1fr; align-items: center; column-gap: 14px; }
+  .meta .num { grid-row: span 4; }
+}
+@media (prefers-reduced-motion: no-preference) { button.btn { transition: background .15s, color .15s; } }
+</style>
+
+<div class="hero">
+  <header class="wrap top">
+    <span class="eyebrow">Strongest Supplements · Black Friday 2026 · Matriz de estáticos 1080x1080</span>
+    <h1>Briefings Black Friday Estáticos</h1>
+    <p class="lead">25 estáticos em 5 pilares, com os preços e descontos reais da coleção Black Friday do site (13 kits). Cada briefing já traz o selo “de/por”, o desconto e a parcela de cada kit, e segue o mesmo público da pesquisa pós-compra.</p>
+    <div class="stats">
+      <div><b>47%</b>de desconto máximo (Base Forte e Creatina + Lanche)</div>
+      <div><b>R$ 179,90</b>menor preço da Black</div>
+      <div><b>13</b>kits na coleção</div>
+      <div><b>3x</b>sem juros no cartão</div>
+      <div><b>15%</b>de cashback em toda compra</div>
+      <div><b>R$ 99</b>frete grátis acima disso: todos os kits passam</div>
+    </div>
+  </header>
+</div>
+
+<section class="wrap intro">
+  <div class="rules">
+    <div><strong>Identidade Black</strong>Fundo preto com o verde da marca. Preço “por” é o maior elemento da arte; o “de” vem riscado e menor; o selo de % OFF fica no canto superior.</div>
+    <div><strong>Quem aparece na arte</strong>Pessoas reais de 40 anos ou mais, na maioria mulheres. Nada de modelo fitness de 25 anos.</div>
+    <div><strong>Leitura fácil</strong>Fonte grande e bom contraste: o público lê no celular, quase sempre à noite. No máximo 3 blocos de texto por arte.</div>
+    <div><strong>Caixas amarelas</strong>O que confirmar antes de subir. Elas não vão para o texto copiado.</div>
+  </div>
+
+  <details class="prices" id="prices">
+    <summary>Tabela de preços da Black <span>· conferida no site em 29/10/2026</span></summary>
+    <div class="tablebox"><table id="priceTable"></table></div>
+    <p class="src">Fonte: strongest.com.br/collections/black-friday. O % OFF é o que o site mostra no selo de cada kit. Se algum preço mudar antes da subida, atualize aqui e os briefings se atualizam juntos.</p>
+  </details>
+</section>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="field">
+      <label for="fmt">Formato</label>
+      <select id="fmt">
+        <option value="1080x1080">1080x1080 (feed)</option>
+        <option value="1080x1350">1080x1350 (feed 4:5)</option>
+        <option value="1080x1920">1080x1920 (stories)</option>
+        <option value="all">Feed + 4:5 + stories</option>
+      </select>
+    </div>
+    <label class="check" for="art"><input type="checkbox" id="art" checked> Incluir direção criativa</label>
+    <div class="chips" id="chips" role="group" aria-label="Filtrar por pilar"></div>
+    <span class="spacer"></span>
+    <button class="btn ghost" id="copyAll" type="button">Copiar todos</button>
+  </div>
+</div>
+
+<main class="wrap" id="list"></main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+// Preços reais da coleção Black Friday (strongest.com.br/collections/black-friday, 29/10/2026).
+const KITS = {
+  bf: { name: "Kit Base Forte", items: "Future Protein 800g + Creatina Pura 300g", de: 469.80, por: 249.90, off: 47, x3: 83.30, rate: "4,6", rev: 184 },
+  sb: { name: "Kit Saúde Base", items: "Strong Multi 60 comprimidos + Ômega 3 MEG-3 60 cápsulas", de: 277.80, por: 179.90, off: 35, x3: 59.96, rate: "4,7", rev: 40 },
+  cl: { name: "Kit Creatina + Lanche", items: "Creatina Pura 300g + caixa com 12 Barras Strong Fit", de: 339.80, por: 179.90, off: 47, x3: 59.96, rate: "4,8", rev: 276 },
+  ca: { name: "Kit Calma e Leveza", items: "Future Protein 800g + Magnésio Complex 60 cápsulas", de: 384.80, por: 229.90, off: 40, x3: 76.63, rate: "4,9", rev: 92 },
+  ve: { name: "Kit Verão Em Dia", items: "Future Protein 800g + Vitamina C + Zinco", de: 384.80, por: 229.90, off: 40, x3: 76.63, rate: "4,6", rev: 144 },
+  pe: { name: "Kit Pé Na Estrada", items: "Future Protein 800g + caixa com 10 sachês de Strong Up Energy Gel", de: 359.80, por: 219.90, off: 39, x3: 73.30, rate: "4,6", rev: 304 },
+  fd: { name: "Kit Fim de Dia", items: "Future Protein 800g + Strong Zen Gotas 30ml", de: 389.80, por: 234.90, off: 40, x3: 78.30, rate: "4,9", rev: 132 },
+  rf: { name: "Kit Rotina Flex", items: "Future Protein 800g + Strong Flex 500mg", de: 422.80, por: 249.90, off: 41, x3: 83.30, rate: "4,8", rev: 116 },
+  fs: { name: "Kit Força ao Sol", items: "Future Protein 800g + Vitamina D3 2000 UI", de: 384.80, por: 229.90, off: 40, x3: 76.63, rate: "4,8", rev: 216 },
+  po: { name: "Kit Proteína & Ômega", items: "Future Protein 800g + Ômega 3 MEG-3 60 cápsulas", de: 438.80, por: 264.90, off: 40, x3: 88.30, rate: "4,8", rev: 36 },
+  ml: { name: "Kit Movimento Livre", items: "Future Protein 800g + Colágeno Tipo II 30 cápsulas", de: 384.80, por: 229.90, off: 40, x3: 76.63, rate: "4,8", rev: 176 },
+  bp: { name: "Kit Bonita Por Dentro", items: "Future Protein 800g + Force Hair 30 cápsulas", de: 407.80, por: 239.90, off: 41, x3: 79.96, rate: "4,7", rev: 280 },
+  tl: { name: "Kit Proteína em Todo Lugar", items: "Future Protein 800g + caixa com 12 Barras Strong Fit", de: 469.80, por: 279.90, off: 40, x3: 93.30, rate: "4,7", rev: 40 }
+};
+const brl = v => "R$ " + v.toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+const save = k => brl(KITS[k].de - KITS[k].por);
+const priceLine = k => { const x = KITS[k]; return "De " + brl(x.de) + " por " + brl(x.por) + " · " + x.off + "% OFF · ou 3x de " + brl(x.x3) + " sem juros"; };
+
+const PILLARS = [
+  { id: 1, name: "Abertura da Black", note: "A campanha toda em uma arte" },
+  { id: 2, name: "Kit em destaque", note: "Um estático por kit, com preço de/por" },
+  { id: 3, name: "Prova social", note: "Notas e avaliações reais do site" },
+  { id: 4, name: "Vantagens que somam", note: "Economia em reais, cashback, frete e parcela" },
+  { id: 5, name: "Urgência e reposição", note: "Últimos dias e pote no fim" }
+];
+
+const ADS = [
+  { n: 1, p: 1, theme: "Até 47% OFF", persona: "Público geral da Black", prod: "os kits da Black Friday",
+    art: "Fundo preto com detalhes em verde da marca. “BLACK FRIDAY” grande no topo e “ATÉ 47% OFF” como maior elemento da arte. Na base, 4 ou 5 kits lado a lado em vitrine (Base Forte, Creatina + Lanche, Bonita Por Dentro, Calma e Leveza, Movimento Livre).",
+    h: "Black Friday Strongest: até 47% OFF em kits.",
+    s: "13 kits com Future Protein, creatina, ômega 3 e mais. Frete grátis acima de R$ 99, 3x sem juros e 15% de cashback.",
+    cta: "Ver kits da Black",
+    flag: "“Até 47%” vale só para Base Forte e Creatina + Lanche. Mostre os dois na vitrine para a promessa bater com o que a pessoa encontra no site." },
+  { n: 2, p: 1, theme: "A partir de R$ 179,90", persona: "Quem decide pelo preço", prod: "os kits da Black Friday",
+    art: "Fundo preto. Os kits Saúde Base e Creatina + Lanche lado a lado, “a partir de R$ 179,90” em número bem grande no centro. Faixa verde fina com “3x de R$ 59,96 sem juros”.",
+    h: "Kits da Black a partir de R$ 179,90.",
+    s: "Saúde Base e Creatina + Lanche por R$ 179,90, ou 3x de R$ 59,96 sem juros. Frete grátis para todo o Brasil.",
+    cta: "Escolher meu kit", flag: "" },
+  { n: 3, p: 1, theme: "Um kit para cada objetivo", persona: "Quem ainda não sabe qual kit escolher", prod: "os kits da Black Friday",
+    art: "Fundo preto, grade 2x3 com 6 blocos. Cada bloco: um objetivo em letra grande, o kit e o preço por. Força: Base Forte R$ 249,90. Descanso: Calma e Leveza R$ 229,90. Articulações: Movimento Livre R$ 229,90. Beleza: Bonita Por Dentro R$ 239,90. Saúde: Saúde Base R$ 179,90. Praticidade: Creatina + Lanche R$ 179,90.",
+    h: "Um kit para cada objetivo. Até 47% OFF.",
+    s: "Força, descanso, articulações, beleza, saúde ou praticidade: escolha o seu na Black Friday Strongest.",
+    cta: "Encontrar meu kit",
+    flag: "Em 1080x1080 a grade fica apertada. Se não couber com fonte grande, corte para 4 blocos (Força, Descanso, Articulações, Beleza)." },
+
+  { n: 4, p: 2, kit: "bf", theme: "Kit Base Forte", persona: "Quem está começando a suplementar",
+    art: "Fundo preto. Future Protein e Creatina Pura lado a lado, iluminação lateral verde. Selo “-47%” no canto superior. Preço “por” grande, “de” riscado acima.",
+    h: "A dupla mais tradicional do treino com 47% OFF.",
+    s: "Future Protein 800g para a recuperação e Creatina Pura 300g para a força, juntos no Kit Base Forte.",
+    cta: "Garantir meu kit", flag: "" },
+  { n: 5, p: 2, kit: "cl", theme: "Kit Creatina + Lanche", persona: "Quem tem rotina corrida",
+    art: "Fundo preto. Pote de creatina e caixa de Barras Strong Fit aberta com 2 ou 3 barras à mostra. Mão de mulher de 45+ pegando uma barra. Selo “-47%”.",
+    h: "Força e lanche proteico, sem coqueteleira.",
+    s: "Creatina Pura 300g + caixa com 12 Barras Strong Fit. O kit mais prático da Black, com 47% OFF.",
+    cta: "Quero o meu",
+    flag: "A barra tem dois sabores (Brigadeiro e Romeu e Julieta). Mostre um só na arte para não confundir." },
+  { n: 6, p: 2, kit: "sb", theme: "Kit Saúde Base", persona: "Quem quer cuidar da saúde, sem foco em treino",
+    art: "Fundo preto com luz suave. Strong Multi e Ômega 3 MEG-3 sobre uma mesa de café da manhã simples. Mulher de 50+ ao fundo, desfocada. Selo “-35%”.",
+    h: "O básico bem feito, com 35% OFF.",
+    s: "Strong Multi + Ômega 3 MEG-3: vitaminas, minerais e EPA e DHA para o dia a dia.",
+    cta: "Cuidar da minha saúde", flag: "" },
+  { n: 7, p: 2, kit: "ca", theme: "Kit Calma e Leveza", persona: "Quem treina e quer descansar melhor",
+    art: "Fundo preto com tom azul-noite. Future Protein e Magnésio Complex sobre criado-mudo, luminária acesa. Clima calmo. Selo “-40%”.",
+    h: "Treino forte pede descanso de verdade.",
+    s: "Future Protein 800g para a recuperação muscular e Magnésio Complex para apoiar o relaxamento.",
+    cta: "Garantir meu kit",
+    flag: "Não prometa sono melhor nem “acabar com a cãibra”. Fale em apoio ao relaxamento muscular." },
+  { n: 8, p: 2, kit: "fd", theme: "Kit Fim de Dia", persona: "Quem chega à noite com a mente acelerada",
+    art: "Fundo preto. Mulher de 45+ de pijama na cozinha à noite, preparando o shake; Strong Zen Gotas ao lado do copo. Luz quente e baixa. Selo “-40%”.",
+    h: "Feche o dia com proteína e calma.",
+    s: "Future Protein 800g para a última dose de proteína do dia e Strong Zen Gotas para apoiar o relaxamento.",
+    cta: "Quero o meu",
+    flag: "Não prometa tratar insônia ou ansiedade. Use só “apoiar o relaxamento”." },
+  { n: 9, p: 2, kit: "rf", theme: "Kit Rotina Flex", persona: "45+ que treina toda semana",
+    art: "Fundo preto. Homem de 50+ na academia, fazendo agachamento com boa postura. Future Protein e Strong Flex em primeiro plano. Selo “-41%”.",
+    h: "Para quem treina toda semana e cuida das articulações.",
+    s: "Future Protein 800g para o músculo e Strong Flex para a saúde das articulações, com 41% OFF.",
+    cta: "Garantir meu kit",
+    flag: "Não prometa tratar dor ou lesão. O próprio kit diz que isso exige avaliação profissional." },
+  { n: 10, p: 2, kit: "ml", theme: "Kit Movimento Livre", persona: "45+ que sente joelho e ombro no treino",
+    art: "Fundo preto. Mulher de 50+ subindo escada ou fazendo caminhada, movimento fluido. Future Protein e Colágeno Tipo II em primeiro plano. Selo “-40%”.",
+    h: "Treine com força e se mova com liberdade.",
+    s: "Future Protein 800g + Colágeno Tipo II, o tipo de colágeno ligado à cartilagem das articulações.",
+    cta: "Quero o meu",
+    flag: "Não escreva “você sente dor no joelho?” na arte: a Meta reprova anúncio que aponta condição de saúde de quem vê." },
+  { n: 11, p: 2, kit: "bp", theme: "Kit Bonita Por Dentro", persona: "Mulher 45+ que cuida da pele e do cabelo",
+    art: "Fundo preto com brilho suave. Mulher de 45+ sorrindo, cabelo solto, em close. Future Protein e Force Hair em primeiro plano. Selo “-41%”.",
+    h: "Beleza que começa de dentro.",
+    s: "Future Protein 800g para a massa magra e Force Hair com nutrientes para pele, cabelo e unhas.",
+    cta: "Garantir meu kit",
+    flag: "Não prometa resultado estético em prazo nenhum (“cabelo mais forte em 30 dias”)." },
+  { n: 12, p: 2, kit: "fs", theme: "Kit Força ao Sol", persona: "Quem passa o dia em lugar fechado",
+    art: "Fundo preto com um feixe de luz de sol entrando pela janela de um escritório. Future Protein e Vitamina D3 iluminados por esse feixe. Selo “-40%”.",
+    h: "Pouco sol na rotina? Reforce a vitamina D.",
+    s: "Future Protein 800g + Vitamina D3 2000 UI: proteína para o músculo e vitamina D para ossos e músculos.",
+    cta: "Quero o meu", flag: "" },
+  { n: 13, p: 2, kit: "po", theme: "Kit Proteína & Ômega", persona: "Quem pensa em saúde além do músculo",
+    art: "Fundo preto. Future Protein e Ômega 3 MEG-3 lado a lado, com algumas cápsulas douradas à frente. Selo “-40%”.",
+    h: "Proteína para o músculo, ômega 3 para o coração.",
+    s: "Future Protein 800g + Ômega 3 MEG-3 com EPA e DHA, no mesmo kit e com 40% OFF.",
+    cta: "Garantir meu kit",
+    flag: "Confira se o rótulo do MEG-3 permite citar saúde do coração. Se não, troque por “para o dia a dia”." },
+  { n: 14, p: 2, kit: "pe", theme: "Kit Pé Na Estrada", persona: "Quem corre, pedala ou viaja muito",
+    art: "Fundo preto. Corredora de 45+ em estrada ao amanhecer, sachê de gel na mão. Future Protein e caixa de Strong Up em primeiro plano. Selo “-39%”.",
+    h: "Energia durante, proteína depois.",
+    s: "Future Protein 800g + 10 sachês de Strong Up Energy Gel para corrida, pedal e treinos longos.",
+    cta: "Quero o meu",
+    flag: "O gel tem sabor Banana ou Limão. Mostre a caixa de um sabor só." },
+  { n: 15, p: 2, kit: "ve", theme: "Kit Verão Em Dia", persona: "Quem quer chegar ao verão com a rotina em dia",
+    art: "Fundo preto com toque de luz quente de fim de tarde. Future Protein e Vitamina C + Zinco sobre canga ou mesa de varanda, copo com shake gelado. Selo “-40%”.",
+    h: "Chegue ao verão com a rotina em dia.",
+    s: "Future Protein 800g + Vitamina C e Zinco, com 40% OFF na Black Friday.",
+    cta: "Garantir meu kit",
+    flag: "Não prometa “blindar a imunidade” nem prevenir gripe. Se quiser falar de imunidade, use o texto do rótulo." },
+  { n: 16, p: 2, kit: "tl", theme: "Kit Proteína em Todo Lugar", persona: "Quem passa o dia fora de casa",
+    art: "Fundo preto. Tela dividida: à esquerda, shake na cozinha de casa; à direita, barra saindo da bolsa no carro. Future Protein e caixa de barras no centro. Selo “-40%”.",
+    h: "Shake em casa, barra na bolsa.",
+    s: "Future Protein 800g + 12 Barras Strong Fit para manter a proteína em dia em qualquer lugar.",
+    cta: "Quero o meu", flag: "" },
+
+  { n: 17, p: 3, kit: "cl", theme: "Nota 4,8 com 276 avaliações", persona: "Quem confia na opinião de outros clientes",
+    art: "Fundo preto. Kit Creatina + Lanche em destaque. Card grande estilo avaliação de loja com 5 estrelas, “4,8” e “276 avaliações”. Selo “-47%”.",
+    h: "Nota 4,8 em 276 avaliações. Agora com 47% OFF.",
+    s: "O Kit Creatina + Lanche é um dos mais bem avaliados da loja e está com o maior desconto da Black.",
+    cta: "Ver avaliações",
+    flag: "Confira na página do kit se a nota e o número de avaliações continuam os mesmos no dia da subida." },
+  { n: 18, p: 3, theme: "Os mais bem avaliados", persona: "Quem decide pela qualidade", prod: "os kits Calma e Leveza e Fim de Dia",
+    art: "Fundo preto. Kits Calma e Leveza e Fim de Dia lado a lado, cada um com seu card de nota “4,9” e estrelas. Preço por de cada um embaixo (R$ 229,90 e R$ 234,90).",
+    h: "Nota 4,9: os kits mais bem avaliados da Black.",
+    s: "Calma e Leveza por R$ 229,90 e Fim de Dia por R$ 234,90, os dois com 40% OFF.",
+    cta: "Conhecer os kits",
+    flag: "Confira as notas no dia da subida. Calma e Leveza tem 92 avaliações e Fim de Dia tem 132." },
+  { n: 19, p: 3, kit: "bp", theme: "280 avaliações", persona: "Mulher 45+ que cuida da pele e do cabelo",
+    art: "Fundo preto. Mulher de 45+ olhando o celular e sorrindo; na tela, a página do kit com as estrelas. Kit Bonita Por Dentro em primeiro plano. Selo “-41%”.",
+    h: "280 avaliações e nota 4,7. Com 41% OFF.",
+    s: "O Kit Bonita Por Dentro junta Future Protein e Force Hair, e já conquistou centenas de clientes.",
+    cta: "Ver avaliações",
+    flag: "Use um print real da página do kit, sem nome nem foto de cliente." },
+
+  { n: 20, p: 4, kit: "bf", theme: "Economia em reais", persona: "Quem faz a conta antes de comprar",
+    art: "Fundo preto. Kit Base Forte à direita. À esquerda, “ECONOMIZE R$ 219,90” em número enorme, e abaixo, menor, o de/por. Sem fotos de pessoas: a arte é o número.",
+    h: "Economize R$ 219,90 no Kit Base Forte.",
+    s: "Future Protein 800g + Creatina Pura 300g por R$ 249,90. É o maior valor de economia da Black.",
+    cta: "Garantir minha economia", flag: "" },
+  { n: 21, p: 4, kit: "bf", theme: "Cashback em cima do desconto", persona: "Quem prefere cupom e vantagem",
+    art: "Fundo preto. Kit Base Forte com uma seta verde saindo dele para um cupom recortado escrito “R$ 37,49 de volta”. Selo “15% de cashback” bem visível.",
+    h: "Desconto agora e 15% de volta depois.",
+    s: "No Kit Base Forte, você paga R$ 249,90 e recebe R$ 37,49 de cashback para usar na próxima compra.",
+    cta: "Comprar com cashback",
+    flag: "O cashback chega como cupom pelo WhatsApp e vale 60 dias. Confirme que ele é calculado sobre o valor pago, sem frete." },
+  { n: 22, p: 4, theme: "Frete grátis e 3x sem juros", persona: "Quem desiste no frete", prod: "os kits da Black Friday",
+    art: "Fundo preto. Caixa da Strongest fechada no centro, com 3 selos grandes em volta: “Frete grátis”, “3x sem juros”, “15% de cashback”. Embaixo, a faixa de preço dos kits.",
+    h: "Todos os kits da Black com frete grátis.",
+    s: "Todo kit passa de R$ 99, então o frete é por nossa conta para todo o Brasil. E ainda dá para pagar em 3x sem juros.",
+    cta: "Ver kits da Black",
+    flag: "Não prometa prazo de entrega: o prazo depende da região. Pode usar “postagem em até 1 dia útil”." },
+
+  { n: 23, p: 5, theme: "Últimos dias", persona: "Quem deixou para depois", prod: "os kits da Black Friday",
+    art: "Fundo preto. “ÚLTIMOS DIAS” em letra enorme, com um relógio ou contagem simples em verde. Vitrine com 3 kits embaixo e “até 47% OFF”.",
+    h: "Últimos dias de Black Friday Strongest.",
+    s: "Kits com até 47% OFF só até [data de término]. Depois, os preços voltam ao normal.",
+    cta: "Aproveitar agora",
+    flag: "Preencha [data de término] com a data real da campanha. Suba só nos últimos 3 dias." },
+  { n: 24, p: 5, kit: "pe", theme: "O pote está no fim", persona: "Quem compra quando o estoque acaba",
+    art: "Fundo preto. Pote de Future Protein quase vazio, scoop raspando o fundo. Ao lado, o Kit Pé Na Estrada com selo “-39%”.",
+    h: "Seu pote está no fim? Reponha com preço de Black.",
+    s: "Os kits com Future Protein 800g começam em R$ 219,90. Postagem em até 1 dia útil e 15% de cashback.",
+    cta: "Repor agora",
+    flag: "R$ 219,90 é o kit com Future Protein mais barato da Black (Pé Na Estrada). Suba para quem já comprou Future Protein." },
+  { n: 25, p: 5, kit: "bf", theme: "Preço volta depois da Black", persona: "Quem está comparando em outros sites", prod: "o Kit Base Forte",
+    art: "Fundo preto. Kit Base Forte no centro. Acima, “R$ 469,80” riscado em vermelho escuro; abaixo, “R$ 249,90” grande em verde. Faixa “Só até [data de término]”.",
+    h: "R$ 249,90 só na Black. Depois, volta para R$ 469,80.",
+    s: "Future Protein 800g + Creatina Pura 300g com 47% OFF até [data de término].",
+    cta: "Garantir esse preço",
+    flag: "Preencha [data de término]. Não mostre nem cite loja ou marca concorrente." }
+];
+
+const FORMATS = { "1080x1080": "1080x1080", "1080x1350": "1080x1350", "1080x1920": "1080x1920", all: "1080x1080 (feed), 1080x1350 (feed 4:5) e 1080x1920 (stories)" };
+const state = { fmt: "1080x1080", art: true, pillar: 0 };
+const pad = n => String(n).padStart(2, "0");
+const prodOf = ad => ad.prod || ("o " + KITS[ad.kit].name);
+
+function briefText(ad) {
+  let t = "Desenvolver um post estático para tráfego pago da Black Friday com " + prodOf(ad) +
+    "\n→ Especificações: " + FORMATS[state.fmt];
+  if (ad.kit) t += "\n→ Produtos na arte: " + KITS[ad.kit].items;
+  if (state.art) t += "\n→ Direção criativa: " + ad.art;
+  t += "\n\nConteúdo:\n" + ad.h + "\n\n" + ad.s;
+  if (ad.kit) t += "\n\nSelo de preço: " + priceLine(ad.kit);
+  t += "\n\nCTA na arte: " + ad.cta;
+  return t;
+}
+function taskTitle(ad) {
+  const kind = state.fmt === "1080x1920" ? "Stories" : state.fmt === "all" ? "Post/Stories" : "Post";
+  return kind + " [PILAR " + ad.p + "] - " + ad.h + " (Black Friday - Estático)";
+}
+
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+function briefHTML(ad) {
+  return esc(briefText(ad)).replace(esc(ad.h), '<span class="hl">' + esc(ad.h) + "</span>");
+}
+
+function renderPrices() {
+  const rows = Object.keys(KITS).map(k => KITS[k]).sort((a, b) => b.off - a.off || a.por - b.por);
+  document.getElementById("priceTable").innerHTML =
+    "<thead><tr><th>Kit</th><th>OFF</th><th>De</th><th>Por</th><th>Economia</th><th>3x sem juros</th><th>Nota</th></tr></thead><tbody>" +
+    rows.map(x => `<tr><td class="kit">${esc(x.name)}<small>${esc(x.items)}</small></td><td class="off">${x.off}%</td><td class="de">${brl(x.de)}</td><td class="por">${brl(x.por)}</td><td>${brl(x.de - x.por)}</td><td>${brl(x.x3)}</td><td>${x.rate} (${x.rev})</td></tr>`).join("") +
+    "</tbody>";
+}
+
+function render() {
+  const list = document.getElementById("list");
+  list.innerHTML = PILLARS.filter(p => !state.pillar || p.id === state.pillar).map(p => `
+    <section class="pillar">
+      <h2>Pilar ${p.id} · ${p.name} <small>${p.note}</small></h2>
+      ${ADS.filter(a => a.p === p.id).map(a => `
+        <article class="card">
+          <div class="meta">
+            <span class="num">${pad(a.n)}</span>
+            <h3>${esc(a.theme)}</h3>
+            <span class="persona">Persona: <b>${esc(a.persona)}</b></span>
+            ${a.kit ? `<span class="offpill">${KITS[a.kit].off}% OFF · ${brl(KITS[a.kit].por)}</span>` : ""}
+          </div>
+          <div class="body">
+            <pre class="brief" id="brief-${a.n}">${briefHTML(a)}</pre>
+            ${a.flag ? `<div class="flag"><b>Validar antes de subir</b>${esc(a.flag)}</div>` : ""}
+            <div class="actions">
+              <button class="btn" type="button" data-copy="brief" data-n="${a.n}">Copiar briefing</button>
+              <button class="btn ghost" type="button" data-copy="title" data-n="${a.n}">Copiar título da tarefa</button>
+            </div>
+          </div>
+        </article>`).join("")}
+    </section>`).join("");
+}
+
+function renderChips() {
+  const opts = [{ id: 0, name: "Todos" }].concat(PILLARS);
+  document.getElementById("chips").innerHTML = opts.map(p =>
+    `<button type="button" class="chip" data-pillar="${p.id}" aria-pressed="${state.pillar === p.id}">${p.id ? p.id + " " : ""}${p.name}</button>`).join("");
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { el.hidden = true; }, 1800);
+}
+function selectNode(node) {
+  const r = document.createRange(); r.selectNodeContents(node);
+  const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+}
+function copy(text, btn, fallbackNode, label) {
+  const ok = () => {
+    toast(label);
+    if (btn) { const old = btn.textContent; btn.textContent = "Copiado"; btn.classList.add("done"); setTimeout(() => { btn.textContent = old; btn.classList.remove("done"); }, 1500); }
+  };
+  const fail = () => {
+    if (fallbackNode) { selectNode(fallbackNode); toast("Texto selecionado. Use Ctrl+C (ou Cmd+C) para copiar."); }
+    else toast("Não deu para copiar automaticamente. Selecione o texto e copie.");
+  };
+  try { navigator.clipboard.writeText(text).then(ok, fail); } catch (e) { fail(); }
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-copy]");
+  if (b) {
+    const ad = ADS.find(a => a.n === +b.dataset.n);
+    if (b.dataset.copy === "brief") copy(briefText(ad), b, document.getElementById("brief-" + ad.n), "Briefing " + pad(ad.n) + " copiado");
+    else copy(taskTitle(ad), b, null, "Título copiado");
+    return;
+  }
+  const c = e.target.closest("[data-pillar]");
+  if (c) { state.pillar = +c.dataset.pillar; renderChips(); render(); }
+});
+document.getElementById("fmt").addEventListener("change", e => { state.fmt = e.target.value; render(); });
+document.getElementById("art").addEventListener("change", e => { state.art = e.target.checked; render(); });
+document.getElementById("copyAll").addEventListener("click", e => {
+  const ads = ADS.filter(a => !state.pillar || a.p === state.pillar);
+  const all = ads.map(a => "=== " + taskTitle(a) + " ===\n\n" + briefText(a)).join("\n\n\n");
+  copy(all, e.currentTarget, document.getElementById("list"), ads.length + " briefings copiados");
+});
+
+state.fmt = document.getElementById("fmt").value;
+state.art = document.getElementById("art").checked;
+renderPrices(); renderChips(); render();
+</script>
